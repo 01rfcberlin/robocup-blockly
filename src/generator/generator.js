@@ -39,12 +39,13 @@ Blockly.JavaScript['robot_add'] = function(block) {
 };
 
 /**
- * Calls the moveRobot(pos_x, pos_y) function
+ * Calls the moveRobot(pos_x, pos_y, ind) function
+ * TODO: Robot index right now is hard-coded so it is always 0
  * @param block
  * @returns {string}
  */
 Blockly.JavaScript['robot_move'] = function(block) {
     var value_pos_x = Blockly.JavaScript.valueToCode(block, 'pos_x', Blockly.JavaScript.ORDER_ATOMIC);
     var value_pos_y = Blockly.JavaScript.valueToCode(block, 'pos_y', Blockly.JavaScript.ORDER_ATOMIC);
-    return 'moveRobot(' + value_pos_x + ', ' + value_pos_y + ');';
+    return 'moveRobot(' + value_pos_x + ', ' + value_pos_y + ', 0);';
 };

@@ -1,7 +1,22 @@
-import React, {useEffect, useRef} from "react";
+import React, {useRef} from "react";
 import {useInterval} from "../helper/useInterval";
+import {useDispatch, useSelector} from "react-redux";
+import RobotActions from "./RobotActions";
 
-export const RoboCupField = ({grid_properties, gameState, dispatch}) => {
+/**
+ * Handles drawing the background of the field as well as the robot(s)
+ *
+ * @param grid_properties
+ * @returns {*}
+ * @constructor
+ */
+export const RoboCupField = ({grid_properties}) => {
+
+    const dispatch = useDispatch();
+
+    const { robotList } = useSelector(state => {
+        return state.RobotReducer;
+    });
 
     const canvasRef = useRef(null);
 
@@ -36,7 +51,7 @@ export const RoboCupField = ({grid_properties, gameState, dispatch}) => {
      * @param ctx
      */
     const draw_robots = (canvas, ctx) => {
-        gameState.robotList.forEach(element => {
+        robotList.forEach(element => {
             var robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
             ctx.drawImage(robot_img, element.x, element.y)
@@ -52,20 +67,14 @@ export const RoboCupField = ({grid_properties, gameState, dispatch}) => {
      */
     const draw_all = () => {
 
-        gameState.robotList.forEach((element, idx) => {
+        robotList.forEach((element, idx) => {
                 if (element.tx) {
                     const delta_x = element.tx - element.x;
                     const delta_y = element.ty - element.y;
                     if (Math.abs(delta_x) > 10 || Math.abs(delta_y) > 10) {
                         const new_x = element.x + delta_x / 10.0;
-                        dispatch({
-                            type: "updateRobotPosition",
-                            index: idx,
-                            position: {
-                                x: new_x,
-                                y: element.y + delta_y / 10.0
-                            }
-                        })
+                        const new_y = element.y + delta_y / 10.0;
+                        dispatch(RobotActions.updateRobot(new_x, new_y, idx))
                     } else {
                         dispatch({
                             type: "setRobotTarget",

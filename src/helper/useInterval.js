@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
+
+/**
+ * Custom Hook for handling the update interval on the field
+ * @param callback
+ * @param delay
+ */
 export function useInterval(callback, delay) {
     const savedCallback = useRef();
 
