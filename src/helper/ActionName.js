@@ -14,6 +14,11 @@ const ActionName = {
     SetTargetPosition: 'SetRobotTarget',
     UpdatePosition: 'UpdateRobotPosition',
     Reset: 'Reset'
+  },
+  Ball: {
+    SetTargetPosition: 'SetBallTarget',
+    UpdatePosition: 'UpdateBallPosition',
+    Reset: 'Reset'
   }
 };
 

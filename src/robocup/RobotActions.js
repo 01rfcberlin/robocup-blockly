@@ -5,9 +5,11 @@ const RobotActions = {
     return {
       type: ActionName.Robot.Add,
       robot: {
-        x: pos_x,
-        y: pos_y,
-        rotation: 0
+        position: {
+          x: pos_x,
+          y: pos_y,
+          rotation: 0
+        }
       }
     }
   },

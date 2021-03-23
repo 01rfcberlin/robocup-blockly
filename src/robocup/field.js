@@ -2,6 +2,7 @@ import React, {useRef} from "react";
 import {useInterval} from "../helper/useInterval";
 import {useDispatch, useSelector} from "react-redux";
 import RobotActions from "./RobotActions";
+import BallActions from "./BallActions";
 
 /**
  * Handles drawing the background of the field as well as the robot(s)
@@ -16,6 +17,10 @@ export const RoboCupField = ({grid_properties}) => {
 
     const { robotList } = useSelector(state => {
         return state.RobotReducer;
+    });
+
+    const { ball_position, ball_target } = useSelector(state => {
+        return state.BallReducer;
     });
 
     const canvasRef = useRef(null);
@@ -54,8 +59,22 @@ export const RoboCupField = ({grid_properties}) => {
         robotList.forEach(element => {
             var robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
-            ctx.drawImage(robot_img, element.x, element.y)
+            ctx.drawImage(robot_img, element.position.x, element.position.y)
         })
+    };
+
+    /**
+     * Draws all robots at their current position.
+     * @param canvas
+     * @param ctx
+     */
+    const draw_ball = (canvas, ctx) => {
+        if(ball_position) {
+            var ball_img = new Image();
+            ball_img.src = process.env.PUBLIC_URL + '/ball.png';
+            ctx.drawImage(ball_img, ball_position.x, ball_position.y, canvas.width/10, canvas.width/10)
+        }
+
     };
 
     /**
@@ -68,35 +87,33 @@ export const RoboCupField = ({grid_properties}) => {
     const draw_all = () => {
 
         robotList.forEach((element, idx) => {
-                if (element.tx) {
-                    const delta_x = element.tx - element.x;
-                    const delta_y = element.ty - element.y;
+                if (element.target) {
+                    const delta_x = element.target.x - element.position.x;
+                    const delta_y = element.target.y - element.position.y;
                     if (Math.abs(delta_x) > 10 || Math.abs(delta_y) > 10) {
-                        const new_x = element.x + delta_x / 10.0;
-                        const new_y = element.y + delta_y / 10.0;
+                        const new_x = element.position.x + delta_x / 10.0;
+                        const new_y = element.position.y + delta_y / 10.0;
                         dispatch(RobotActions.updateRobot(new_x, new_y, idx))
                     } else {
-                        dispatch({
-                            type: "setRobotTarget",
-                            index: idx,
-                            target: {
-                                x: null,
-                                y: null
-                            }
-                        })
+                        dispatch(RobotActions.updateRobot(null, null, idx))
                     }
                 }
             }
         );
 
+        //TODO: This is a dummy-implementation
+        if(ball_target) {
+            dispatch(BallActions.updateBall(ball_target.x,ball_target.y))
+        }
 
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width + 20, canvas.height + 20)
 
-        //Draw field and robots
+        //Draw field, robots and ball
         init_field(canvas, context);
         draw_robots(canvas, context);
+        draw_ball(canvas, context);
     };
 
     /**

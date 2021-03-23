@@ -40,8 +40,10 @@ function RobotReducer(state, action) {
           ...copy_robot_list,
           {
             ...current_robot,
-            tx: action.target.x,
-            ty: action.target.y
+            target: {
+              x: action.target.x,
+              y: action.target.y
+            }
           }
         ]
       };
@@ -56,8 +58,10 @@ function RobotReducer(state, action) {
           ...copy_robot_list2,
           {
             ...current_robot,
-            x: action.position.x,
-            y: action.position.y
+            position: {
+              x: action.position.x,
+              y: action.position.y
+            }
           }
         ]
       };

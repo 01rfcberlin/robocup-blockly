@@ -4,6 +4,7 @@ import React, {useEffect} from "react";
 import {useBlockly} from "../helper/useBlockly";
 import {useDispatch} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
+import BallActions from "../robocup/BallActions";
 
 /**
  * TASK
@@ -27,6 +28,8 @@ const GoStraight = () => {
     useEffect(() => {
         dispatch(RobotActions.reset())
         dispatch(RobotActions.addRobot(200,200))
+        dispatch(BallActions.updateBall(0,0))
+        dispatch(BallActions.moveBall(300,300))
     }, []);
 
     return(
