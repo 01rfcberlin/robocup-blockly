@@ -31,22 +31,99 @@ export const RoboCupField = ({grid_properties}) => {
     const width = grid_properties.width;
     const height = grid_properties.height;
 
+    const lineMetersX = ( width / 11 );
+    const lineMetersY = ( height / 8 );
+
+    // robotSize: width 0.5 meter
+    const robotSize = 0.5;
+
+    // ballsize: FIFA Size 1 (130mm) times 2.5
+    const ballSize = 0.325;
+
     /**
      * This draws the RoboCup field.
-     * TODO: Field dimensions are not set correctly.
-     * TODO: draw the white field lines
+     * Field dimensions depends on canvas size
      * @param canvas
      * @param ctx
      */
     const init_field = (canvas, ctx) => {
-        let field = new Path2D();
-        ctx.fillStyle = field_color;
-        field.moveTo(field_x, field_y);
-        field.lineTo(field_x + width, field_y);
-        field.lineTo(field_x + width, field_y + height);
-        field.lineTo(field_x, field_y + height);
-        field.lineTo(field_x, field_y);
-        ctx.fill(field)
+        // let field = new Path2D();
+        ctx.fillStyle = 'green';
+        ctx.fillRect(0, 0, width, height);
+
+        // draw grid
+        for (var i = 1; i <= 7; i++) {
+            for (var j = 1; j <= 9; j++) {
+                ctx.beginPath();
+                ctx.fillStyle = ["rgba(0,255,0,0.3)", "rgba(0,255,0,0.1)"][(i + j) % 2];
+                ctx.fillRect(j * lineMetersX, i * lineMetersY-(0.5*lineMetersY), lineMetersX, lineMetersY);
+                ctx.closePath();
+            }
+        }
+
+        // draw border
+        for (var i = 1; i < 11; i++) { 
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.fillRect(i * lineMetersX, 0, lineMetersX, lineMetersY);
+            ctx.fillRect(i * lineMetersX, 7*lineMetersY, lineMetersX, lineMetersY);
+            ctx.closePath();       
+        }
+
+        // outer lines (9m * 6m)
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.strokeStyle = 'white';
+        ctx.rect(1*lineMetersX, 1*lineMetersY, 9*lineMetersX, 6*lineMetersY);
+        
+        // mid line
+        ctx.moveTo(width/2, 1*lineMetersY);
+        ctx.lineTo(width/2, 7*lineMetersY);
+
+        // goal area
+        // 5m area (1m * 3m)
+        ctx.rect(1*lineMetersX, height/2-1.5*lineMetersY, 1*lineMetersX, 3*lineMetersY);
+        ctx.rect(10*lineMetersX-1*lineMetersX, height/2-1.5*lineMetersY, 1*lineMetersX, 3*lineMetersY);
+        // 16m area (2m * 5m)
+        ctx.rect(1*lineMetersX, height/2-2.5*lineMetersY, 2*lineMetersX, 5*lineMetersY);
+        ctx.rect(10*lineMetersX-2*lineMetersX, height/2-2.5*lineMetersY, 2*lineMetersX, 5*lineMetersY);
+        ctx.stroke();
+        ctx.closePath();
+        
+        // penalty point
+        // left side
+        ctx.beginPath();
+        ctx.arc(1*lineMetersX+1.5*lineMetersX, height/2, 2, 0, 2*Math.PI, false);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+        // right side
+        ctx.beginPath();
+        ctx.arc(10*lineMetersX-1.5*lineMetersX, height/2, 2, 0, 2*Math.PI, false);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        // ctx.moveTo
+        // mid circle (dimension based on lineMetersX)
+        ctx.beginPath();
+        ctx.arc(width/2, height/2, 0.75*lineMetersX, 0, 2*Math.PI, false);
+        ctx.stroke();
+        ctx.closePath();
+        // mid point
+        ctx.beginPath();
+        ctx.arc(width/2, height/2, 2, 0, 2*Math.PI, false);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        // goals
+        ctx.beginPath();
+        ctx.rect(1*lineMetersX-0.6*lineMetersX, height/2-1.3*lineMetersY, 0.6*lineMetersX, 2.6*lineMetersY);
+        ctx.rect(10*lineMetersX, height/2-1.3*lineMetersY, 0.6*lineMetersX, 2.6*lineMetersY);
+        ctx.lineWidth = 3.5;
+        ctx.stroke();
+        ctx.closePath();
 
     };
 
@@ -59,7 +136,12 @@ export const RoboCupField = ({grid_properties}) => {
         robotList.forEach(element => {
             var robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
-            ctx.drawImage(robot_img, element.position.x, element.position.y)
+            var cellX = Math.floor(element.position.x/lineMetersX);
+            var cellY = Math.floor(element.position.y/lineMetersY);
+            console.log(cellX, cellY);
+            ctx.drawImage(robot_img, cellX*lineMetersX+robotSize/2*lineMetersX, cellY*lineMetersY-robotSize/2*lineMetersY, robotSize*lineMetersX, robotSize*lineMetersY)
+
+            // ctx.drawImage(robot_img, element.position.x, element.position.y, 0.5*lineMetersX, 0.5*lineMetersY)
         })
     };
 
@@ -72,7 +154,7 @@ export const RoboCupField = ({grid_properties}) => {
         if(ball_position) {
             var ball_img = new Image();
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
-            ctx.drawImage(ball_img, ball_position.x, ball_position.y, canvas.width/10, canvas.width/10)
+            ctx.drawImage(ball_img, ball_position.x, ball_position.y, ballSize*lineMetersX, ballSize*lineMetersY)
         }
 
     };
