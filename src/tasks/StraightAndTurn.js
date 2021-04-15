@@ -54,6 +54,7 @@ const StraightAndTurn = () => {
                                   wheel: true
                               }}>
                 <Block type="move_one_block_ahead"/>
+                <Block type="ball_kick"/>
                 <Block type="turn_right"/>
                 <Block type="turn_left"/>
             </BlocklyComponent>

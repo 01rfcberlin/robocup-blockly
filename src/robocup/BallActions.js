@@ -10,12 +10,12 @@ const BallActions = {
       }
     }
   },
-  ballKick: () => {
+  ballKick: (pos_x, pos_y) => {
     return {
       type: ActionName.Ball.BallKick,
       target: {
-        x: 3*600/11,
-        y: 3*400/8
+        x: pos_x,
+        y: pos_y
       }
     }
   },

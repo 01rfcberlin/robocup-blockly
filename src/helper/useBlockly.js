@@ -16,10 +16,18 @@ export function useBlockly() {
 
     const simpleWorkspace = React.createRef();
 
+    // TODO: gridsize hardcoded
+    const cellSizeX = ( 600 / 11 );
+    const cellSizeY = ( 400 / 8 );
+
     const dispatch = useDispatch();
 
     const { robotList } = useSelector(state => {
         return state.RobotReducer;
+    });
+
+    const ball = useSelector(state => {
+        return state.BallReducer;
     });
 
     /**
@@ -60,8 +68,21 @@ export function useBlockly() {
     /**
      * Helper-function to translate the ballKick() function received from Blockly into dispatch
      */
-     const ballKick = () => {
-        dispatch(BallActions.ballKick());
+     const ballKick = (block, ind) => {
+        // dispatch(BallActions.ballKick(block));
+        console.log(ball)
+        if(robotList[ind].position.rotation == 90) {
+            dispatch(BallActions.ballKick(ball.ball_position.x + (block * cellSizeX), ball.ball_position.y));
+        }
+        else if(robotList[ind].position.rotation == 270) {
+            dispatch(BallActions.ballKick(ball.ball_position.x - (block * cellSizeX), ball.ball_position.y));
+        }
+        else if(robotList[ind].position.rotation == 180) {
+            dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y + (block * cellSizeY)));
+        }
+        else if(robotList[ind].position.rotation == 0) {
+            dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y - (block * cellSizeY)));
+        }
     };
 
     /**
@@ -80,16 +101,16 @@ export function useBlockly() {
      */
     const moveForward = (block, ind) => {
         if(robotList[ind].position.rotation == 90) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * 50), robotList[ind].position.y, ind));
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * cellSizeX), robotList[ind].position.y, ind));
         }
         else if(robotList[ind].position.rotation == 270) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x - (block * 50), robotList[ind].position.y, ind));
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x - (block * cellSizeX), robotList[ind].position.y, ind));
         }
         else if(robotList[ind].position.rotation == 180) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y + (block * 50), ind));
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y + (block * cellSizeY), ind));
         }
         else if(robotList[ind].position.rotation == 0) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y - (block * 50), ind));
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y - (block * cellSizeY), ind));
         }
     };
 

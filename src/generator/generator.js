@@ -56,7 +56,7 @@ Blockly.JavaScript['robot_move'] = function(block) {
  * @returns {string}
  */
  Blockly.JavaScript['ball_kick'] = function(block) {
-    return 'ballKick();';
+    return 'ballKick(1, 0);';
 };
 
 /**

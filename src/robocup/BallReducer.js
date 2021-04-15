@@ -35,8 +35,8 @@ function BallReducer(state, action) {
         return {
           ...state,
           ball_target: {
-            x: state.ball_position.x + action.target.x,
-            y: state.ball_position.y
+            x: action.target.x,
+            y: action.target.y
           }
         };
     case ActionName.Ball.UpdatePosition:
