@@ -65,6 +65,23 @@ function RobotReducer(state, action) {
           }
         ]
       };
+    case ActionName.Robot.Turn:
+      //Turn the robot on the field
+      current_robot = {...state.robotList[action.index]};
+      const copy_robot_list3 = [...state.robotList]
+      copy_robot_list3.splice(action.index, 1)
+      return {
+        ...state,
+        robotList: [
+          ...copy_robot_list3,
+          {
+            ...current_robot,
+            position: {
+              rotation: action.position.rotation,
+            }
+          }
+        ]
+      };
     case ActionName.Robot.Reset:
       return initialState;
     default:

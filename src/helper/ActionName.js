@@ -13,6 +13,7 @@ const ActionName = {
     Add: 'AddRobot',
     SetTargetPosition: 'SetRobotTarget',
     UpdatePosition: 'UpdateRobotPosition',
+    Turn: 'TurnRobot',
     Reset: 'Reset'
   },
   Ball: {

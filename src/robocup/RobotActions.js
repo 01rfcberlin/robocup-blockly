@@ -13,6 +13,15 @@ const RobotActions = {
       }
     }
   },
+  turnRobot: (deg, ind) => {
+    return {
+      type: ActionName.Robot.Turn,
+      index: ind,
+      position: {
+        rotation: deg
+      }
+    }
+  },
   moveRobot: (pos_x, pos_y, ind) => {
     return {
       type: ActionName.Robot.SetTargetPosition,
