@@ -146,7 +146,7 @@ export const RoboCupField = ({grid_properties}) => {
 
       // move back to original origin
       ctx.translate(-center_x, -center_y);
-    }
+    };
 
     /**
      * Draws all robots at their current position.
@@ -160,7 +160,7 @@ export const RoboCupField = ({grid_properties}) => {
             var cellX = Math.floor(element.position.x/lineMetersX);
             var cellY = Math.floor(element.position.y/lineMetersY);
             console.log(cellX, cellY);
-            drawRotatedImage(ctx, robot_img, 2*Math.PI/360 * 30, cellX*lineMetersX+robotSize/2*lineMetersX, cellY*lineMetersY-robotSize/2*lineMetersY, robotSize*lineMetersX, robotSize*lineMetersY)
+            drawRotatedImage(ctx, robot_img, 2*Math.PI/360 * element.position.rotation, cellX*lineMetersX+robotSize/2*lineMetersX, cellY*lineMetersY-robotSize/2*lineMetersY, robotSize*lineMetersX, robotSize*lineMetersY)
             // ctx.drawImage(robot_img, element.position.x, element.position.y, 0.5*lineMetersX, 0.5*lineMetersY)
         })
     };

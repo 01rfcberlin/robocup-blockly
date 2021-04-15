@@ -28,6 +28,7 @@ const GoFurtherStraight = () => {
     useEffect(() => {
         dispatch(RobotActions.reset())
         dispatch(RobotActions.addRobot(300,220));
+        dispatch(RobotActions.turnRobot(90,0));
         dispatch(BallActions.updateBall(0,0));
         dispatch(BallActions.moveBall(470,220));
     }, []);

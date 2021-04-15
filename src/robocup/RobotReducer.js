@@ -77,6 +77,7 @@ function RobotReducer(state, action) {
           {
             ...current_robot,
             position: {
+              ...current_robot.position,
               rotation: action.position.rotation,
             }
           }

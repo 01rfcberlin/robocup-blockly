@@ -49,3 +49,13 @@ Blockly.JavaScript['robot_move'] = function(block) {
     var value_pos_y = Blockly.JavaScript.valueToCode(block, 'pos_y', Blockly.JavaScript.ORDER_ATOMIC);
     return 'moveRobot(' + value_pos_x + ', ' + value_pos_y + ', 0);';
 };
+
+/**
+ * Calls the turnRobot(deg, ind) function
+ * TODO: Robot index right now is hard-coded so it is always 0
+ * @param block
+ * @returns {string}
+ */
+Blockly.JavaScript['turn_90_deg'] = function(block) {
+    return 'turnRobot(90, 0);';
+};

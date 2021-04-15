@@ -52,5 +52,15 @@ export function useBlockly() {
         dispatch(RobotActions.moveRobot(pos_x,pos_y, ind));
     };
 
+
+    /**
+     * Helper-function to translate the turnRobot() function received from Blockly into dispatch
+     * @param deg
+     * @param ind
+     */
+    const turnRobot = (deg, ind) => {
+        dispatch(RobotActions.turnRobot(0, ind));
+    };
+
     return {simpleWorkspace, generateCode}
 }
