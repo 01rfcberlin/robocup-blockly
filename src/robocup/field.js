@@ -128,6 +128,26 @@ export const RoboCupField = ({grid_properties}) => {
 
     };
 
+    // with angle == 0, this function is equivalent to:
+    // ctx.drawImage(img, x, y, w, h);
+    const drawRotatedImage = (ctx, img, angle, x, y, w, h) => {
+      const center_x = x + w/2;
+      const center_y = y + w/2;
+
+      // move origin to center of image
+      ctx.translate(center_x, center_y);
+
+      ctx.rotate(angle);
+
+      // draw image centered around (0,0)
+      ctx.drawImage(img, -w/2, -h/2, w, h);
+
+      ctx.rotate(-angle);
+
+      // move back to original origin
+      ctx.translate(-center_x, -center_y);
+    }
+
     /**
      * Draws all robots at their current position.
      * @param canvas
@@ -140,8 +160,7 @@ export const RoboCupField = ({grid_properties}) => {
             var cellX = Math.floor(element.position.x/lineMetersX);
             var cellY = Math.floor(element.position.y/lineMetersY);
             console.log(cellX, cellY);
-            ctx.drawImage(robot_img, cellX*lineMetersX+robotSize/2*lineMetersX, cellY*lineMetersY-robotSize/2*lineMetersY, robotSize*lineMetersX, robotSize*lineMetersY)
-
+            drawRotatedImage(ctx, robot_img, 2*Math.PI/360 * 30, cellX*lineMetersX+robotSize/2*lineMetersX, cellY*lineMetersY-robotSize/2*lineMetersY, robotSize*lineMetersX, robotSize*lineMetersY)
             // ctx.drawImage(robot_img, element.position.x, element.position.y, 0.5*lineMetersX, 0.5*lineMetersY)
         })
     };
