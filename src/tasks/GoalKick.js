@@ -54,22 +54,6 @@ const GoalKick = () => {
                                   drag: true,
                                   wheel: true
                               }}>
-                <Block type="robot_add"/>
-                <Block type="robot_move"/>
-                <Block type="controls_ifelse"/>
-                <Block type="logic_compare"/>
-                <Block type="logic_operation"/>
-                <Block type="controls_repeat_ext">
-                    <Value name="TIMES">
-                        <Shadow type="math_number">
-                            <Field name="NUM">10</Field>
-                        </Shadow>
-                    </Value>
-                </Block>
-                <Block type="logic_operation"/>
-                <Block type="logic_negate"/>
-                <Block type="logic_boolean"/>
-                <Block type="math_number"/>
             </BlocklyComponent>
         </div>
     )

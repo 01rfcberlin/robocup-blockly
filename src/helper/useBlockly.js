@@ -1,6 +1,6 @@
 import BlocklyJS from "blockly/javascript";
 import * as React from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
 
 /**
@@ -16,6 +16,10 @@ export function useBlockly() {
     const simpleWorkspace = React.createRef();
 
     const dispatch = useDispatch();
+
+    const { robotList } = useSelector(state => {
+        return state.RobotReducer;
+    });
 
     /**
      * Blockly-method to generate the code from the current workspace, print it to console (just for debugging)
@@ -52,14 +56,33 @@ export function useBlockly() {
         dispatch(RobotActions.moveRobot(pos_x,pos_y, ind));
     };
 
-
     /**
      * Helper-function to translate the turnRobot() function received from Blockly into dispatch
      * @param deg
      * @param ind
      */
     const turnRobot = (deg, ind) => {
-        dispatch(RobotActions.turnRobot(0, ind));
+        dispatch(RobotActions.turnRobot(deg, ind));
+    };
+
+    /**
+     * Helper-function to translate the moveForward() function received from Blockly into dispatch
+     * @param deg
+     * @param ind
+     */
+    const moveForward = (block, ind) => {
+        if(robotList[ind].position.rotation == 90) {
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * 50), robotList[ind].position.y, ind));
+        }
+        else if(robotList[ind].position.rotation == 270) {
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x - (block * 50), robotList[ind].position.y, ind));
+        }
+        else if(robotList[ind].position.rotation == 180) {
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y + (block * 50), ind));
+        }
+        else if(robotList[ind].position.rotation == 0) {
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y - (block * 50), ind));
+        }
     };
 
     return {simpleWorkspace, generateCode}

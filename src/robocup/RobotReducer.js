@@ -41,6 +41,7 @@ function RobotReducer(state, action) {
           {
             ...current_robot,
             target: {
+              ...current_robot.position,
               x: action.target.x,
               y: action.target.y
             }
@@ -59,6 +60,7 @@ function RobotReducer(state, action) {
           {
             ...current_robot,
             position: {
+              ...current_robot.position,
               x: action.position.x,
               y: action.position.y
             }

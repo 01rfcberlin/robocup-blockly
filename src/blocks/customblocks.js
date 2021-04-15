@@ -61,7 +61,7 @@ Blockly.Blocks['robot_add'] = {
 /**
  * Block that handles moving a robot.
  * Requires two numeric input for x and y target position
- * @type {{init: Blockly.Blocks.robot_add.init}}
+ * @type {{init: Blockly.Blocks.robot_move.init}}
  */
 Blockly.Blocks['robot_move'] = {
   init: function() {
@@ -85,6 +85,39 @@ Blockly.Blocks['robot_move'] = {
           "align": "RIGHT"
         }
       ],
+    });
+  }
+};
+
+
+/**
+ * Block that handles moving a robot exactly one block straight ahead
+ * @type {{init: Blockly.Blocks.move_one_block_ahead.init}}
+ */
+Blockly.Blocks['move_one_block_ahead'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Gehe einen Schritt vor',
+      "colour": 160,
+      "previousStatement": null,
+      "nextStatement": null,
+      "tooltip": "Der Roboter läuft einen Schritt geradeaus (also in die Richtung, in die er schaut).",
+    });
+  }
+};
+
+/**
+ * Block that handles turning the robot 90 degrees to the right
+ * @type {{init: Blockly.Blocks.turn_right.init}}
+ */
+Blockly.Blocks['turn_right'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Drehe nach rechts',
+      "colour": 160,
+      "previousStatement": null,
+      "nextStatement": null,
+      "tooltip": "Der Roboter dreht sich nach rechts.",
     });
   }
 };
