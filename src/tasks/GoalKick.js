@@ -10,15 +10,15 @@ import BallActions from "../robocup/BallActions";
  * TASK
  * ====
  *
- * Initial: Robot positioned several steps in front of the goal
- * Task: Shoot ball into goal
- * Required Actions: Walk straight, Shoot
+ * Initial: Ball positioned on right penalty point, robot right in front of the ball, facing the goal
+ * Task: Kick ball into goal
+ * Required Actions: Kick
  * Required Coding Concepts: --
  *
  * @returns {*}
  * @constructor
  */
-const GoFurtherStraight = () => {
+const GoalKick = () => {
 
     const blockly = useBlockly();
 
@@ -27,9 +27,9 @@ const GoFurtherStraight = () => {
     //Initialize the robot position on the field for the given task
     useEffect(() => {
         dispatch(RobotActions.reset())
-        dispatch(RobotActions.addRobot(0,0))
+        dispatch(RobotActions.addRobot(460,195))
         dispatch(BallActions.updateBall(0,0))
-        dispatch(BallActions.moveBall(200,450))
+        dispatch(BallActions.moveBall(460,195))
     }, []);
 
     return(
@@ -76,4 +76,4 @@ const GoFurtherStraight = () => {
 
 };
 
-export default GoFurtherStraight
+export default GoalKick

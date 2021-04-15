@@ -30,6 +30,7 @@ import GoStraight from "./tasks/GoStraight";
 import {useDispatch, useSelector} from "react-redux";
 import ApplicationActions from "./applicationLogic/ApplicationActions";
 import GoFurtherStraight from "./tasks/GoFurtherStraight";
+import GoalKick from "./tasks/GoalKick";
 
 
 const App = () => {
@@ -42,6 +43,7 @@ const App = () => {
 
     //Contains the individual tasks that the students can work through.
     const taskList = [
+        <GoalKick/>,
         <GoStraight/>,
         <GoFurtherStraight/>
     ];
