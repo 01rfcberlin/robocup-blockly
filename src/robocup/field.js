@@ -188,6 +188,7 @@ export const RoboCupField = ({grid_properties}) => {
      * time that has passed into consideration.
      */
     const draw_all = () => {
+        if (canvasRef.current === null) return;
 
         robotList.forEach((element, idx) => {
                 if (element.target) {
