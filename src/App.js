@@ -31,6 +31,7 @@ import {useDispatch, useSelector} from "react-redux";
 import ApplicationActions from "./applicationLogic/ApplicationActions";
 import GoFurtherStraight from "./tasks/GoFurtherStraight";
 import GoalKick from "./tasks/GoalKick";
+import StraightAndTurn from "./tasks/StraightAndTurn";
 
 
 const App = () => {
@@ -44,8 +45,8 @@ const App = () => {
     //Contains the individual tasks that the students can work through.
     const taskList = [
         <GoalKick/>,
-        <GoStraight/>,
-        <GoFurtherStraight/>
+        <GoFurtherStraight/>,
+        <StraightAndTurn/>
     ];
 
     // TODO: This currently doesn't have a logic to handle that you should not be able to go lower than task 0 and higher

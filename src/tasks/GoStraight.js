@@ -10,9 +10,9 @@ import BallActions from "../robocup/BallActions";
  * TASK
  * ====
  *
- * Initial: Robot positioned in front of the goal
- * Task: Shoot ball into goal
- * Required Actions: Shoot
+ * Initial: Ball positioned on right penalty point, robot one field away from the ball, facing the goal
+ * Task: Kick ball into goal
+ * Required Actions: Walk, Kick
  * Required Coding Concepts: --
  *
  * @returns {*}
@@ -26,10 +26,10 @@ const GoStraight = () => {
 
     //Initialize the robot position on the field for the given task
     useEffect(() => {
-        dispatch(RobotActions.reset())
-        dispatch(RobotActions.addRobot(200,200))
-        dispatch(BallActions.updateBall(0,0))
-        dispatch(BallActions.moveBall(300,300))
+        dispatch(RobotActions.reset());
+        dispatch(RobotActions.addRobot(390,220));
+        dispatch(BallActions.updateBall(0,0));
+        dispatch(BallActions.moveBall(470,220));
     }, []);
 
     return(

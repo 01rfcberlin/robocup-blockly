@@ -196,8 +196,9 @@ export const RoboCupField = ({grid_properties}) => {
 
         //Draw field, robots and ball
         init_field(canvas, context);
+        draw_ball(canvas, context); //ball needs to be drawn first, otherwise the ball potentially covers the robot
+
         draw_robots(canvas, context);
-        draw_ball(canvas, context);
     };
 
     /**

@@ -2,23 +2,23 @@ import {RoboCupField} from "../robocup/field";
 import BlocklyComponent, {Block, Field, Shadow, Value} from "../Blockly";
 import React, {useEffect} from "react";
 import {useBlockly} from "../helper/useBlockly";
-import RobotActions from "../robocup/RobotActions";
 import {useDispatch} from "react-redux";
+import RobotActions from "../robocup/RobotActions";
 import BallActions from "../robocup/BallActions";
 
 /**
  * TASK
  * ====
  *
- * Initial: Ball positioned on right penalty point, robot right in front of the ball, facing the goal
+ * Initial: Ball positioned on right penalty point, robot one field below center mark, facing the center mark
  * Task: Kick ball into goal
- * Required Actions: Kick
+ * Required Actions: Turn, Walk, Kick
  * Required Coding Concepts: --
  *
  * @returns {*}
  * @constructor
  */
-const GoalKick = () => {
+const StraightAndTurn = () => {
 
     const blockly = useBlockly();
 
@@ -27,7 +27,7 @@ const GoalKick = () => {
     //Initialize the robot position on the field for the given task
     useEffect(() => {
         dispatch(RobotActions.reset());
-        dispatch(RobotActions.addRobot(460,220));
+        dispatch(RobotActions.addRobot(300,250));
         dispatch(BallActions.updateBall(0,0));
         dispatch(BallActions.moveBall(470,220));
     }, []);
@@ -76,4 +76,4 @@ const GoalKick = () => {
 
 };
 
-export default GoalKick
+export default StraightAndTurn
