@@ -37,11 +37,6 @@ const StraightAndTurn = () => {
             <div>
                 <RoboCupField
                     grid_properties={{
-                        "title": "Initial",
-                        "x": 10,
-                        "y": 10,
-                        "width": 600,
-                        "height": 400,
                     }}
                 />
             </div>

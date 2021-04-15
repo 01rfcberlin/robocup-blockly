@@ -14,7 +14,7 @@ const initialState = {
  * @constructor
  */
 function BallReducer(state, action) {
-  console.log("BallReducer", action.type);
+  //console.log("BallReducer", action.type);
 
   if (typeof state === "undefined") {
     return initialState;

@@ -3,6 +3,7 @@ import {useInterval} from "../helper/useInterval";
 import {useDispatch, useSelector} from "react-redux";
 import RobotActions from "./RobotActions";
 import BallActions from "./BallActions";
+import * as constants from "../constants.js";
 
 /**
  * Handles drawing the background of the field as well as the robot(s)
@@ -12,7 +13,6 @@ import BallActions from "./BallActions";
  * @constructor
  */
 export const RoboCupField = ({grid_properties}) => {
-
     const dispatch = useDispatch();
 
     const { robotList } = useSelector(state => {
@@ -25,20 +25,6 @@ export const RoboCupField = ({grid_properties}) => {
 
     const canvasRef = useRef(null);
 
-    const field_color = 'green';
-    const field_x = grid_properties.x;
-    const field_y = grid_properties.y;
-    const width = grid_properties.width;
-    const height = grid_properties.height;
-
-    const lineMetersX = ( width / 11 );
-    const lineMetersY = ( height / 8 );
-
-    // robotSize: width 0.5 meter
-    const robotSize = 0.5;
-
-    // ballsize: FIFA Size 1 (130mm) times 2.5
-    const ballSize = 0.325;
 
     /**
      * This draws the RoboCup field.
@@ -49,15 +35,15 @@ export const RoboCupField = ({grid_properties}) => {
     const init_field = (canvas, ctx) => {
         // let field = new Path2D();
         ctx.fillStyle = 'green';
-        ctx.fillRect(0, 0, width, height);
+        ctx.fillRect(0, 0, constants.canvas_width, constants.canvas_height);
 
         // draw grid
         for (var i = 1; i <= 7; i++) {
             for (var j = 1; j <= 9; j++) {
                 ctx.beginPath();
                 ctx.fillStyle = ["rgba(0,255,0,0.3)", "rgba(0,255,0,0.1)"][(i + j) % 2];
-                // -(0.5*lineMetersY) moves the field up along the y-axis
-                ctx.fillRect(j * lineMetersX, i * lineMetersY-(0.5*lineMetersY), lineMetersX, lineMetersY);
+                // -(0.5*constants.cell_height) moves the field up along the y-axis
+                ctx.fillRect(j * constants.cell_width, i * constants.cell_height-(0.5*constants.cell_height), constants.cell_width, constants.cell_height);
                 ctx.closePath();
             }
         }
@@ -66,8 +52,8 @@ export const RoboCupField = ({grid_properties}) => {
         for (var i = 1; i < 11; i++) { 
             ctx.beginPath();
             ctx.fillStyle = 'green';
-            ctx.fillRect(i * lineMetersX, 0, lineMetersX, lineMetersY);
-            ctx.fillRect(i * lineMetersX, 7*lineMetersY, lineMetersX, lineMetersY);
+            ctx.fillRect(i * constants.cell_width, 0, constants.cell_width, constants.cell_height);
+            ctx.fillRect(i * constants.cell_width, 7*constants.cell_height, constants.cell_width, constants.cell_height);
             ctx.closePath();       
         }
 
@@ -75,53 +61,53 @@ export const RoboCupField = ({grid_properties}) => {
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.strokeStyle = 'white';
-        ctx.rect(1*lineMetersX, 1*lineMetersY, 9*lineMetersX, 6*lineMetersY);
+        ctx.rect(1*constants.cell_width, 1*constants.cell_height, 9*constants.cell_width, 6*constants.cell_height);
         
         // mid line
-        ctx.moveTo(width/2, 1*lineMetersY);
-        ctx.lineTo(width/2, 7*lineMetersY);
+        ctx.moveTo(constants.canvas_width/2, 1*constants.cell_height);
+        ctx.lineTo(constants.canvas_width/2, 7*constants.cell_height);
 
         // goal area
         // 5m area (1m * 3m)
-        ctx.rect(1*lineMetersX, height/2-1.5*lineMetersY, 1*lineMetersX, 3*lineMetersY);
-        ctx.rect(10*lineMetersX-1*lineMetersX, height/2-1.5*lineMetersY, 1*lineMetersX, 3*lineMetersY);
+        ctx.rect(1*constants.cell_width, constants.canvas_height/2-1.5*constants.cell_height, 1*constants.cell_width, 3*constants.cell_height);
+        ctx.rect(10*constants.cell_width-1*constants.cell_width, constants.canvas_height/2-1.5*constants.cell_height, 1*constants.cell_width, 3*constants.cell_height);
         // 16m area (2m * 5m)
-        ctx.rect(1*lineMetersX, height/2-2.5*lineMetersY, 2*lineMetersX, 5*lineMetersY);
-        ctx.rect(10*lineMetersX-2*lineMetersX, height/2-2.5*lineMetersY, 2*lineMetersX, 5*lineMetersY);
+        ctx.rect(1*constants.cell_width, constants.canvas_height/2-2.5*constants.cell_height, 2*constants.cell_width, 5*constants.cell_height);
+        ctx.rect(10*constants.cell_width-2*constants.cell_width, constants.canvas_height/2-2.5*constants.cell_height, 2*constants.cell_width, 5*constants.cell_height);
         ctx.stroke();
         ctx.closePath();
         
         // penalty point
         // left side
         ctx.beginPath();
-        ctx.arc(1*lineMetersX+1.5*lineMetersX, height/2, 2, 0, 2*Math.PI, false);
+        ctx.arc(1*constants.cell_width+1.5*constants.cell_width, constants.canvas_height/2, 2, 0, 2*Math.PI, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
         // right side
         ctx.beginPath();
-        ctx.arc(10*lineMetersX-1.5*lineMetersX, height/2, 2, 0, 2*Math.PI, false);
+        ctx.arc(10*constants.cell_width-1.5*constants.cell_width, constants.canvas_height/2, 2, 0, 2*Math.PI, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
 
         // ctx.moveTo
-        // mid circle (dimension based on lineMetersX)
+        // mid circle (dimension based on constants.cell_width)
         ctx.beginPath();
-        ctx.arc(width/2, height/2, 0.75*lineMetersX, 0, 2*Math.PI, false);
+        ctx.arc(constants.canvas_width/2, constants.canvas_height/2, 0.75*constants.cell_width, 0, 2*Math.PI, false);
         ctx.stroke();
         ctx.closePath();
         // mid point
         ctx.beginPath();
-        ctx.arc(width/2, height/2, 2, 0, 2*Math.PI, false);
+        ctx.arc(constants.canvas_width/2, constants.canvas_height/2, 2, 0, 2*Math.PI, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
 
         // goals
         ctx.beginPath();
-        ctx.rect(1*lineMetersX-0.6*lineMetersX, height/2-1.3*lineMetersY, 0.6*lineMetersX, 2.6*lineMetersY);
-        ctx.rect(10*lineMetersX, height/2-1.3*lineMetersY, 0.6*lineMetersX, 2.6*lineMetersY);
+        ctx.rect(1*constants.cell_width-0.6*constants.cell_width, constants.canvas_height/2-1.3*constants.cell_height, 0.6*constants.cell_width, 2.6*constants.cell_height);
+        ctx.rect(10*constants.cell_width, constants.canvas_height/2-1.3*constants.cell_height, 0.6*constants.cell_width, 2.6*constants.cell_height);
         ctx.lineWidth = 3.5;
         ctx.stroke();
         ctx.closePath();
@@ -157,11 +143,13 @@ export const RoboCupField = ({grid_properties}) => {
         robotList.forEach(element => {
             var robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
-            var cellX = Math.floor(element.position.x/lineMetersX);
-            var cellY = Math.floor(element.position.y/lineMetersY);
-            console.log(cellX, cellY);
-            drawRotatedImage(ctx, robot_img, 2*Math.PI/360 * element.position.rotation, cellX*lineMetersX+robotSize/2*lineMetersX, cellY*lineMetersY-robotSize/2*lineMetersY, robotSize*lineMetersX, robotSize*lineMetersY)
-            // ctx.drawImage(robot_img, element.position.x, element.position.y, 0.5*lineMetersX, 0.5*lineMetersY)
+            drawRotatedImage(ctx,
+              robot_img,
+              2*Math.PI/360 * element.position.rotation,
+              element.position.x+constants.robot_width/2,
+              element.position.y-constants.robot_height/2,
+              constants.robot_width,
+              constants.robot_height)
         })
     };
 
@@ -174,36 +162,61 @@ export const RoboCupField = ({grid_properties}) => {
         if(ball_position) {
             var ball_img = new Image();
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
-            // -(0.5*lineMetersY) we need to move the ball up according to the field
-            ctx.drawImage(ball_img, ball_position.x, ball_position.y-(0.5*lineMetersY), ballSize*lineMetersX, ballSize*lineMetersY)
+            // -(0.5*constants.cell_height) we need to move the ball up according to the field
+            ctx.drawImage(ball_img, ball_position.x, ball_position.y-(0.5*constants.cell_height), constants.ball_width, constants.ball_height)
         }
 
     };
 
     /**
-     * TODO: This is just a demo and needs some proper work!
      * This is the method that is called for every timestep of our simulation.
      * The method checks whether the current position of a robot requires updating (since a target position is set
-     * but not reached) and handles the update. That position updating needs some proper logic, also taking the
-     * time that has passed into consideration.
+     * but not reached) and handles the update.
      */
+    const draw_interval = 20;
     const draw_all = () => {
         if (canvasRef.current === null) return;
 
         robotList.forEach((element, idx) => {
-                if (element.target) {
-                    const delta_x = element.target.x - element.position.x;
-                    const delta_y = element.target.y - element.position.y;
-                    if (Math.abs(delta_x) > 10 || Math.abs(delta_y) > 10) {
-                        const new_x = element.position.x + delta_x / 10.0;
-                        const new_y = element.position.y + delta_y / 10.0;
-                        dispatch(RobotActions.updateRobot(new_x, new_y, idx))
-                    } else {
-                        // dispatch(RobotActions.updateRobot(null, null, idx))
-                    }
-                }
+            if (!element.target) return;
+
+            // Assumption: We either move left/right or top/bottom. We never move
+            // in both directions at the same time. Or put differently,
+            // element.target and element.position only differ in at most one
+            // component.
+            console.assert(element.target.x == element.position.x || element.target.y == element.position.y);
+
+            const reached_target = element.target.x == element.position.x && element.target.y == element.position.y;
+            if (reached_target) return;
+
+            const delta_x = element.target.x - element.position.x;
+            const delta_y = element.target.y - element.position.y;
+
+            const delta_vec_length = Math.sqrt(delta_x**2 + delta_y**2);
+            const normalized_delta_vec_x = delta_x / delta_vec_length;
+            const normalized_delta_vec_y = delta_y / delta_vec_length;
+
+            const movement_speed = draw_interval / 20;
+            const movement_vec_x = normalized_delta_vec_x * movement_speed;
+            const movement_vec_y = normalized_delta_vec_y * movement_speed;
+
+            let new_x = element.position.x + movement_vec_x;
+            let new_y = element.position.y + movement_vec_y;
+
+            // Avoid overshooting: Since we know that we only go along one
+            // coordinate, we can just set the position to the target.
+            const would_overshoot =
+                 element.target.x > element.position.x && new_x > element.target.x
+              || element.target.x < element.position.x && new_x < element.target.x
+              || element.target.y > element.position.y && new_y > element.target.y
+              || element.target.y < element.position.y && new_y < element.target.y;
+            if (would_overshoot) {
+                new_x = element.target.x;
+                new_y = element.target.y;
             }
-        );
+
+            dispatch(RobotActions.updateRobot(new_x, new_y, idx));
+        });
 
         //TODO: This is a dummy-implementation
         if(ball_target) {
@@ -212,7 +225,7 @@ export const RoboCupField = ({grid_properties}) => {
 
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width + 20, canvas.height + 20)
+        context.clearRect(0, 0, constants.canvas_width, constants.canvas_height)
 
         //Draw field, robots and ball
         init_field(canvas, context);
@@ -224,8 +237,7 @@ export const RoboCupField = ({grid_properties}) => {
     /**
      * This re-draws the elements on the canvas every 200 ms
      */
-    useInterval(() => draw_all(), 200);
+    useInterval(() => draw_all(), draw_interval);
 
-
-    return <canvas ref={canvasRef} width={width + 20} height={height + 20} key={"robocupfield"}/>
+    return <canvas ref={canvasRef} width={constants.canvas_width} height={constants.canvas_height} key={"robocupfield"}/>
 }

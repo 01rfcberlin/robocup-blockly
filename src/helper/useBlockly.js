@@ -3,6 +3,7 @@ import * as React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
 import BallActions from "../robocup/BallActions";
+import * as constants from "../constants.js";
 
 /**
  * Custom Hook that allows us to access the blockly Workspace and evaluation method inside the individual tasks
@@ -15,10 +16,6 @@ import BallActions from "../robocup/BallActions";
 export function useBlockly() {
 
     const simpleWorkspace = React.createRef();
-
-    // TODO: gridsize hardcoded
-    const cellSizeX = ( 600 / 11 );
-    const cellSizeY = ( 400 / 8 );
 
     const dispatch = useDispatch();
 
@@ -38,7 +35,7 @@ export function useBlockly() {
         var code = BlocklyJS.workspaceToCode(
             simpleWorkspace.current.workspace
         );
-        console.log(code);
+        //console.log(code);
         try {
             eval(code);
         } catch (e) {
@@ -62,6 +59,7 @@ export function useBlockly() {
      * @param ind
      */
     const moveRobot = (pos_x, pos_y, ind) => {
+      //console.log("moveRobot helper")
         dispatch(RobotActions.moveRobot(pos_x,pos_y, ind));
     };
 
@@ -71,25 +69,25 @@ export function useBlockly() {
      * @param ind
      */
      const ballKick = (block, ind) => {
-        var robotCellX = Math.floor(robotList[ind].position.x/cellSizeX);
-        var robotCellY = Math.floor(robotList[ind].position.y/cellSizeY);
-        var ballCellX = Math.floor(ball.ball_position.x/cellSizeX);
-        var ballCellY = Math.floor(ball.ball_position.y/cellSizeY);
+        var robotCellX = Math.floor(robotList[ind].position.x/constants.cell_width);
+        var robotCellY = Math.floor(robotList[ind].position.y/constants.cell_height);
+        var ballCellX = Math.floor(ball.ball_position.x/constants.cell_width);
+        var ballCellY = Math.floor(ball.ball_position.y/constants.cell_height);
 
         // console.log("Ball:", ballCellX, ballCellY)
         // console.log("Robot:", robotCellX, robotCellY)
         if(ballCellX == robotCellX && ballCellY == robotCellY) {
             if(robotList[ind].position.rotation == 90) {
-                dispatch(BallActions.ballKick(ball.ball_position.x + (block * cellSizeX), ball.ball_position.y));
+                dispatch(BallActions.ballKick(ball.ball_position.x + (block * constants.cell_width), ball.ball_position.y));
             }
             else if(robotList[ind].position.rotation == 270) {
-                dispatch(BallActions.ballKick(ball.ball_position.x - (block * cellSizeX), ball.ball_position.y));
+                dispatch(BallActions.ballKick(ball.ball_position.x - (block * constants.cell_width), ball.ball_position.y));
             }
             else if(robotList[ind].position.rotation == 180) {
-                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y + (block * cellSizeY)));
+                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y + (block * constants.cell_height)));
             }
             else if(robotList[ind].position.rotation == 0) {
-                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y - (block * cellSizeY)));
+                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y - (block * constants.cell_height)));
             }
         }
     };
@@ -109,25 +107,25 @@ export function useBlockly() {
      * @param ind
      */
     const moveForward = (block, ind) => {
-        var robotCellX = Math.floor(robotList[ind].position.x/cellSizeX);
-        var robotCellY = Math.floor(robotList[ind].position.y/cellSizeY);
-        var ballCellX = Math.floor(ball.ball_position.x/cellSizeX);
-        var ballCellY = Math.floor(ball.ball_position.y/cellSizeY);
+        var robotCellX = Math.floor(robotList[ind].position.x/constants.cell_width);
+        var robotCellY = Math.floor(robotList[ind].position.y/constants.cell_height);
+        var ballCellX = Math.floor(ball.ball_position.x/constants.cell_width);
+        var ballCellY = Math.floor(ball.ball_position.y/constants.cell_height);
 
         // console.log("Ball:", ballCellX, ballCellY)
         // console.log("Robot:", robotCellX, robotCellY)
 
         if(robotList[ind].position.rotation == 90) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * cellSizeX), robotList[ind].position.y, ind));
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * constants.cell_width), robotList[ind].position.y, ind));
         }
         else if(robotList[ind].position.rotation == 270) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x - (block * cellSizeX), robotList[ind].position.y, ind));
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x - (block * constants.cell_width), robotList[ind].position.y, ind));
         }
         else if(robotList[ind].position.rotation == 180) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y + (block * cellSizeY), ind));
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y + (block * constants.cell_height), ind));
         }
         else if(robotList[ind].position.rotation == 0) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y - (block * cellSizeY), ind));
+            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y - (block * constants.cell_height), ind));
         }
         if(ballCellX == robotCellX && ballCellY == robotCellY) {
             ballKick(1, 0);       

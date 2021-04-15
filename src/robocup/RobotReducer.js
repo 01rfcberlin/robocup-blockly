@@ -1,4 +1,13 @@
 import ActionName from "../helper/ActionName";
+import * as constants from "../constants.js";
+
+// map a position for the robot to the center of a grid
+function closest_cell_center(x, y) {
+  return {
+    x: Math.floor(x / constants.cell_width)*constants.cell_width + constants.cell_width/2 - constants.robot_width,
+    y: Math.floor(y / constants.cell_height)*constants.cell_height + constants.cell_height/2 - constants.robot_height,
+  };
+}
 
 const initialState = {
   robotList: []
@@ -13,7 +22,7 @@ const initialState = {
  * @constructor
  */
 function RobotReducer(state, action) {
-  console.log("RobotReducer", action.type);
+  // console.log("RobotReducer", action.type);
 
   let current_robot = null;
 
@@ -24,6 +33,9 @@ function RobotReducer(state, action) {
   switch (action.type) {
     case ActionName.Robot.Add:
       //Handles adding a new robot to the field
+      const pos = closest_cell_center(action.robot.position.x, action.robot.position.y);
+      action.robot.position.x = pos.x;
+      action.robot.position.y = pos.y;
       return {
         ...state,
         robotList: [...state.robotList, action.robot]
@@ -31,7 +43,7 @@ function RobotReducer(state, action) {
     case ActionName.Robot.SetTargetPosition:
       //Handles setting a new target position for the robot on the field.
       current_robot = {...state.robotList[action.index]};
-      console.log("Current robot: " + current_robot)
+      //console.log("Robot.SetTargetPosition: Current robot: " + current_robot)
       const copy_robot_list = [...state.robotList];
       copy_robot_list.splice(action.index, 1);
       return {
@@ -51,6 +63,7 @@ function RobotReducer(state, action) {
     case ActionName.Robot.UpdatePosition:
       //Actually updates the position of a robot on the field
       current_robot = {...state.robotList[action.index]};
+      //console.log("Robot.UpdatePosition: Current robot: " + current_robot)
       const copy_robot_list2 = [...state.robotList]
       copy_robot_list2.splice(action.index, 1)
       return {
