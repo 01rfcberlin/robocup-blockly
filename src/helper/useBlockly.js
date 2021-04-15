@@ -104,7 +104,7 @@ export function useBlockly() {
      * @param ind
      */
     const turnRobot = (deg, ind) => {
-        dispatch(RobotActions.turnRobot(deg, ind));
+        dispatch(RobotActions.turnRobot(robotList[ind].position.rotation + deg, ind));
     };
 
     /**
