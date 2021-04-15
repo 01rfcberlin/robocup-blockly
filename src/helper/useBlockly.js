@@ -67,21 +67,34 @@ export function useBlockly() {
 
     /**
      * Helper-function to translate the ballKick() function received from Blockly into dispatch
+     * @param block
+     * @param ind
      */
      const ballKick = (block, ind) => {
         // dispatch(BallActions.ballKick(block));
-        console.log(ball)
-        if(robotList[ind].position.rotation == 90) {
-            dispatch(BallActions.ballKick(ball.ball_position.x + (block * cellSizeX), ball.ball_position.y));
-        }
-        else if(robotList[ind].position.rotation == 270) {
-            dispatch(BallActions.ballKick(ball.ball_position.x - (block * cellSizeX), ball.ball_position.y));
-        }
-        else if(robotList[ind].position.rotation == 180) {
-            dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y + (block * cellSizeY)));
-        }
-        else if(robotList[ind].position.rotation == 0) {
-            dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y - (block * cellSizeY)));
+        
+
+        var robotCellX = Math.floor(robotList[ind].position.x/cellSizeX);
+        var robotCellY = Math.floor(robotList[ind].position.y/cellSizeY);
+        var ballCellX = Math.floor(ball.ball_position.x/cellSizeX);
+        var ballCellY = Math.floor(ball.ball_position.y/cellSizeY);
+
+        console.log("Ball:", ballCellX, ballCellY)
+        console.log("Robot:", robotCellX, robotCellY)
+        // if(robotList[ind].position.x == )
+        if(ballCellX == robotCellX && ballCellY == robotCellY) {
+            if(robotList[ind].position.rotation == 90) {
+                dispatch(BallActions.ballKick(ball.ball_position.x + (block * cellSizeX), ball.ball_position.y));
+            }
+            else if(robotList[ind].position.rotation == 270) {
+                dispatch(BallActions.ballKick(ball.ball_position.x - (block * cellSizeX), ball.ball_position.y));
+            }
+            else if(robotList[ind].position.rotation == 180) {
+                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y + (block * cellSizeY)));
+            }
+            else if(robotList[ind].position.rotation == 0) {
+                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y - (block * cellSizeY)));
+            }
         }
     };
 
