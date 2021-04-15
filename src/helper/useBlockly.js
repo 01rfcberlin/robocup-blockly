@@ -71,17 +71,13 @@ export function useBlockly() {
      * @param ind
      */
      const ballKick = (block, ind) => {
-        // dispatch(BallActions.ballKick(block));
-        
-
         var robotCellX = Math.floor(robotList[ind].position.x/cellSizeX);
         var robotCellY = Math.floor(robotList[ind].position.y/cellSizeY);
         var ballCellX = Math.floor(ball.ball_position.x/cellSizeX);
         var ballCellY = Math.floor(ball.ball_position.y/cellSizeY);
 
-        console.log("Ball:", ballCellX, ballCellY)
-        console.log("Robot:", robotCellX, robotCellY)
-        // if(robotList[ind].position.x == )
+        // console.log("Ball:", ballCellX, ballCellY)
+        // console.log("Robot:", robotCellX, robotCellY)
         if(ballCellX == robotCellX && ballCellY == robotCellY) {
             if(robotList[ind].position.rotation == 90) {
                 dispatch(BallActions.ballKick(ball.ball_position.x + (block * cellSizeX), ball.ball_position.y));
@@ -113,6 +109,14 @@ export function useBlockly() {
      * @param ind
      */
     const moveForward = (block, ind) => {
+        var robotCellX = Math.floor(robotList[ind].position.x/cellSizeX);
+        var robotCellY = Math.floor(robotList[ind].position.y/cellSizeY);
+        var ballCellX = Math.floor(ball.ball_position.x/cellSizeX);
+        var ballCellY = Math.floor(ball.ball_position.y/cellSizeY);
+
+        // console.log("Ball:", ballCellX, ballCellY)
+        // console.log("Robot:", robotCellX, robotCellY)
+
         if(robotList[ind].position.rotation == 90) {
             dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * cellSizeX), robotList[ind].position.y, ind));
         }
@@ -124,6 +128,9 @@ export function useBlockly() {
         }
         else if(robotList[ind].position.rotation == 0) {
             dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y - (block * cellSizeY), ind));
+        }
+        if(ballCellX == robotCellX && ballCellY == robotCellY) {
+            ballKick(1, 0);       
         }
     };
 
