@@ -55,6 +55,7 @@ const StraightAndTurn = () => {
                               }}>
                 <Block type="move_one_block_ahead"/>
                 <Block type="turn_right"/>
+                <Block type="turn_left"/>
             </BlocklyComponent>
         </div>
     )

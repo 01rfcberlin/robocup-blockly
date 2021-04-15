@@ -121,3 +121,20 @@ Blockly.Blocks['turn_right'] = {
     });
   }
 };
+
+/**
+ * Block that handles turning the robot 90 degrees to the right
+ * @type {{init: Blockly.Blocks.turn_right.init}}
+ */
+Blockly.Blocks['turn_left'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Drehe nach links',
+      "colour": 160,
+      "previousStatement": null,
+      "nextStatement": null,
+      "tooltip": "Der Roboter dreht sich nach links.",
+    });
+  }
+};
+

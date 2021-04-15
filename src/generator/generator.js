@@ -61,6 +61,16 @@ Blockly.JavaScript['turn_right'] = function(block) {
 };
 
 /**
+ * Calls the turnRobot(-90, ind) function
+ * TODO: Robot index right now is hard-coded so it is always 0
+ * @param block
+ * @returns {string}
+ */
+Blockly.JavaScript['turn_left'] = function(block) {
+    return 'turnRobot(-90, 0);';
+};
+
+/**
  * Calls the moveForward(1, ind) function to move the robot one block forward
  * TODO: Robot index right now is hard-coded so it is always 0
  * @param block
