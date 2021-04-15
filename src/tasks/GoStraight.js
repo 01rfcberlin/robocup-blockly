@@ -5,6 +5,7 @@ import {useBlockly} from "../helper/useBlockly";
 import {useDispatch} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
 import BallActions from "../robocup/BallActions";
+import ExecuteResetButton from "./ExecuteResetButton";
 
 /**
  * TASK
@@ -25,13 +26,15 @@ const GoStraight = () => {
     const dispatch = useDispatch();
 
     //Initialize the robot position on the field for the given task
-    useEffect(() => {
+    const reset = () => {
         dispatch(RobotActions.reset());
         dispatch(RobotActions.addRobot(390,220))
         dispatch(RobotActions.turnRobot(90,0));
         dispatch(BallActions.updateBall(0,0));
         dispatch(BallActions.moveBall(470,220));
-    }, []);
+    };
+
+    useEffect(reset, []);
 
     return(
         <div>
@@ -41,7 +44,7 @@ const GoStraight = () => {
                     }}
                 />
             </div>
-            <button onClick={blockly.generateCode}>Code Ausführen!</button>
+            <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
             <BlocklyComponent ref={blockly.simpleWorkspace}
                               readOnly={false} trashcan={true}
                               move={{
