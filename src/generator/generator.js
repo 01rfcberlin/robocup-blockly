@@ -51,6 +51,15 @@ Blockly.JavaScript['robot_move'] = function(block) {
 };
 
 /**
+ * Calls the ballKick function
+ * @param block
+ * @returns {string}
+ */
+ Blockly.JavaScript['ball_kick'] = function(block) {
+    return 'ballKick();';
+};
+
+/**
  * Calls the turnRobot(deg, ind) function
  * TODO: Robot index right now is hard-coded so it is always 0
  * @param block

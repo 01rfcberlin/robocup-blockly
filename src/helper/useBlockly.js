@@ -2,6 +2,7 @@ import BlocklyJS from "blockly/javascript";
 import * as React from "react";
 import {useDispatch} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
+import BallActions from "../robocup/BallActions";
 
 /**
  * Custom Hook that allows us to access the blockly Workspace and evaluation method inside the individual tasks
@@ -52,6 +53,12 @@ export function useBlockly() {
         dispatch(RobotActions.moveRobot(pos_x,pos_y, ind));
     };
 
+    /**
+     * Helper-function to translate the ballKick() function received from Blockly into dispatch
+     */
+     const ballKick = () => {
+        dispatch(BallActions.ballKick());
+    };
 
     /**
      * Helper-function to translate the turnRobot() function received from Blockly into dispatch

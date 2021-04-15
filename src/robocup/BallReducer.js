@@ -30,6 +30,15 @@ function BallReducer(state, action) {
           y: action.target.y
         }
       };
+      case ActionName.Ball.BallKick:
+        //Handles setting a new target position for the ball on the field.
+        return {
+          ...state,
+          ball_target: {
+            x: state.ball_position.x + action.target.x,
+            y: state.ball_position.y
+          }
+        };
     case ActionName.Ball.UpdatePosition:
       //Actually updates the position of the ball on the field
       return {

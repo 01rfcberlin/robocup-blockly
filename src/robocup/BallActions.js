@@ -10,6 +10,15 @@ const BallActions = {
       }
     }
   },
+  ballKick: () => {
+    return {
+      type: ActionName.Ball.BallKick,
+      target: {
+        x: 3*600/11,
+        y: 3*400/8
+      }
+    }
+  },
   updateBall: (new_x, new_y) => {
     return {
       type: ActionName.Ball.UpdatePosition,

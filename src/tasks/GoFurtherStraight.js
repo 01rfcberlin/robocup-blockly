@@ -56,6 +56,7 @@ const GoFurtherStraight = () => {
                               }}>
                 <Block type="robot_add"/>
                 <Block type="robot_move"/>
+                <Block type="ball_kick"/>
                 <Block type="controls_ifelse"/>
                 <Block type="logic_compare"/>
                 <Block type="logic_operation"/>

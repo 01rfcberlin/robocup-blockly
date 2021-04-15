@@ -88,3 +88,19 @@ Blockly.Blocks['robot_move'] = {
     });
   }
 };
+
+/**
+ * Block that handles a kick.
+ * @type {{init: Blockly.Blocks.robot_add.init}}
+ */
+ Blockly.Blocks['ball_kick'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Ball schießen',
+      "colour": 160,
+      "previousStatement": null,
+      "nextStatement": null,
+      "tooltip": "Schießt den Ball 3 Felder vorwärts",
+    });
+  }
+};
