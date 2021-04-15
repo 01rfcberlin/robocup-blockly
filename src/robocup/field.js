@@ -199,7 +199,7 @@ export const RoboCupField = ({grid_properties}) => {
                         const new_y = element.position.y + delta_y / 10.0;
                         dispatch(RobotActions.updateRobot(new_x, new_y, idx))
                     } else {
-                        dispatch(RobotActions.updateRobot(null, null, idx))
+                        // dispatch(RobotActions.updateRobot(null, null, idx))
                     }
                 }
             }
