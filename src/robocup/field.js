@@ -56,6 +56,7 @@ export const RoboCupField = ({grid_properties}) => {
             for (var j = 1; j <= 9; j++) {
                 ctx.beginPath();
                 ctx.fillStyle = ["rgba(0,255,0,0.3)", "rgba(0,255,0,0.1)"][(i + j) % 2];
+                // -(0.5*lineMetersY) moves the field up along the y-axis
                 ctx.fillRect(j * lineMetersX, i * lineMetersY-(0.5*lineMetersY), lineMetersX, lineMetersY);
                 ctx.closePath();
             }
@@ -154,7 +155,8 @@ export const RoboCupField = ({grid_properties}) => {
         if(ball_position) {
             var ball_img = new Image();
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
-            ctx.drawImage(ball_img, ball_position.x, ball_position.y, ballSize*lineMetersX, ballSize*lineMetersY)
+            // -(0.5*lineMetersY) we need to move the ball up according to the field
+            ctx.drawImage(ball_img, ball_position.x, ball_position.y-(0.5*lineMetersY), ballSize*lineMetersX, ballSize*lineMetersY)
         }
 
     };
