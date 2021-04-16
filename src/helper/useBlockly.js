@@ -32,6 +32,9 @@ export function useBlockly() {
      * and then executing the code.
      */
     const generateCode = () => {
+        BlocklyJS.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+        BlocklyJS.addReservedWords('highlightBlock');
+
         var code = BlocklyJS.workspaceToCode(
             simpleWorkspace.current.workspace
         );
@@ -42,6 +45,10 @@ export function useBlockly() {
             alert(e);
         }
     };
+
+    function highlightBlock(id) {
+        simpleWorkspace.current.workspace.highlightBlock(id);
+    }
 
     /**
      * Helper-function to translate the addRobot() function received from Blockly into dispatch
