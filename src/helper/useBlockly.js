@@ -38,12 +38,20 @@ export function useBlockly() {
         var code = BlocklyJS.workspaceToCode(
             simpleWorkspace.current.workspace
         );
-        //console.log(code);
-        try {
-            eval(code);
-        } catch (e) {
-            alert(e);
+
+
+        function initApi(interpreter, globalObject) {
+            interpreter.setProperty(globalObject, 'highlightBlock', interpreter.createNativeFunction(highlightBlock));
+            interpreter.setProperty(globalObject, 'addRobot', interpreter.createNativeFunction(addRobot));
+            interpreter.setProperty(globalObject, 'moveRobot', interpreter.createNativeFunction(moveRobot));
+            interpreter.setProperty(globalObject, 'ballKick', interpreter.createNativeFunction(ballKick));
+            interpreter.setProperty(globalObject, 'turnRobot', interpreter.createNativeFunction(turnRobot));
+            interpreter.setProperty(globalObject, 'moveForward', interpreter.createNativeFunction(moveForward));
         }
+
+        const Interpreter = window["Interpreter"];
+        const myInterpreter = new Interpreter(code, initApi);
+        myInterpreter.run();
     };
 
     function highlightBlock(id) {
