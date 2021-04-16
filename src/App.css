@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.tasks {
+  padding: 3px;
+}
+
+.task {
+  display: inline-block;
+  padding: 5px 10px;
+  user-select: none;
+  background-color: lightgrey;
+}
+
+.task-text {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.current-task {
+  background-color: grey;
+}

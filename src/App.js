@@ -49,16 +49,27 @@ const App = () => {
         <StraightAndTurn/>
     ];
 
-    // TODO: This currently doesn't have a logic to handle that you should not be able to go lower than task 0 and higher
-    //  than the maximum available tasks.
     return (
-        <div className="App">
-            <div>
-                Current Task Number: {currentTask}
-                <button onClick={() => {dispatch(ApplicationActions.nextTask())}}>Next Task</button>
-            </div>
-            {taskList[currentTask]}
+      <div className="App">
+        <div className="tasks">
+          <div className="task-text">Aufgabe:</div>
+          {
+            taskList.map((task, i) => {
+              let className = "task";
+              if (i==currentTask) {
+                className += " current-task";
+              }
+              const key = "task-" + i;
+              return (
+                <div key={key} className={className} onClick={() => {dispatch(ApplicationActions.setTask(i))}}>
+                  {i+1}
+                </div>
+              )
+            })
+          }
         </div>
+        {taskList[currentTask]}
+      </div>
     );
 };
 

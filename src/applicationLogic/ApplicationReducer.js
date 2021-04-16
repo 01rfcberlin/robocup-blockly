@@ -22,6 +22,8 @@ function ApplicationReducer(state, action) {
   }
 
   switch (action.type) {
+    // TODO: This currently doesn't have a logic to handle that you should not
+    // be able to go higher than the maximum available tasks.
     case ActionName.Application.NextTask:
       //Handles going to the next task
       return {
