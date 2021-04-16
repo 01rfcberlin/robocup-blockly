@@ -28,7 +28,7 @@ const StraightAndTurn = () => {
     // Initialize the robot position on the field for the given task
     const reset = () => {
         dispatch(RobotActions.reset());
-        dispatch(RobotActions.addRobot(300,250));
+        dispatch(RobotActions.addRobot(300,250, 0));
         dispatch(BallActions.updateBall(0,0));
         dispatch(BallActions.moveBall(470,220));
     }

@@ -14,6 +14,7 @@ const ActionName = {
     SetTargetPosition: 'SetRobotTarget',
     UpdatePosition: 'UpdateRobotPosition',
     Turn: 'TurnRobot',
+    Walk: 'WalkForward',
     Reset: 'Reset'
   },
   Ball: {

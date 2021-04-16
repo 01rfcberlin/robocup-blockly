@@ -1,14 +1,14 @@
 import ActionName from "../helper/ActionName";
 
 const RobotActions = {
-  addRobot: (pos_x, pos_y) => {
+  addRobot: (pos_x, pos_y, rotation) => {
     return {
       type: ActionName.Robot.Add,
       robot: {
         position: {
           x: pos_x,
           y: pos_y,
-          rotation: 0
+          rotation: rotation
         }
       }
     }
@@ -17,7 +17,7 @@ const RobotActions = {
     return {
       type: ActionName.Robot.Turn,
       index: ind,
-      position: {
+      target: {
         rotation: deg
       }
     }
@@ -32,11 +32,19 @@ const RobotActions = {
       }
     }
   },
-  updateRobot: (new_x, new_y, idx) => {
+  walkForward: (blocks, ind) => {
+    return {
+      type: ActionName.Robot.Walk,
+      index: ind,
+      blocks: blocks
+    }
+  },
+  updateRobot: (new_x, new_y, new_rot, idx) => {
     return {
       type: ActionName.Robot.UpdatePosition,
       index: idx,
       position: {
+        rotation: new_rot,
         x: new_x,
         y: new_y
       }

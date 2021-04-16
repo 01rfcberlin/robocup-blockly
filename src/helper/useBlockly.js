@@ -4,6 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
 import BallActions from "../robocup/BallActions";
 import * as constants from "../constants.js";
+import {useState} from "react";
+import {useEffect} from "react";
+import {useInterval} from "./useInterval";
 
 /**
  * Custom Hook that allows us to access the blockly Workspace and evaluation method inside the individual tasks
@@ -28,6 +31,8 @@ export function useBlockly() {
     });
 
     let lastBlockType;
+
+    const [workspaceCodeInterpreter, setWorkspaceCodeInterpreter] = useState();
 
     /**
      * Blockly-method to generate the code from the current workspace, print it to console (just for debugging)
@@ -56,29 +61,36 @@ export function useBlockly() {
         })(simpleWorkspace.current.workspace);
 
         const Interpreter = window["Interpreter"];
-        console.log(code)
+        console.log(code);
         const myInterpreter = new Interpreter(code, initApi);
+        setWorkspaceCodeInterpreter(myInterpreter);
 
-        // WIP: man muss den setTimeout/ cb integrieren in react, damit man auf den redux state zugriff hat. das war wohl auch das prob, wieso ich nicht auf die workspace zugreifen konnte?
-      //
-        const nextStep = (robotList) => {
-          // TODO: hier können wir einfach den "type" vom *letzten* block uns
-          // angucken, und wenn der zB ein moveForward block war, dann müssen
-          // wir halt warten, bis der Roboter am Ziel angekommen ist. für die
-          // meisten anderen blöcke, sollte es ausreichen, wenn wir paar ms
-          // warten
-          console.log("lastBlockType", lastBlockType)
-          const rob = robotList[0];
-          console.log(rob.position)
-          if (rob.target && lastBlockType === "move_one_block_ahead" && (rob.position.x != rob.target.x || rob.position.y != rob.target.y)) {
-            // don't do anything
-          } else if (myInterpreter.step()) {
-            setTimeout(nextStep(robotList), 50);
-          }
-        }
-
-        nextStep(nextStep(robotList));
     };
+
+    const interpret = () => {
+        //console.log("I'm thinking. Hard.");
+        if(workspaceCodeInterpreter) {
+            const nextStep = (robotList) => {
+                // TODO: hier können wir einfach den "type" vom *letzten* block uns
+                // angucken, und wenn der zB ein moveForward block war, dann müssen
+                // wir halt warten, bis der Roboter am Ziel angekommen ist. für die
+                // meisten anderen blöcke, sollte es ausreichen, wenn wir paar ms
+                // warten
+                //console.log("lastBlockType", lastBlockType);
+                const rob = robotList[0];
+                //console.log(rob.isActive);
+                if (rob.isActive) {
+                    return;
+                }
+                workspaceCodeInterpreter.step();
+                workspaceCodeInterpreter.step();
+            };
+
+            nextStep(robotList);
+        }
+    };
+
+    useInterval(interpret, 100);
 
     function highlightBlock(workspace, id) {
         const blockType = workspace.getBlockById(id).type;
@@ -141,7 +153,7 @@ export function useBlockly() {
      * @param ind
      */
     const turnRobot = (deg, ind) => {
-        dispatch(RobotActions.turnRobot(robotList[ind].position.rotation + deg, ind));
+        dispatch(RobotActions.turnRobot(deg, ind));
     };
 
     /**
@@ -158,22 +170,10 @@ export function useBlockly() {
         // console.log("Ball:", ballCellX, ballCellY)
         // console.log("Robot:", robotCellX, robotCellY)
 
-        if(robotList[ind].position.rotation == 90) {
-            // console.log("old",robotList[ind].position.x)
-            // console.log("new", robotList[ind].position.x + (block * constants.cell_width))
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * constants.cell_width), robotList[ind].position.y, ind));
-        }
-        else if(robotList[ind].position.rotation == 270) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x - (block * constants.cell_width), robotList[ind].position.y, ind));
-        }
-        else if(robotList[ind].position.rotation == 180) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y + (block * constants.cell_height), ind));
-        }
-        else if(robotList[ind].position.rotation == 0) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y - (block * constants.cell_height), ind));
-        }
+        dispatch(RobotActions.walkForward(block,ind));
+
         if(ballCellX == robotCellX && ballCellY == robotCellY) {
-            ballKick(1, 0);       
+            ballKick(1, 0);
         }
     };
 

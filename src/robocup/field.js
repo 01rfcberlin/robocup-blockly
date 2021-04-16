@@ -180,42 +180,50 @@ export const RoboCupField = ({grid_properties}) => {
         robotList.forEach((element, idx) => {
             if (!element.target) return;
 
-            // Assumption: We either move left/right or top/bottom. We never move
-            // in both directions at the same time. Or put differently,
-            // element.target and element.position only differ in at most one
-            // component.
-            console.assert(element.target.x == element.position.x || element.target.y == element.position.y);
+            const reached_target_position = !element.target.x || (element.target.x == element.position.x && element.target.y == element.position.y);
+            const reached_target_rotation = element.target.rotation == element.position.rotation;
 
-            const reached_target = element.target.x == element.position.x && element.target.y == element.position.y;
-            if (reached_target) return;
+            if (reached_target_position && reached_target_rotation) return;
 
-            const delta_x = element.target.x - element.position.x;
-            const delta_y = element.target.y - element.position.y;
+            if(!reached_target_position) {
+                // Assumption: We either move left/right or top/bottom. We never move
+                // in both directions at the same time. Or put differently,
+                // element.target and element.position only differ in at most one
+                // component.
+                console.assert(element.target.x == element.position.x || element.target.y == element.position.y);
 
-            const delta_vec_length = Math.sqrt(delta_x**2 + delta_y**2);
-            const normalized_delta_vec_x = delta_x / delta_vec_length;
-            const normalized_delta_vec_y = delta_y / delta_vec_length;
 
-            const movement_speed = draw_interval / 20;
-            const movement_vec_x = normalized_delta_vec_x * movement_speed;
-            const movement_vec_y = normalized_delta_vec_y * movement_speed;
+                const delta_x = element.target.x - element.position.x;
+                const delta_y = element.target.y - element.position.y;
 
-            let new_x = element.position.x + movement_vec_x;
-            let new_y = element.position.y + movement_vec_y;
+                const delta_vec_length = Math.sqrt(delta_x ** 2 + delta_y ** 2);
+                const normalized_delta_vec_x = delta_x / delta_vec_length;
+                const normalized_delta_vec_y = delta_y / delta_vec_length;
 
-            // Avoid overshooting: Since we know that we only go along one
-            // coordinate, we can just set the position to the target.
-            const would_overshoot =
-                 element.target.x > element.position.x && new_x > element.target.x
-              || element.target.x < element.position.x && new_x < element.target.x
-              || element.target.y > element.position.y && new_y > element.target.y
-              || element.target.y < element.position.y && new_y < element.target.y;
-            if (would_overshoot) {
-                new_x = element.target.x;
-                new_y = element.target.y;
+                const movement_speed = draw_interval / 20;
+                const movement_vec_x = normalized_delta_vec_x * movement_speed;
+                const movement_vec_y = normalized_delta_vec_y * movement_speed;
+
+                let new_x = element.position.x + movement_vec_x;
+                let new_y = element.position.y + movement_vec_y;
+
+                // Avoid overshooting: Since we know that we only go along one
+                // coordinate, we can just set the position to the target.
+                const would_overshoot =
+                    element.target.x > element.position.x && new_x > element.target.x
+                    || element.target.x < element.position.x && new_x < element.target.x
+                    || element.target.y > element.position.y && new_y > element.target.y
+                    || element.target.y < element.position.y && new_y < element.target.y;
+                if (would_overshoot) {
+                    new_x = element.target.x;
+                    new_y = element.target.y;
+                }
+
+                dispatch(RobotActions.updateRobot(new_x, new_y, element.position.rotation, idx));
             }
-
-            dispatch(RobotActions.updateRobot(new_x, new_y, idx));
+            if(!reached_target_rotation) {
+                dispatch(RobotActions.updateRobot(element.position.x, element.position.y, element.position.rotation + 5, idx));
+            }
         });
 
         //TODO: This is a dummy-implementation
