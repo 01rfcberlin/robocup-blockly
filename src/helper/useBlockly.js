@@ -83,7 +83,6 @@ export function useBlockly() {
                     return;
                 }
                 workspaceCodeInterpreter.step();
-                workspaceCodeInterpreter.step();
             };
 
             nextStep(robotList);
