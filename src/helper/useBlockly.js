@@ -27,6 +27,8 @@ export function useBlockly() {
         return state.BallReducer;
     });
 
+    let lastBlockType;
+
     /**
      * Blockly-method to generate the code from the current workspace, print it to console (just for debugging)
      * and then executing the code.
@@ -39,23 +41,49 @@ export function useBlockly() {
             simpleWorkspace.current.workspace
         );
 
+        // remove the highlight from all the last execution
+        simpleWorkspace.current.workspace.highlightBlock(null);
 
-        function initApi(interpreter, globalObject) {
-            interpreter.setProperty(globalObject, 'highlightBlock', interpreter.createNativeFunction(highlightBlock));
+        const initApi = ((workspace) => {
+          return (interpreter, globalObject) => {
+            interpreter.setProperty(globalObject, 'highlightBlock', interpreter.createNativeFunction((id) => highlightBlock(workspace, id)));
             interpreter.setProperty(globalObject, 'addRobot', interpreter.createNativeFunction(addRobot));
             interpreter.setProperty(globalObject, 'moveRobot', interpreter.createNativeFunction(moveRobot));
             interpreter.setProperty(globalObject, 'ballKick', interpreter.createNativeFunction(ballKick));
             interpreter.setProperty(globalObject, 'turnRobot', interpreter.createNativeFunction(turnRobot));
             interpreter.setProperty(globalObject, 'moveForward', interpreter.createNativeFunction(moveForward));
-        }
+          }
+        })(simpleWorkspace.current.workspace);
 
         const Interpreter = window["Interpreter"];
+        console.log(code)
         const myInterpreter = new Interpreter(code, initApi);
-        myInterpreter.run();
+
+        // WIP: man muss den setTimeout/ cb integrieren in react, damit man auf den redux state zugriff hat. das war wohl auch das prob, wieso ich nicht auf die workspace zugreifen konnte?
+      //
+        const nextStep = (robotList) => {
+          // TODO: hier können wir einfach den "type" vom *letzten* block uns
+          // angucken, und wenn der zB ein moveForward block war, dann müssen
+          // wir halt warten, bis der Roboter am Ziel angekommen ist. für die
+          // meisten anderen blöcke, sollte es ausreichen, wenn wir paar ms
+          // warten
+          console.log("lastBlockType", lastBlockType)
+          const rob = robotList[0];
+          console.log(rob.position)
+          if (rob.target && lastBlockType === "move_one_block_ahead" && (rob.position.x != rob.target.x || rob.position.y != rob.target.y)) {
+            // don't do anything
+          } else if (myInterpreter.step()) {
+            setTimeout(nextStep(robotList), 50);
+          }
+        }
+
+        nextStep(nextStep(robotList));
     };
 
-    function highlightBlock(id) {
-        simpleWorkspace.current.workspace.highlightBlock(id);
+    function highlightBlock(workspace, id) {
+        const blockType = workspace.getBlockById(id).type;
+        workspace.highlightBlock(id);
+        lastBlockType = blockType;
     }
 
     /**
@@ -83,7 +111,7 @@ export function useBlockly() {
      * @param block
      * @param ind
      */
-     const ballKick = (block, ind) => {
+    const ballKick = (block, ind) => {
         var robotCellX = Math.floor(robotList[ind].position.x/constants.cell_width);
         var robotCellY = Math.floor(robotList[ind].position.y/constants.cell_height);
         var ballCellX = Math.floor(ball.ball_position.x/constants.cell_width);
@@ -131,6 +159,8 @@ export function useBlockly() {
         // console.log("Robot:", robotCellX, robotCellY)
 
         if(robotList[ind].position.rotation == 90) {
+            // console.log("old",robotList[ind].position.x)
+            // console.log("new", robotList[ind].position.x + (block * constants.cell_width))
             dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * constants.cell_width), robotList[ind].position.y, ind));
         }
         else if(robotList[ind].position.rotation == 270) {
