@@ -222,7 +222,12 @@ export const RoboCupField = ({grid_properties}) => {
                 dispatch(RobotActions.updateRobot(new_x, new_y, element.position.rotation, idx));
             }
             if(!reached_target_rotation) {
-                dispatch(RobotActions.updateRobot(element.position.x, element.position.y, element.position.rotation + 5, idx));
+                if(element.target.rotation > 0 ) {
+                    dispatch(RobotActions.updateRobot(element.position.x, element.position.y, element.position.rotation + 5, idx));
+                }
+                else {
+                    dispatch(RobotActions.updateRobot(element.position.x, element.position.y, element.position.rotation - 5, idx));
+                }
             }
         });
 
