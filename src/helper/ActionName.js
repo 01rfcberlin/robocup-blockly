@@ -1,7 +1,5 @@
 /**
  * Abstraction of all actions that can be performed in the different Reducers.
- *
- * @type {{Application: {Status: string, NextTask: string, SetTask: string}, Robot: {Add: string, SetTargetPosition: string, UpdatePosition: string, Reset: string}}}
  */
 
 const ActionName = {
@@ -10,18 +8,18 @@ const ActionName = {
     SetTask: 'SetTask'
   },
   Robot: {
-    Add: 'AddRobot',
-    SetTargetPosition: 'SetRobotTarget',
-    UpdatePosition: 'UpdateRobotPosition',
-    Turn: 'TurnRobot',
-    Walk: 'WalkForward',
-    Reset: 'Reset'
+    AddRobot: 'Robot.AddRobot',
+    SetTargetPosition: 'Robot.SetTargetPosition',
+    SetPosition: 'Robot.SetPosition',
+    AddTargetRotation: 'Robot.AddTargetRotation',
+    WalkForward: 'Robot.WalkForward',
+    Reset: 'Robot.Reset'
   },
   Ball: {
-    SetTargetPosition: 'SetBallTarget',
-    UpdatePosition: 'UpdateBallPosition',
-    BallKick: 'BallKick',
-    Reset: 'Reset'
+    SetTargetPosition: 'Ball.SetTargetPosition',
+    SetPosition: 'Ball.SetPosition',
+    BallKick: 'Ball.BallKick',
+    Reset: 'Ball.Reset'
   }
 };
 

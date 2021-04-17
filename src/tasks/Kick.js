@@ -29,7 +29,7 @@ const Kick = ({task_properties}) => {
     const reset = () => {
         dispatch(RobotActions.reset());
         dispatch(RobotActions.addRobot(task_properties.own_robot.position.x,task_properties.own_robot.position.y, task_properties.own_robot.position.rotation));
-        dispatch(BallActions.updateBall(task_properties.ball.position.x,task_properties.ball.position.y));
+        dispatch(BallActions.setPosition(task_properties.ball.position.x,task_properties.ball.position.y));
     };
 
     useEffect(reset, []);

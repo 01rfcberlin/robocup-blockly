@@ -47,9 +47,9 @@ export function useBlockly() {
           return (interpreter, globalObject) => {
             interpreter.setProperty(globalObject, 'highlightBlock', interpreter.createNativeFunction((id) => highlightBlock(workspace, id)));
             interpreter.setProperty(globalObject, 'addRobot', interpreter.createNativeFunction(addRobot));
-            interpreter.setProperty(globalObject, 'moveRobot', interpreter.createNativeFunction(moveRobot));
+            interpreter.setProperty(globalObject, 'setRobotTargetPosition', interpreter.createNativeFunction(setRobotTargetPosition));
             interpreter.setProperty(globalObject, 'ballKick', interpreter.createNativeFunction(ballKick));
-            interpreter.setProperty(globalObject, 'turnRobot', interpreter.createNativeFunction(turnRobot));
+            interpreter.setProperty(globalObject, 'addRobotTargetRotation', interpreter.createNativeFunction(addRobotTargetRotation));
             interpreter.setProperty(globalObject, 'moveForward', interpreter.createNativeFunction(moveForward));
           }
         })(simpleWorkspace.current.workspace);
@@ -91,14 +91,13 @@ export function useBlockly() {
     };
 
     /**
-     * Helper-function to translate the moveRobot() function received from Blockly into dispatch
+     * Helper-function to translate the setRobotTargetPosition() function received from Blockly into dispatch
      * @param pos_x
      * @param pos_y
      * @param ind
      */
-    const moveRobot = (pos_x, pos_y, ind) => {
-      //console.log("moveRobot helper")
-        dispatch(RobotActions.moveRobot(pos_x,pos_y, ind));
+    const setRobotTargetPosition = (pos_x, pos_y, ind) => {
+        dispatch(RobotActions.setTargetPosition(pos_x,pos_y, ind));
     };
 
     /**
@@ -111,12 +110,12 @@ export function useBlockly() {
     };
 
     /**
-     * Helper-function to translate the turnRobot() function received from Blockly into dispatch
+     * Helper-function to translate the addRobotTargetRotation() function received from Blockly into dispatch
      * @param deg
      * @param ind
      */
-    const turnRobot = (deg, ind) => {
-        dispatch(RobotActions.turnRobot(deg, ind));
+    const addRobotTargetRotation = (deg, ind) => {
+        dispatch(RobotActions.addTargetRotation(deg, ind));
     };
 
     /**

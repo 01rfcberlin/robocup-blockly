@@ -64,7 +64,7 @@ function GameStateReducer(state, action) {
   }
 
   switch (action.type) {
-    case ActionName.Robot.Add:
+    case ActionName.Robot.AddRobot:
       //Handles adding a new robot to the field
       const pos = closest_cell_center(action.robot.position.x, action.robot.position.y);
       action.robot.position.x = pos.x;
@@ -77,7 +77,7 @@ function GameStateReducer(state, action) {
       };
     case ActionName.Robot.SetTargetPosition:
       return setRobotTarget(state, action.index, action.target.x, action.target.y);
-    case ActionName.Robot.UpdatePosition:
+    case ActionName.Robot.SetPosition:
       //Actually updates the position of a robot on the field
       current_robot = {...state.robotListLeft[action.index]};
       const copy_robot_list2 = [...state.robotListLeft];
@@ -110,12 +110,12 @@ function GameStateReducer(state, action) {
           }
         ]
       };
-    case ActionName.Robot.Turn:
+    case ActionName.Robot.AddTargetRotation:
       //Turn the robot on the field
       current_robot = {...state.robotListLeft[action.index]};
       const copy_robot_list3 = [...state.robotListLeft];
       copy_robot_list3.splice(action.index, 1);
-      let new_rotation = current_robot.position.rotation + action.target.rotation;
+      let new_rotation = current_robot.position.rotation + action.relativeTarget.rotation;
       if (new_rotation >= 360) {
         new_rotation = new_rotation - 360;
       } else if (new_rotation <= -360) {
@@ -135,7 +135,7 @@ function GameStateReducer(state, action) {
           }
         ]
       };
-    case ActionName.Robot.Walk:
+    case ActionName.Robot.WalkForward:
       current_robot = {...state.robotListLeft[action.index]};
       if(current_robot.position.rotation == 90) {
         return setRobotTarget(state, action.index, current_robot.position.x + (action.blocks * constants.cell_width), current_robot.position.y);
@@ -199,7 +199,7 @@ function GameStateReducer(state, action) {
           }
         }
       };
-    case ActionName.Ball.UpdatePosition:
+    case ActionName.Ball.SetPosition:
       //Actually updates the position of the ball on the field
       return {
         ...state,

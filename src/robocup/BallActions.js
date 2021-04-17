@@ -1,7 +1,7 @@
 import ActionName from "../helper/ActionName";
 
 const BallActions = {
-  moveBall: (pos_x, pos_y) => {
+  setTargetPosition: (pos_x, pos_y) => {
     return {
       type: ActionName.Ball.SetTargetPosition,
       target: {
@@ -21,9 +21,9 @@ const BallActions = {
       }
     }
   },
-  updateBall: (new_x, new_y) => {
+  setPosition: (new_x, new_y) => {
     return {
-      type: ActionName.Ball.UpdatePosition,
+      type: ActionName.Ball.SetPosition,
       position: {
         x: new_x,
         y: new_y

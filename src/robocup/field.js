@@ -215,21 +215,21 @@ export const RoboCupField = ({grid_properties}) => {
                     new_y = element.target.y;
                 }
 
-                dispatch(RobotActions.updateRobot(new_x, new_y, element.position.rotation, idx));
+                dispatch(RobotActions.setPosition(new_x, new_y, element.position.rotation, idx));
             }
             if(!reached_target_rotation) {
                 if(element.target.rotation >= 0 && element.position.rotation >= 0) {
-                    dispatch(RobotActions.updateRobot(element.position.x, element.position.y, element.position.rotation + 5, idx));
+                    dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.position.rotation + 5, idx));
                 }
                 else {
-                    dispatch(RobotActions.updateRobot(element.position.x, element.position.y, element.position.rotation - 5, idx));
+                    dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.position.rotation - 5, idx));
                 }
             }
         });
 
         //TODO: This is a dummy-implementation
         if(ball.target) {
-            dispatch(BallActions.updateBall(ball.target.x,ball.target.y))
+            dispatch(BallActions.setPosition(ball.target.x,ball.target.y))
         }
 
         const canvas = canvasRef.current;

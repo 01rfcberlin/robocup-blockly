@@ -3,7 +3,7 @@ import ActionName from "../helper/ActionName";
 const RobotActions = {
   addRobot: (pos_x, pos_y, rotation) => {
     return {
-      type: ActionName.Robot.Add,
+      type: ActionName.Robot.AddRobot,
       robot: {
         position: {
           x: pos_x,
@@ -13,16 +13,16 @@ const RobotActions = {
       }
     }
   },
-  turnRobot: (deg, ind) => {
+  addTargetRotation: (degree, ind) => {
     return {
-      type: ActionName.Robot.Turn,
+      type: ActionName.Robot.AddTargetRotation,
       index: ind,
-      target: {
-        rotation: deg
+      relativeTarget: {
+        rotation: degree
       }
     }
   },
-  moveRobot: (pos_x, pos_y, ind) => {
+  setTargetPosition: (pos_x, pos_y, ind) => {
     return {
       type: ActionName.Robot.SetTargetPosition,
       index: ind,
@@ -34,14 +34,14 @@ const RobotActions = {
   },
   walkForward: (blocks, ind) => {
     return {
-      type: ActionName.Robot.Walk,
+      type: ActionName.Robot.WalkForward,
       index: ind,
       blocks: blocks
     }
   },
-  updateRobot: (new_x, new_y, new_rot, idx) => {
+  setPosition: (new_x, new_y, new_rot, idx) => {
     return {
-      type: ActionName.Robot.UpdatePosition,
+      type: ActionName.Robot.SetPosition,
       index: idx,
       position: {
         rotation: new_rot,
