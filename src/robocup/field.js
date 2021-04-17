@@ -16,7 +16,7 @@ import * as angles from "./angles";
 export const RoboCupField = ({grid_properties}) => {
     const dispatch = useDispatch();
 
-    const { robotListLeft, ball } = useSelector(state => {
+    const { robotListLeft, robotListRight, ball } = useSelector(state => {
         return state.gameState;
     });
 
@@ -147,6 +147,17 @@ export const RoboCupField = ({grid_properties}) => {
               element.position.y-constants.robot_height/2,
               constants.robot_width,
               constants.robot_height)
+        });
+        robotListRight.forEach(element => {
+            var robot_img = new Image();
+            robot_img.src = process.env.PUBLIC_URL + '/wolfgang.png';
+            drawRotatedImage(ctx,
+                robot_img,
+                element.position.rotation,
+                element.position.x+constants.robot_width/2,
+                element.position.y-constants.robot_height/2,
+                constants.robot_width,
+                constants.robot_height)
         })
     };
 

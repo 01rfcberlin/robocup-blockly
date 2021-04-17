@@ -88,3 +88,45 @@ Blockly.JavaScript['turn_left'] = function(block) {
 Blockly.JavaScript['move_one_block_ahead'] = function(block) {
     return 'moveForward(1, 0);';
 };
+
+/**
+ * Custom code that create a for-loop
+ * @param block
+ * @returns {string}
+ */
+Blockly.JavaScript['repeat'] = function(block) {
+    var number_in = block.getFieldValue('times');
+    var statements_name = Blockly.JavaScript.statementToCode(block, 'do');
+    const variable_name = randomNameGenerator();
+    return 'for(var ' + variable_name + ' = 0; ' + variable_name + ' < ' + number_in + '; ' + variable_name + '++){' + statements_name + '}';
+};
+
+/**
+ * Custom code for a repeat-until loop
+ * @param block
+ * @returns {string}
+ */
+Blockly.JavaScript['repeat_until'] = function(block) {
+    var boolean_in = Blockly.JavaScript.valueToCode(block, 'sensor_in', Blockly.JavaScript.ORDER_ATOMIC);
+    var statements_name = Blockly.JavaScript.statementToCode(block, 'do');
+    const variable_name = randomNameGenerator();
+    return 'while(' + boolean_in + '){' + statements_name + '}';
+};
+
+/**
+ * Custom code that checks whether the robot is next to the ball
+ * @param block
+ * @returns {string}
+ */
+Blockly.JavaScript['next_to_ball'] = function(block) {
+    return ['ballInRange()', Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+const randomNameGenerator = () => {
+    let res = '';
+    for(let i = 0; i < 5; i++){
+        const random = Math.floor(Math.random() * 27);
+        res += String.fromCharCode(97 + random);
+    };
+    return res;
+};

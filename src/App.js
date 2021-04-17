@@ -32,6 +32,9 @@ import Walk from "./tasks/Walk";
 import Kick from "./tasks/Kick";
 import WalkAndTurn from "./tasks/WalkAndTurn";
 import Task from "./tasks/task.json";
+import WalkAndRepeat from "./tasks/WalkAndRepeat";
+import WalkAndRepeatUntil from "./tasks/WalkAndRepeatUntil";
+import WalkAndTurnAndRepeatUntil from "./tasks/WalkAndTurnAndRepeatUntil";
 
 const App = () => {
 
@@ -48,6 +51,10 @@ const App = () => {
         <Walk task_properties={Task.tasks.task2}/>,
         <WalkAndTurn task_properties={Task.tasks.task3}/>,
         <Walk task_properties={Task.tasks.task4}/>,
+        <WalkAndRepeat task_properties={Task.tasks.task5}/>,
+        <WalkAndRepeat task_properties={Task.tasks.task6}/>,
+        <WalkAndRepeatUntil task_properties={Task.tasks.task7}/>,
+        <WalkAndTurnAndRepeatUntil task_properties={Task.tasks.task8}/>,
     ];
 
     return (

@@ -2,8 +2,8 @@ import {RoboCupField} from "../robocup/field";
 import BlocklyComponent, {Block, Field, Shadow, Value} from "../Blockly";
 import React, {useEffect} from "react";
 import {useBlockly} from "../helper/useBlockly";
-import {useDispatch} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
+import {useDispatch} from "react-redux";
 import BallActions from "../robocup/BallActions";
 import ExecuteResetButton from "../helper/ExecuteResetButton";
 
@@ -11,15 +11,15 @@ import ExecuteResetButton from "../helper/ExecuteResetButton";
  * TASK
  * ====
  *
- * Initial: Ball positioned on right penalty point, robot one field below center mark, facing the center mark
+ * Initial: Ball positioned on right penalty point, robot three fields away from the ball, facing the goal
  * Task: Kick ball into goal
- * Required Actions: Turn, Walk, Kick
+ * Required Actions: Walk, Kick
  * Required Coding Concepts: --
  *
  * @returns {*}
  * @constructor
  */
-const WalkAndTurn = ({task_properties}) => {
+const Walk = ({task_properties}) => {
 
     const blockly = useBlockly();
 
@@ -34,17 +34,16 @@ const WalkAndTurn = ({task_properties}) => {
           task_properties.own_robot.position.rotation * 2*Math.PI/360,
             "left"
         ));
+        dispatch(RobotActions.addRobot(
+            task_properties.opponent_robot.position.x,
+            task_properties.opponent_robot.position.y,
+            task_properties.opponent_robot.position.rotation * 2*Math.PI/360,
+            "right"
+        ));
         dispatch(BallActions.setPosition(task_properties.ball.position.x,task_properties.ball.position.y));
     };
 
     useEffect(reset, []);
-
-    useEffect(() => {
-        let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('start_block');
-        parentBlock.initSvg();
-        parentBlock.render();
-        parentBlock.moveBy(20,20)
-    }, []);
 
     return(
         <div>
@@ -61,8 +60,11 @@ const WalkAndTurn = ({task_properties}) => {
                               }}>
                 <Block type="move_one_block_ahead"/>
                 <Block type="ball_kick"/>
-                <Block type="turn_right"/>
                 <Block type="turn_left"/>
+                <Block type="turn_right"/>
+                <Block type="repeat"/>
+                <Block type="repeat_until"/>
+                <Block type="next_to_ball"/>
             </BlocklyComponent>
         </div>
     )
@@ -70,4 +72,4 @@ const WalkAndTurn = ({task_properties}) => {
 
 };
 
-export default WalkAndTurn
+export default Walk

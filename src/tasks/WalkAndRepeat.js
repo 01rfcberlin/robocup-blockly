@@ -2,8 +2,8 @@ import {RoboCupField} from "../robocup/field";
 import BlocklyComponent, {Block, Field, Shadow, Value} from "../Blockly";
 import React, {useEffect} from "react";
 import {useBlockly} from "../helper/useBlockly";
-import {useDispatch} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
+import {useDispatch} from "react-redux";
 import BallActions from "../robocup/BallActions";
 import ExecuteResetButton from "../helper/ExecuteResetButton";
 
@@ -11,15 +11,15 @@ import ExecuteResetButton from "../helper/ExecuteResetButton";
  * TASK
  * ====
  *
- * Initial: Ball positioned on right penalty point, robot one field below center mark, facing the center mark
+ * Initial: Ball positioned on right penalty point, robot three fields away from the ball, facing the goal
  * Task: Kick ball into goal
- * Required Actions: Turn, Walk, Kick
+ * Required Actions: Walk, Kick
  * Required Coding Concepts: --
  *
  * @returns {*}
  * @constructor
  */
-const WalkAndTurn = ({task_properties}) => {
+const Walk = ({task_properties}) => {
 
     const blockly = useBlockly();
 
@@ -39,13 +39,6 @@ const WalkAndTurn = ({task_properties}) => {
 
     useEffect(reset, []);
 
-    useEffect(() => {
-        let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('start_block');
-        parentBlock.initSvg();
-        parentBlock.render();
-        parentBlock.moveBy(20,20)
-    }, []);
-
     return(
         <div>
             <div>
@@ -61,8 +54,7 @@ const WalkAndTurn = ({task_properties}) => {
                               }}>
                 <Block type="move_one_block_ahead"/>
                 <Block type="ball_kick"/>
-                <Block type="turn_right"/>
-                <Block type="turn_left"/>
+                <Block type="repeat"/>
             </BlocklyComponent>
         </div>
     )
@@ -70,4 +62,4 @@ const WalkAndTurn = ({task_properties}) => {
 
 };
 
-export default WalkAndTurn
+export default Walk
