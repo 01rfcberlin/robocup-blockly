@@ -15,10 +15,10 @@ const initialState = {
   teamNameRight: "Hamburg Bit-Bots",
   robotListLeft: [],
   robotListRight: [],
-  ball: {
-    position: {},
-    target: {}
-  },
+  // Don't already define position and target here because the code checks if
+  // position and target are already defined or not and does different things
+  // depending on this.
+  ball: {},
   goalsLeft: 0,
   goalsRight: 0
 };
