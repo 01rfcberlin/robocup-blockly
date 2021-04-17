@@ -23,4 +23,21 @@ const robot_height = robot_size_meters * cell_height;
 const ball_width = ball_size_meters * cell_width;
 const ball_height = ball_size_meters * cell_height;
 
-export { canvas_width, canvas_height, cell_width, cell_height, robot_width, robot_height, ball_width, ball_height };
+// the interval between execution of the code blocks. in ms
+const step_execution_interval = 100;
+
+// in ms
+const draw_all_interval = 20;
+
+// how many pixels the robot should move per second
+const robot_movement_per_second = 50;
+
+// how many radians the robot should rotate per second. an absolute value.
+const robot_rotation_speed = Math.PI * 1.1;
+
+const calls_to_draw_all_per_second = 1000 / draw_all_interval;
+
+const robot_movement_per_draw_all = robot_movement_per_second / calls_to_draw_all_per_second;
+const robot_rotation_per_draw_all = robot_rotation_speed / calls_to_draw_all_per_second;
+
+export { canvas_width, canvas_height, cell_width, cell_height, robot_width, robot_height, ball_width, ball_height, draw_all_interval, robot_movement_per_draw_all, robot_rotation_per_draw_all, step_execution_interval };

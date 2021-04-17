@@ -170,7 +170,6 @@ export const RoboCupField = ({grid_properties}) => {
      * The method checks whether the current position of a robot requires updating (since a target position is set
      * but not reached) and handles the update.
      */
-    const draw_interval = 20;
     const draw_all = () => {
         if (canvasRef.current === null) return;
 
@@ -198,9 +197,8 @@ export const RoboCupField = ({grid_properties}) => {
                 const normalized_delta_vec_x = delta_x / delta_vec_length;
                 const normalized_delta_vec_y = delta_y / delta_vec_length;
 
-                const movement_speed = draw_interval / 20;
-                const movement_vec_x = normalized_delta_vec_x * movement_speed;
-                const movement_vec_y = normalized_delta_vec_y * movement_speed;
+                const movement_vec_x = normalized_delta_vec_x * constants.robot_movement_per_draw_all;
+                const movement_vec_y = normalized_delta_vec_y * constants.robot_movement_per_draw_all;
 
                 let new_x = element.position.x + movement_vec_x;
                 let new_y = element.position.y + movement_vec_y;
@@ -221,9 +219,8 @@ export const RoboCupField = ({grid_properties}) => {
             }
 
             if (!reached_target_rotation) {
-              const angle_delta = angles.degree_to_radians(5);
               const direction = Math.sign(angles.angle_signed_smallest_difference(element.position.rotation, element.target.rotation));
-              const new_angle = element.position.rotation + direction * angle_delta;
+              const new_angle = element.position.rotation + direction * constants.robot_rotation_per_draw_all;
               const new_direction = Math.sign(angles.angle_signed_smallest_difference(new_angle, element.target.rotation));
               const would_overshoot = direction != new_direction;
 
@@ -254,7 +251,7 @@ export const RoboCupField = ({grid_properties}) => {
     /**
      * This re-draws the elements on the canvas every 200 ms
      */
-    useInterval(() => draw_all(), draw_interval);
+    useInterval(() => draw_all(), constants.draw_all_interval);
 
     return <canvas ref={canvasRef} width={constants.canvas_width} height={constants.canvas_height} key={"robocupfield"}/>
 }
