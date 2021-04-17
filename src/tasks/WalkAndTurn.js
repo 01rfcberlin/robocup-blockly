@@ -2,24 +2,24 @@ import {RoboCupField} from "../robocup/field";
 import BlocklyComponent, {Block, Field, Shadow, Value} from "../Blockly";
 import React, {useEffect} from "react";
 import {useBlockly} from "../helper/useBlockly";
-import RobotActions from "../robocup/RobotActions";
 import {useDispatch} from "react-redux";
+import RobotActions from "../robocup/RobotActions";
 import BallActions from "../robocup/BallActions";
-import ExecuteResetButton from "./ExecuteResetButton";
+import ExecuteResetButton from "../helper/ExecuteResetButton";
 
 /**
  * TASK
  * ====
  *
- * Initial: Ball positioned on right penalty point, robot three fields away from the ball, facing the goal
+ * Initial: Ball positioned on right penalty point, robot one field below center mark, facing the center mark
  * Task: Kick ball into goal
- * Required Actions: Walk, Kick
+ * Required Actions: Turn, Walk, Kick
  * Required Coding Concepts: --
  *
  * @returns {*}
  * @constructor
  */
-const GoFurtherStraight = () => {
+const WalkAndTurn = ({task_properties}) => {
 
     const blockly = useBlockly();
 
@@ -27,10 +27,10 @@ const GoFurtherStraight = () => {
 
     // Initialize the robot position on the field for the given task
     const reset = () => {
-        dispatch(RobotActions.reset())
-        dispatch(RobotActions.addRobot(300,220, 90));
+        dispatch(RobotActions.reset());
+        dispatch(RobotActions.addRobot(task_properties.own_robot.position.x,task_properties.own_robot.position.y, task_properties.own_robot.position.rotation));
         dispatch(BallActions.updateBall(0,0));
-        dispatch(BallActions.moveBall(470,220));
+        dispatch(BallActions.moveBall(task_properties.ball.position.x,task_properties.ball.position.y));
     };
 
     useEffect(reset, []);
@@ -38,10 +38,7 @@ const GoFurtherStraight = () => {
     return(
         <div>
             <div>
-                <RoboCupField
-                    grid_properties={{
-                    }}
-                />
+                <RoboCupField/>
             </div>
             <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
             <BlocklyComponent ref={blockly.simpleWorkspace}
@@ -53,6 +50,8 @@ const GoFurtherStraight = () => {
                               }}>
                 <Block type="move_one_block_ahead"/>
                 <Block type="ball_kick"/>
+                <Block type="turn_right"/>
+                <Block type="turn_left"/>
             </BlocklyComponent>
         </div>
     )
@@ -60,4 +59,4 @@ const GoFurtherStraight = () => {
 
 };
 
-export default GoFurtherStraight
+export default WalkAndTurn
