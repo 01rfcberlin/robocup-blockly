@@ -26,8 +26,6 @@ export function useBlockly() {
     });
 
 
-    let lastBlockType;
-
     const [workspaceCodeInterpreter, setWorkspaceCodeInterpreter] = useState();
 
     /**
@@ -80,9 +78,7 @@ export function useBlockly() {
     useInterval(interpret, 100);
 
     function highlightBlock(workspace, id) {
-        const blockType = workspace.getBlockById(id).type;
         workspace.highlightBlock(id);
-        lastBlockType = blockType;
     }
 
     /**
