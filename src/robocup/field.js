@@ -150,7 +150,7 @@ export const RoboCupField = ({grid_properties}) => {
         });
         robotListRight.forEach(element => {
             var robot_img = new Image();
-            robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
+            robot_img.src = process.env.PUBLIC_URL + '/wolfgang.png';
             drawRotatedImage(ctx,
                 robot_img,
                 element.position.rotation,
