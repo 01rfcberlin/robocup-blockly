@@ -153,3 +153,29 @@ Blockly.Blocks['turn_left'] = {
   }
 };
 
+/**
+ * Custom block for repeat x times
+ * @type {{init: Blockly.Blocks.turn_right.init}}
+ */
+Blockly.Blocks['repeat'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Wiederhole %1 Mal',
+      "args0": [{
+        "type": "field_number",
+        "name": "times",
+        "min": 0,
+        "precision": 1
+      }],
+      "message1": "Aktion %1",
+      "args1": [{
+        "type": "input_statement",
+        "name": "do"
+      }],
+      "colour": 160,
+      "previousStatement": null,
+      "nextStatement": null,
+      "tooltip": "Mit diesem Block kannst du dafür sorgen, dass der Roboter eine Aktion genau so oft ausführt, wie du oben im Block einträgst",
+    });
+  }
+};

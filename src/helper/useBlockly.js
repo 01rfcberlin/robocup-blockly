@@ -40,6 +40,8 @@ export function useBlockly() {
             simpleWorkspace.current.workspace
         );
 
+        console.log(code)
+
         // remove the highlight from all the last execution
         simpleWorkspace.current.workspace.highlightBlock(null);
 

@@ -59,6 +59,36 @@
                     "y": 220
                 }
             }
+        },
+        "task5": {
+            "own_robot": {
+                "position": {
+                    "x": 100,
+                    "y": 220,
+                    "rotation": 90
+                }
+            },
+            "ball": {
+                "position": {
+                    "x": 470,
+                    "y": 220
+                }
+            }
+        },
+        "task6": {
+            "own_robot": {
+                "position": {
+                    "x": 150,
+                    "y": 220,
+                    "rotation": 90
+                }
+            },
+            "ball": {
+                "position": {
+                    "x": 290,
+                    "y": 220
+                }
+            }
         }
     }
 }
