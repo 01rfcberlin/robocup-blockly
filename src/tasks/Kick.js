@@ -1,6 +1,6 @@
 import {RoboCupField} from "../robocup/field";
 import BlocklyComponent, {Block, Field, Shadow, Value} from "../Blockly";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useBlockly} from "../helper/useBlockly";
 import RobotActions from "../robocup/RobotActions";
 import {useDispatch} from "react-redux";
@@ -25,6 +25,8 @@ const Kick = ({task_properties}) => {
 
     const dispatch = useDispatch();
 
+    const [currentNumberBlocks,setCurrentNumberBlocks] = useState(0);
+
     // Initialize the robot position on the field for the given task
     const reset = () => {
         dispatch(RobotActions.reset());
@@ -46,12 +48,16 @@ const Kick = ({task_properties}) => {
         parentBlock.moveBy(10,10)
     }, []);
 
+
+
     return(
         <div>
             <div>
                 <RoboCupField/>
             </div>
             <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
+            Optimale Anzahl Blöcke: {currentNumberBlocks}/{task_properties.optimal_blocks}
+
             <BlocklyComponent ref={blockly.simpleWorkspace}
                               readOnly={false} trashcan={true}
                               move={{

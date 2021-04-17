@@ -6,6 +6,7 @@ import BallActions from "../robocup/BallActions";
 import * as constants from "../constants.js";
 import {useState} from "react";
 import {useInterval} from "./useInterval";
+import {useEffect} from "react";
 
 /**
  * Custom Hook that allows us to access the blockly Workspace and evaluation method inside the individual tasks
@@ -24,7 +25,6 @@ export function useBlockly() {
     const { robotListLeft, ball } = useSelector(state => {
         return state.gameState;
     });
-
 
     const [workspaceCodeInterpreter, setWorkspaceCodeInterpreter] = useState();
 
@@ -83,6 +83,8 @@ export function useBlockly() {
     function highlightBlock(workspace, id) {
         workspace.highlightBlock(id);
     }
+
+
 
     /**
      * Helper-function to translate the addRobot() function received from Blockly into dispatch

@@ -1,6 +1,7 @@
 {
     "tasks": {
         "task1": {
+            "optimal_blocks": 1,
             "own_robot": {
                 "position": {
                     "x": 460,
@@ -16,6 +17,7 @@
             }
         },
         "task2": {
+            "optimal_blocks": 4,
             "own_robot": {
                 "position": {
                     "x": 300,
@@ -31,6 +33,7 @@
             }
         },
         "task3": {
+            "optimal_blocks": 6,
             "own_robot": {
                 "position": {
                     "x": 300,
@@ -46,6 +49,7 @@
             }
         },
         "task4": {
+            "optimal_blocks": 8,
             "own_robot": {
                 "position": {
                     "x": 100,
@@ -61,6 +65,7 @@
             }
         },
         "task5": {
+            "optimal_blocks": 3,
             "own_robot": {
                 "position": {
                     "x": 100,
@@ -76,6 +81,7 @@
             }
         },
         "task6": {
+            "optimal_blocks": 4,
             "own_robot": {
                 "position": {
                     "x": 150,
@@ -91,6 +97,7 @@
             }
         },
         "task7": {
+            "optimal_blocks": 4,
             "own_robot": {
                 "position": {
                     "x": 100,
@@ -106,6 +113,7 @@
             }
         },
         "task8": {
+            "optimal_blocks": 42,
             "own_robot": {
                 "position": {
                     "x": 100,
