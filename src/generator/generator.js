@@ -90,6 +90,16 @@ Blockly.JavaScript['move_one_block_ahead'] = function(block) {
 };
 
 /**
+ * Calls the moveForward(1, ind) function to move the robot one block forward
+ * TODO: Robot index right now is hard-coded so it is always 0
+ * @param block
+ * @returns {string}
+ */
+ Blockly.JavaScript['start_block'] = function(block) {
+     return 'startBlock();';
+};
+
+/**
  * Custom code that create a for-loop
  * @param block
  * @returns {string}
