@@ -80,12 +80,19 @@ function GameStateReducer(state, action) {
     case ActionName.Robot.UpdatePosition:
       //Actually updates the position of a robot on the field
       current_robot = {...state.robotListLeft[action.index]};
-      //console.log("Robot.UpdatePosition: Current robot: " + current_robot)
       const copy_robot_list2 = [...state.robotListLeft];
       copy_robot_list2.splice(action.index, 1);
       const is_active = (current_robot.target.x && current_robot.target.x != action.position.x) ||
                         (current_robot.target.y && current_robot.target.y != action.position.y) ||
                         (current_robot.target.rotation &&current_robot.target.rotation != action.position.rotation);
+      let new_rot = 0;
+      if (action.position.rotation)
+      {
+        new_rot = action.position.rotation;
+      }
+      if (new_rot >= 360) {
+        new_rot = new_rot - 360;
+      }
       return {
         ...state,
         robotListLeft: [
@@ -93,7 +100,7 @@ function GameStateReducer(state, action) {
           {
             ...current_robot,
             position: {
-              rotation: action.position.rotation,
+              rotation: new_rot,
               x: action.position.x,
               y: action.position.y
             },
@@ -105,7 +112,11 @@ function GameStateReducer(state, action) {
       //Turn the robot on the field
       current_robot = {...state.robotListLeft[action.index]};
       const copy_robot_list3 = [...state.robotListLeft];
-      copy_robot_list3.splice(action.index, 1)
+      copy_robot_list3.splice(action.index, 1);
+      let new_rotation = current_robot.position.rotation + action.target.rotation;
+      if (new_rotation >= 360) {
+        new_rotation = new_rotation - 360;
+      }
       return {
         ...state,
         robotListLeft: [
@@ -114,7 +125,7 @@ function GameStateReducer(state, action) {
             ...current_robot,
             target: {
               ...current_robot.target,
-              rotation: current_robot.position.rotation + action.target.rotation,
+              rotation: new_rotation
             },
             is_active: true
           }
