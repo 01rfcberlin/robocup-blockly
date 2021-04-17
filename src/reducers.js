@@ -1,15 +1,13 @@
 import { combineReducers } from "redux";
-import RobotReducer from "./robocup/RobotReducer";
+import GameStateReducer from "./robocup/GameStateReducer";
 import ApplicationReducer from "./applicationLogic/ApplicationReducer";
-import BallReducer from "./robocup/BallReducer";
 
 /*
  * Combines all reducers and their state to be used when creating the store
  */
 const combinedReducers = combineReducers({
-  RobotReducer,
-  ApplicationReducer,
-  BallReducer
+  gameState: GameStateReducer,
+  application: ApplicationReducer,
 });
 
 const rootReducer = (state, action) => {

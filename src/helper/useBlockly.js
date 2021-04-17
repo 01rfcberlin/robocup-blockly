@@ -5,7 +5,6 @@ import RobotActions from "../robocup/RobotActions";
 import BallActions from "../robocup/BallActions";
 import * as constants from "../constants.js";
 import {useState} from "react";
-import {useEffect} from "react";
 import {useInterval} from "./useInterval";
 
 /**
@@ -22,13 +21,10 @@ export function useBlockly() {
 
     const dispatch = useDispatch();
 
-    const { robotList } = useSelector(state => {
-        return state.RobotReducer;
+    const { robotListLeft } = useSelector(state => {
+        return state.gameState;
     });
 
-    const ball = useSelector(state => {
-        return state.BallReducer;
-    });
 
     let lastBlockType;
 
@@ -68,24 +64,16 @@ export function useBlockly() {
     };
 
     const interpret = () => {
-        //console.log("I'm thinking. Hard.");
         if(workspaceCodeInterpreter) {
-            const nextStep = (robotList) => {
-                // TODO: hier können wir einfach den "type" vom *letzten* block uns
-                // angucken, und wenn der zB ein moveForward block war, dann müssen
-                // wir halt warten, bis der Roboter am Ziel angekommen ist. für die
-                // meisten anderen blöcke, sollte es ausreichen, wenn wir paar ms
-                // warten
-                //console.log("lastBlockType", lastBlockType);
-                const rob = robotList[0];
-                //console.log(rob.isActive);
+            const nextStep = (robotListLeft) => {
+                const rob = robotListLeft[0];
                 if (rob.isActive) {
                     return;
                 }
                 workspaceCodeInterpreter.step();
             };
 
-            nextStep(robotList);
+            nextStep(robotListLeft);
         }
     };
 
@@ -120,30 +108,10 @@ export function useBlockly() {
     /**
      * Helper-function to translate the ballKick() function received from Blockly into dispatch
      * @param block
-     * @param ind
+     * @param ind Index of the robot performing the kick
      */
     const ballKick = (block, ind) => {
-        var robotCellX = Math.floor(robotList[ind].position.x/constants.cell_width);
-        var robotCellY = Math.floor(robotList[ind].position.y/constants.cell_height);
-        var ballCellX = Math.floor(ball.ball_position.x/constants.cell_width);
-        var ballCellY = Math.floor(ball.ball_position.y/constants.cell_height);
-
-        // console.log("Ball:", ballCellX, ballCellY)
-        // console.log("Robot:", robotCellX, robotCellY)
-        if(ballCellX == robotCellX && ballCellY == robotCellY) {
-            if(robotList[ind].position.rotation == 90) {
-                dispatch(BallActions.ballKick(ball.ball_position.x + (block * constants.cell_width), ball.ball_position.y));
-            }
-            else if(robotList[ind].position.rotation == 270) {
-                dispatch(BallActions.ballKick(ball.ball_position.x - (block * constants.cell_width), ball.ball_position.y));
-            }
-            else if(robotList[ind].position.rotation == 180) {
-                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y + (block * constants.cell_height)));
-            }
-            else if(robotList[ind].position.rotation == 0) {
-                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y - (block * constants.cell_height)));
-            }
-        }
+        dispatch(BallActions.ballKick(block,ind));
     };
 
     /**
@@ -161,19 +129,9 @@ export function useBlockly() {
      * @param ind
      */
     const moveForward = (block, ind) => {
-        var robotCellX = Math.floor(robotList[ind].position.x/constants.cell_width);
-        var robotCellY = Math.floor(robotList[ind].position.y/constants.cell_height);
-        var ballCellX = Math.floor(ball.ball_position.x/constants.cell_width);
-        var ballCellY = Math.floor(ball.ball_position.y/constants.cell_height);
-
-        // console.log("Ball:", ballCellX, ballCellY)
-        // console.log("Robot:", robotCellX, robotCellY)
-
         dispatch(RobotActions.walkForward(block,ind));
+        ballKick(1, 0);
 
-        if(ballCellX == robotCellX && ballCellY == robotCellY) {
-            ballKick(1, 0);
-        }
     };
 
     return {simpleWorkspace, generateCode}

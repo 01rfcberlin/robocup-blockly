@@ -39,7 +39,7 @@ const App = () => {
     const dispatch = useDispatch();
 
     const { currentTask } = useSelector(state => {
-        return state.ApplicationReducer;
+        return state.application;
     });
 
     //Contains the individual tasks that the students can work through.

@@ -3,26 +3,35 @@ import * as constants from "../constants.js";
 import RobotActions from "./RobotActions";
 
 // map a position for the robot to the center of a grid
-function closest_cell_center(x, y) {
+const closest_cell_center = (x, y) => {
   return {
     x: Math.floor(x / constants.cell_width)*constants.cell_width + constants.cell_width/2 - constants.robot_width,
     y: Math.floor(y / constants.cell_height)*constants.cell_height + constants.cell_height/2 - constants.robot_height,
   };
-}
+};
 
 const initialState = {
-  robotList: []
+  teamNameLeft: "01.RFC Berlin",
+  teamNameRight: "Hamburg Bit-Bots",
+  robotListLeft: [],
+  robotListRight: [],
+  ball: {
+    position: {},
+    target: {}
+  },
+  goalsLeft: 0,
+  goalsRight: 0
 };
 
 const setRobotTarget = (state, index, x, y) => {
   //Handles setting a new target position for the robot on the field.
-  let current_robot = {...state.robotList[index]};
+  let current_robot = {...state.robotListLeft[index]};
   //console.log("Robot.SetTargetPosition: Current robot: " + current_robot)
-  const copy_robot_list = [...state.robotList];
+  const copy_robot_list = [...state.robotListLeft];
   copy_robot_list.splice(index, 1);
   return {
     ...state,
-    robotList: [
+    robotListLeft: [
       ...copy_robot_list,
       {
         ...current_robot,
@@ -35,18 +44,18 @@ const setRobotTarget = (state, index, x, y) => {
       }
     ]
   };
-}
+};
 
 /**
- * This handles the overall state of the robots on the field within a given task.
+ * This handles the overall state of the game, including the state of each robot and the ball.
  *
  * @param state
  * @param action
- * @returns {RobotReducer.props|{robotList: *[]}|{robotList: []}}
+ * @returns {GameStateReducer.props|{robotList: *[]}|{robotList: []}}
  * @constructor
  */
-function RobotReducer(state, action) {
-  // console.log("RobotReducer", action.type);
+function GameStateReducer(state, action) {
+  // console.log("GameStateReducer", action.type);
 
   let current_robot = null;
 
@@ -64,22 +73,22 @@ function RobotReducer(state, action) {
       action.robot.isActive = false;
       return {
         ...state,
-        robotList: [...state.robotList, action.robot]
+        robotListLeft: [...state.robotListLeft, action.robot]
       };
     case ActionName.Robot.SetTargetPosition:
       return setRobotTarget(state, action.index, action.target.x, action.target.y);
     case ActionName.Robot.UpdatePosition:
       //Actually updates the position of a robot on the field
-      current_robot = {...state.robotList[action.index]};
+      current_robot = {...state.robotListLeft[action.index]};
       //console.log("Robot.UpdatePosition: Current robot: " + current_robot)
-      const copy_robot_list2 = [...state.robotList];
+      const copy_robot_list2 = [...state.robotListLeft];
       copy_robot_list2.splice(action.index, 1);
       const is_active = (current_robot.target.x && current_robot.target.x != action.position.x) ||
                         (current_robot.target.y && current_robot.target.y != action.position.y) ||
                         (current_robot.target.rotation &&current_robot.target.rotation != action.position.rotation);
       return {
         ...state,
-        robotList: [
+        robotListLeft: [
           ...copy_robot_list2,
           {
             ...current_robot,
@@ -94,12 +103,12 @@ function RobotReducer(state, action) {
       };
     case ActionName.Robot.Turn:
       //Turn the robot on the field
-      current_robot = {...state.robotList[action.index]};
-      const copy_robot_list3 = [...state.robotList]
+      current_robot = {...state.robotListLeft[action.index]};
+      const copy_robot_list3 = [...state.robotListLeft];
       copy_robot_list3.splice(action.index, 1)
       return {
         ...state,
-        robotList: [
+        robotListLeft: [
           ...copy_robot_list3,
           {
             ...current_robot,
@@ -112,7 +121,7 @@ function RobotReducer(state, action) {
         ]
       };
     case ActionName.Robot.Walk:
-      current_robot = {...state.robotList[action.index]};
+      current_robot = {...state.robotListLeft[action.index]};
       if(current_robot.position.rotation == 90) {
         return setRobotTarget(state, action.index, current_robot.position.x + (action.blocks * constants.cell_width), current_robot.position.y);
       }
@@ -127,9 +136,71 @@ function RobotReducer(state, action) {
       }
     case ActionName.Robot.Reset:
       return initialState;
+    case ActionName.Ball.SetTargetPosition:
+      //Handles setting a new target position for the ball on the field.
+      return {
+        ...state,
+        ball: {
+          ...state.ball,
+          target: {
+            x: action.target.x,
+            y: action.target.y
+          }
+        }
+      };
+    case ActionName.Ball.BallKick:
+      //Handles setting a new target position for the ball on the field.
+      current_robot = {...state.robotListLeft[action.robot.index]};
+
+      const robotCellX = Math.floor(current_robot.position.x/constants.cell_width);
+      const robotCellY = Math.floor(current_robot.position.y/constants.cell_height);
+      const ballCellX = Math.floor(state.ball.position.x/constants.cell_width);
+      const ballCellY = Math.floor(state.ball.position.y/constants.cell_height);
+
+
+      let new_ball_x = state.ball.position.x;
+      let new_ball_y = state.ball.position.y;
+      if(ballCellX == robotCellX && ballCellY == robotCellY) {
+        if(current_robot.position.rotation == 90) {
+          new_ball_x = state.ball.position.x + (action.target.blocks * constants.cell_width);
+        }
+        else if(current_robot.position.rotation == 270) {
+          new_ball_x = state.ball.position.x - (action.target.blocks * constants.cell_width);
+        }
+        else if(current_robot.position.rotation == 180) {
+          new_ball_y = state.ball.position.y + (action.target.blocks * constants.cell_height);
+        }
+        else if(current_robot.position.rotation == 0) {
+          new_ball_y = state.ball.position.y - (action.target.blocks * constants.cell_height);
+        }
+      }
+      return {
+        ...state,
+        ball: {
+          ...state.ball,
+          target: {
+            x: new_ball_x,
+            y: new_ball_y
+          }
+        }
+      };
+    case ActionName.Ball.UpdatePosition:
+      //Actually updates the position of the ball on the field
+      return {
+        ...state,
+        ball:{
+          ...state.ball,
+          position: {
+            x: action.position.x,
+            y: action.position.y
+          }
+        }
+      };
+    case ActionName.Ball.Reset:
+      return initialState;
     default:
       return state;
   }
 }
 
-export default RobotReducer;
+export default GameStateReducer;

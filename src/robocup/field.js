@@ -15,12 +15,8 @@ import * as constants from "../constants.js";
 export const RoboCupField = ({grid_properties}) => {
     const dispatch = useDispatch();
 
-    const { robotList } = useSelector(state => {
-        return state.RobotReducer;
-    });
-
-    const { ball_position, ball_target } = useSelector(state => {
-        return state.BallReducer;
+    const { robotListLeft, ball } = useSelector(state => {
+        return state.gameState;
     });
 
     const canvasRef = useRef(null);
@@ -140,7 +136,7 @@ export const RoboCupField = ({grid_properties}) => {
      * @param ctx
      */
     const draw_robots = (canvas, ctx) => {
-        robotList.forEach(element => {
+        robotListLeft.forEach(element => {
             var robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
             drawRotatedImage(ctx,
@@ -159,11 +155,11 @@ export const RoboCupField = ({grid_properties}) => {
      * @param ctx
      */
     const draw_ball = (canvas, ctx) => {
-        if(ball_position) {
+        if(ball.position) {
             var ball_img = new Image();
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
             // -(0.5*constants.cell_height) we need to move the ball up according to the field
-            ctx.drawImage(ball_img, ball_position.x, ball_position.y-(0.5*constants.cell_height), constants.ball_width, constants.ball_height)
+            ctx.drawImage(ball_img, ball.position.x, ball.position.y-(0.5*constants.cell_height), constants.ball_width, constants.ball_height)
         }
 
     };
@@ -177,7 +173,7 @@ export const RoboCupField = ({grid_properties}) => {
     const draw_all = () => {
         if (canvasRef.current === null) return;
 
-        robotList.forEach((element, idx) => {
+        robotListLeft.forEach((element, idx) => {
             if (!element.target) return;
 
             const reached_target_position = !element.target.x || (element.target.x == element.position.x && element.target.y == element.position.y);
@@ -232,8 +228,8 @@ export const RoboCupField = ({grid_properties}) => {
         });
 
         //TODO: This is a dummy-implementation
-        if(ball_target) {
-            dispatch(BallActions.updateBall(ball_target.x,ball_target.y))
+        if(ball.target) {
+            dispatch(BallActions.updateBall(ball.target.x,ball.target.y))
         }
 
         const canvas = canvasRef.current;

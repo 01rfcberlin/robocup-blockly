@@ -54,7 +54,8 @@ const RobotActions = {
     return {
       type: ActionName.Robot.Reset
     }
-  }
+  },
+
 };
 
 export default RobotActions;
