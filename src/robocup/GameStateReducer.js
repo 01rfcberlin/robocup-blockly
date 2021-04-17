@@ -92,6 +92,8 @@ function GameStateReducer(state, action) {
       }
       if (new_rot >= 360) {
         new_rot = new_rot - 360;
+      } else if (new_rot <= -360) {
+        new_rot = new_rot + 360;
       }
       return {
         ...state,
@@ -116,6 +118,8 @@ function GameStateReducer(state, action) {
       let new_rotation = current_robot.position.rotation + action.target.rotation;
       if (new_rotation >= 360) {
         new_rotation = new_rotation - 360;
+      } else if (new_rotation <= -360) {
+        new_rotation = new_rotation + 360;
       }
       return {
         ...state,
