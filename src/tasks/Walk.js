@@ -41,6 +41,13 @@ const Walk = ({task_properties}) => {
 
     useEffect(reset, []);
 
+    useEffect(() => {
+        let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('start_block');
+        parentBlock.initSvg();
+        parentBlock.render();
+        parentBlock.moveBy(20,20)
+    }, []);
+
     return(
         <div>
             <div>

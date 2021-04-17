@@ -139,7 +139,7 @@ Blockly.Blocks['turn_right'] = {
 
 /**
  * Block that handles turning the robot 90 degrees to the right
- * @type {{init: Blockly.Blocks.turn_right.init}}
+ * @type {{init: Blockly.Blocks.turn_left.init}}
  */
 Blockly.Blocks['turn_left'] = {
   init: function() {
@@ -154,6 +154,24 @@ Blockly.Blocks['turn_left'] = {
 };
 
 /**
+ * Starting Block - does nothing
+ * @type {{init: Blockly.Blocks.start_block.init}}
+ */
+ Blockly.Blocks['start_block'] = {
+    init: function() {
+      this.jsonInit({
+        "message0": 'Start:',
+        "colour": 900,
+        "nextStatement": null,
+        "tooltip": "Start Block",
+      });
+      this.setDeletable(false);
+      // this does not work?!?!?!?!
+      this.setMovable(false);
+    }
+  };
+  
+/*
  * Custom block for repeat x times
  * @type {{init: Blockly.Blocks.turn_right.init}}
  */

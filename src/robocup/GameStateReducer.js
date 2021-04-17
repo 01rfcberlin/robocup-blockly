@@ -11,6 +11,12 @@ const closest_cell_center = (x, y) => {
   };
 };
 
+const getGridCell = (x, y) => {
+    return {
+      x: Math.floor(x / constants.cell_width),
+      y: Math.floor(y / constants.cell_height),
+    };
+  };
 
 const initialState = {
   teamNameLeft: "01.RFC Berlin",
@@ -189,6 +195,10 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       //Handles setting a new target position for the ball on the field.
       current_robot = {...state.robotListLeft[action.robot.index]};
 
+    //   const goalCellsX = [1, 10];
+      const goalCellsY = [3, 4, 5]
+
+
       let new_ball_x = state.ball.position.x;
       let new_ball_y = state.ball.position.y;
       if(isBallKickable(state,current_robot)) {
@@ -203,6 +213,18 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         } else if (gaze_direction == angles.gaze_directions.top) {
           new_ball_y = state.ball.position.y - (action.target.blocks * constants.cell_height);
         }
+      }
+
+      const ballPos = getGridCell(new_ball_x, new_ball_y);
+
+      if(ballPos.x >= constants.num_x_cells-1 && goalCellsY.includes(ballPos.y)) {
+        console.log("TOOR Home Team")
+        // TODO: add goal for Hometeam or succes windows or whatever
+      }
+
+      if(ballPos.x <= 0 && goalCellsY.includes(ballPos.y)) {
+        console.log("TOOR Away Team")
+        // TODO: add goal for Hometeam or succes windows or whatever
       }
 
       return {

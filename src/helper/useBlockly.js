@@ -53,6 +53,7 @@ export function useBlockly() {
             interpreter.setProperty(globalObject, 'ballKick', interpreter.createNativeFunction(ballKick));
             interpreter.setProperty(globalObject, 'addRobotTargetRotation', interpreter.createNativeFunction(addRobotTargetRotation));
             interpreter.setProperty(globalObject, 'moveForward', interpreter.createNativeFunction(moveForward));
+            interpreter.setProperty(globalObject, 'startBlock', interpreter.createNativeFunction(startBlock));
             interpreter.setProperty(globalObject, 'ballInRange', interpreter.createNativeFunction(ballInRange));
           }
         })(simpleWorkspace.current.workspace);
@@ -129,6 +130,13 @@ export function useBlockly() {
         ballKick(1, 0);
 
     };
+
+    /**
+     * Helper-function to translate the moveForward() function received from Blockly into dispatch
+     */
+         const startBlock = () => {
+            return console.log("Start");
+        };
 
     /**
      * Helper-function to check whether the ball is in range

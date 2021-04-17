@@ -56,7 +56,7 @@ Blockly.JavaScript['robot_move'] = function(block) {
  * @returns {string}
  */
  Blockly.JavaScript['ball_kick'] = function(block) {
-    return 'ballKick(1, 0);';
+    return 'ballKick(3, 0);';
 };
 
 /**
@@ -87,6 +87,16 @@ Blockly.JavaScript['turn_left'] = function(block) {
  */
 Blockly.JavaScript['move_one_block_ahead'] = function(block) {
     return 'moveForward(1, 0);';
+};
+
+/**
+ * Calls the moveForward(1, ind) function to move the robot one block forward
+ * TODO: Robot index right now is hard-coded so it is always 0
+ * @param block
+ * @returns {string}
+ */
+ Blockly.JavaScript['start_block'] = function(block) {
+     return 'startBlock();';
 };
 
 /**
