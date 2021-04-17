@@ -89,6 +89,43 @@
                     "y": 220
                 }
             }
+        },
+        "task7": {
+            "own_robot": {
+                "position": {
+                    "x": 100,
+                    "y": 220,
+                    "rotation": 90
+                }
+            },
+            "ball": {
+                "position": {
+                    "x": 470,
+                    "y": 220
+                }
+            }
+        },
+        "task8": {
+            "own_robot": {
+                "position": {
+                    "x": 100,
+                    "y": 220,
+                    "rotation": 90
+                }
+            },
+            "opponent_robot": {
+                "position": {
+                    "x": 420,
+                    "y": 220,
+                    "rotation": -90
+                }
+            },
+            "ball": {
+                "position": {
+                    "x": 130,
+                    "y": 270
+                }
+            }
         }
     }
 }

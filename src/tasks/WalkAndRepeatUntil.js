@@ -54,6 +54,8 @@ const Walk = ({task_properties}) => {
                               }}>
                 <Block type="move_one_block_ahead"/>
                 <Block type="ball_kick"/>
+                <Block type="repeat_until"/>
+                <Block type="next_to_ball"/>
             </BlocklyComponent>
         </div>
     )

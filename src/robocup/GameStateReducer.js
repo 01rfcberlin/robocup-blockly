@@ -48,6 +48,19 @@ const setRobotTarget = (state, index, x, y) => {
   };
 };
 
+const isBallKickable = (state, current_robot) => {
+  const robotCellX = Math.floor(current_robot.position.x/constants.cell_width);
+  const robotCellY = Math.floor(current_robot.position.y/constants.cell_height);
+  const ballCellX = Math.floor(state.ball.position.x/constants.cell_width);
+  const ballCellY = Math.floor(state.ball.position.y/constants.cell_height);
+
+  let ball_in_range = false;
+  if(ballCellX == robotCellX && ballCellY == robotCellY) {
+    ball_in_range = true;
+  }
+  return ball_in_range;
+};
+
 /**
  * This handles the overall state of the game, including the state of each robot and the ball.
  *
@@ -73,10 +86,19 @@ function GameStateReducer(state, action) {
       action.robot.position.y = pos.y;
       action.robot.position.rotation = action.robot.position.rotation;
       action.robot.isActive = false;
-      return {
-        ...state,
-        robotListLeft: [...state.robotListLeft, action.robot]
-      };
+      action.robot.isBallKickable = false;
+      if (action.field_half == "left") {
+        return {
+          ...state,
+          robotListLeft: [...state.robotListLeft, action.robot]
+        };
+      }
+      else {
+        return {
+          ...state,
+          robotListRight: [...state.robotListRight, action.robot]
+        };
+      }
     case ActionName.Robot.SetTargetPosition:
       return setRobotTarget(state, action.index, action.target.x, action.target.y);
     case ActionName.Robot.SetPosition:
@@ -93,6 +115,9 @@ function GameStateReducer(state, action) {
         new_rot = angles.normalize_angle(action.position.rotation);
       }
 
+      const ballKickable = isBallKickable(state, current_robot);
+      console.log("Robot state says: " + ballKickable);
+
       return {
         ...state,
         robotListLeft: [
@@ -104,7 +129,8 @@ function GameStateReducer(state, action) {
               x: action.position.x,
               y: action.position.y
             },
-            isActive: is_active
+            isActive: is_active,
+            isBallKickable: ballKickable
           }
         ]
       };
@@ -163,15 +189,9 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       //Handles setting a new target position for the ball on the field.
       current_robot = {...state.robotListLeft[action.robot.index]};
 
-      const robotCellX = Math.floor(current_robot.position.x/constants.cell_width);
-      const robotCellY = Math.floor(current_robot.position.y/constants.cell_height);
-      const ballCellX = Math.floor(state.ball.position.x/constants.cell_width);
-      const ballCellY = Math.floor(state.ball.position.y/constants.cell_height);
-
-
       let new_ball_x = state.ball.position.x;
       let new_ball_y = state.ball.position.y;
-      if(ballCellX == robotCellX && ballCellY == robotCellY) {
+      if(isBallKickable(state,current_robot)) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
         if (gaze_direction == angles.gaze_directions.left) {

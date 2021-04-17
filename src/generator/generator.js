@@ -101,6 +101,27 @@ Blockly.JavaScript['repeat'] = function(block) {
     return 'for(var ' + variable_name + ' = 0; ' + variable_name + ' < ' + number_in + '; ' + variable_name + '++){' + statements_name + '}';
 };
 
+/**
+ * Custom code for a repeat-until loop
+ * @param block
+ * @returns {string}
+ */
+Blockly.JavaScript['repeat_until'] = function(block) {
+    var boolean_in = Blockly.JavaScript.valueToCode(block, 'sensor_in', Blockly.JavaScript.ORDER_ATOMIC);
+    var statements_name = Blockly.JavaScript.statementToCode(block, 'do');
+    const variable_name = randomNameGenerator();
+    return 'while(' + boolean_in + '){' + statements_name + '}';
+};
+
+/**
+ * Custom code that checks whether the robot is next to the ball
+ * @param block
+ * @returns {string}
+ */
+Blockly.JavaScript['next_to_ball'] = function(block) {
+    return ['ballInRange()', Blockly.JavaScript.ORDER_ATOMIC];
+};
+
 const randomNameGenerator = () => {
     let res = '';
     for(let i = 0; i < 5; i++){

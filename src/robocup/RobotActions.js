@@ -1,7 +1,7 @@
 import ActionName from "../helper/ActionName";
 
 const RobotActions = {
-  addRobot: (pos_x, pos_y, rotation) => {
+  addRobot: (pos_x, pos_y, rotation, field_half) => {
     return {
       type: ActionName.Robot.AddRobot,
       robot: {
@@ -10,7 +10,8 @@ const RobotActions = {
           y: pos_y,
           rotation: rotation
         }
-      }
+      },
+      field_half: field_half
     }
   },
   addTargetRotation: (radians, ind) => {

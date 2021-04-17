@@ -21,7 +21,7 @@ export function useBlockly() {
 
     const dispatch = useDispatch();
 
-    const { robotListLeft } = useSelector(state => {
+    const { robotListLeft, ball } = useSelector(state => {
         return state.gameState;
     });
 
@@ -53,6 +53,7 @@ export function useBlockly() {
             interpreter.setProperty(globalObject, 'ballKick', interpreter.createNativeFunction(ballKick));
             interpreter.setProperty(globalObject, 'addRobotTargetRotation', interpreter.createNativeFunction(addRobotTargetRotation));
             interpreter.setProperty(globalObject, 'moveForward', interpreter.createNativeFunction(moveForward));
+            interpreter.setProperty(globalObject, 'ballInRange', interpreter.createNativeFunction(ballInRange));
           }
         })(simpleWorkspace.current.workspace);
 
@@ -125,6 +126,17 @@ export function useBlockly() {
         dispatch(RobotActions.walkForward(block,ind));
         ballKick(1, 0);
 
+    };
+
+    /**
+     * Helper-function to check whether the ball is in range
+     * TODO: WIP, this is not evaluated correctly yet!
+     */
+    const ballInRange = () => {
+        const ball_out_of_range = !robotListLeft[0].isBallKickable;
+
+        console.log("Ball in Range? " + ball_out_of_range);
+        return ball_out_of_range;
     };
 
     return {simpleWorkspace, generateCode}

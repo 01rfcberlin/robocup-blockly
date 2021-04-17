@@ -179,3 +179,45 @@ Blockly.Blocks['repeat'] = {
     });
   }
 };
+
+/**
+ * Custom block for repeat x times
+ * @type {{init: Blockly.Blocks.turn_right.init}}
+ */
+Blockly.Blocks['repeat_until'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Wiederhole solange bis %1',
+      "args0": [{
+        "type": "input_value",
+        "name": "sensor_in",
+        "check": "Boolean"
+      }],
+      "message1": "Aktion: %1",
+      "args1": [{
+        "type": "input_statement",
+        "name": "do"
+      }],
+      "colour": 160,
+      "previousStatement": null,
+      "nextStatement": null,
+      "tooltip": "Mit diesem Block kannst du dafür sorgen, dass der Roboter eine Aktion genau so oft ausführt, bis eine bestimmte Bedingung erfüllt ist",
+    });
+  }
+};
+
+/**
+ * Custom block for robot not next to ball
+ * @type {{init: Blockly.Blocks.turn_right.init}}
+ */
+Blockly.Blocks['next_to_ball'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Roboter am Ball',
+      "output": null,
+      "type": Boolean,
+      "colour": 160,
+      "tooltip": "Dieser Block sagt euch, ob der Roboter den Ball bereits erreicht hat",
+    });
+  }
+};
