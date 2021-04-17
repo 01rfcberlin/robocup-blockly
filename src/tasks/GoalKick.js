@@ -36,6 +36,13 @@ const GoalKick = () => {
 
     useEffect(reset, []);
 
+    useEffect(() => {
+        let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('ball_kick');
+        parentBlock.initSvg();
+        parentBlock.render();
+        parentBlock.moveBy(10,10)
+    }, []);
+
     return(
         <div>
             <div>
