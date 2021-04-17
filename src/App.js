@@ -26,27 +26,28 @@ import './App.css';
 
 import './blocks/customblocks';
 import './generator/generator';
-import GoStraight from "./tasks/GoStraight";
 import {useDispatch, useSelector} from "react-redux";
 import ApplicationActions from "./applicationLogic/ApplicationActions";
-import GoFurtherStraight from "./tasks/GoFurtherStraight";
-import GoalKick from "./tasks/GoalKick";
-import StraightAndTurn from "./tasks/StraightAndTurn";
-
+import Walk from "./tasks/Walk";
+import Kick from "./tasks/Kick";
+import WalkAndTurn from "./tasks/WalkAndTurn";
+import Task from "./tasks/task.json";
 
 const App = () => {
 
     const dispatch = useDispatch();
 
     const { currentTask } = useSelector(state => {
-        return state.ApplicationReducer;
+        return state.application;
     });
+
 
     //Contains the individual tasks that the students can work through.
     const taskList = [
-        <GoalKick/>,
-        <GoFurtherStraight/>,
-        <StraightAndTurn/>
+        <Kick task_properties={Task.tasks.task1}/>,
+        <Walk task_properties={Task.tasks.task2}/>,
+        <WalkAndTurn task_properties={Task.tasks.task3}/>,
+        <Walk task_properties={Task.tasks.task4}/>,
     ];
 
     return (

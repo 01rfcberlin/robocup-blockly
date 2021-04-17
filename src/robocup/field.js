@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import RobotActions from "./RobotActions";
 import BallActions from "./BallActions";
 import * as constants from "../constants.js";
+import * as angles from "./angles";
 
 /**
  * Handles drawing the background of the field as well as the robot(s)
@@ -15,12 +16,8 @@ import * as constants from "../constants.js";
 export const RoboCupField = ({grid_properties}) => {
     const dispatch = useDispatch();
 
-    const { robotList } = useSelector(state => {
-        return state.RobotReducer;
-    });
-
-    const { ball_position, ball_target } = useSelector(state => {
-        return state.BallReducer;
+    const { robotListLeft, ball } = useSelector(state => {
+        return state.gameState;
     });
 
     const canvasRef = useRef(null);
@@ -140,12 +137,12 @@ export const RoboCupField = ({grid_properties}) => {
      * @param ctx
      */
     const draw_robots = (canvas, ctx) => {
-        robotList.forEach(element => {
+        robotListLeft.forEach(element => {
             var robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
             drawRotatedImage(ctx,
               robot_img,
-              2*Math.PI/360 * element.position.rotation,
+              element.position.rotation,
               element.position.x+constants.robot_width/2,
               element.position.y-constants.robot_height/2,
               constants.robot_width,
@@ -159,11 +156,11 @@ export const RoboCupField = ({grid_properties}) => {
      * @param ctx
      */
     const draw_ball = (canvas, ctx) => {
-        if(ball_position) {
+        if(ball.position) {
             var ball_img = new Image();
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
             // -(0.5*constants.cell_height) we need to move the ball up according to the field
-            ctx.drawImage(ball_img, ball_position.x, ball_position.y-(0.5*constants.cell_height), constants.ball_width, constants.ball_height)
+            ctx.drawImage(ball_img, ball.position.x, ball.position.y-(0.5*constants.cell_height), constants.ball_width, constants.ball_height)
         }
 
     };
@@ -177,50 +174,70 @@ export const RoboCupField = ({grid_properties}) => {
     const draw_all = () => {
         if (canvasRef.current === null) return;
 
-        robotList.forEach((element, idx) => {
+        robotListLeft.forEach((element, idx) => {
             if (!element.target) return;
 
-            // Assumption: We either move left/right or top/bottom. We never move
-            // in both directions at the same time. Or put differently,
-            // element.target and element.position only differ in at most one
-            // component.
-            console.assert(element.target.x == element.position.x || element.target.y == element.position.y);
+            // TODO: use "is_active" from redux here instead
+            const reached_target_position = !element.target.x || (element.target.x == element.position.x && element.target.y == element.position.y);
+            const reached_target_rotation = angles.angle_almost_equals(element.target.rotation, element.position.rotation);
 
-            const reached_target = element.target.x == element.position.x && element.target.y == element.position.y;
-            if (reached_target) return;
+            if (reached_target_position && reached_target_rotation) return;
 
-            const delta_x = element.target.x - element.position.x;
-            const delta_y = element.target.y - element.position.y;
+            if(!reached_target_position) {
+                // Assumption: We either move left/right or top/bottom. We never move
+                // in both directions at the same time. Or put differently,
+                // element.target and element.position only differ in at most one
+                // component.
+                console.assert(element.target.x == element.position.x || element.target.y == element.position.y);
 
-            const delta_vec_length = Math.sqrt(delta_x**2 + delta_y**2);
-            const normalized_delta_vec_x = delta_x / delta_vec_length;
-            const normalized_delta_vec_y = delta_y / delta_vec_length;
 
-            const movement_speed = draw_interval / 20;
-            const movement_vec_x = normalized_delta_vec_x * movement_speed;
-            const movement_vec_y = normalized_delta_vec_y * movement_speed;
+                const delta_x = element.target.x - element.position.x;
+                const delta_y = element.target.y - element.position.y;
 
-            let new_x = element.position.x + movement_vec_x;
-            let new_y = element.position.y + movement_vec_y;
+                const delta_vec_length = Math.sqrt(delta_x ** 2 + delta_y ** 2);
+                const normalized_delta_vec_x = delta_x / delta_vec_length;
+                const normalized_delta_vec_y = delta_y / delta_vec_length;
 
-            // Avoid overshooting: Since we know that we only go along one
-            // coordinate, we can just set the position to the target.
-            const would_overshoot =
-                 element.target.x > element.position.x && new_x > element.target.x
-              || element.target.x < element.position.x && new_x < element.target.x
-              || element.target.y > element.position.y && new_y > element.target.y
-              || element.target.y < element.position.y && new_y < element.target.y;
-            if (would_overshoot) {
-                new_x = element.target.x;
-                new_y = element.target.y;
+                const movement_speed = draw_interval / 20;
+                const movement_vec_x = normalized_delta_vec_x * movement_speed;
+                const movement_vec_y = normalized_delta_vec_y * movement_speed;
+
+                let new_x = element.position.x + movement_vec_x;
+                let new_y = element.position.y + movement_vec_y;
+
+                // Avoid overshooting: Since we know that we only go along one
+                // coordinate, we can just set the position to the target.
+                const would_overshoot =
+                    element.target.x > element.position.x && new_x > element.target.x
+                    || element.target.x < element.position.x && new_x < element.target.x
+                    || element.target.y > element.position.y && new_y > element.target.y
+                    || element.target.y < element.position.y && new_y < element.target.y;
+                if (would_overshoot) {
+                    new_x = element.target.x;
+                    new_y = element.target.y;
+                }
+
+                dispatch(RobotActions.setPosition(new_x, new_y, element.position.rotation, idx));
             }
 
-            dispatch(RobotActions.updateRobot(new_x, new_y, idx));
+            if (!reached_target_rotation) {
+              const angle_delta = angles.degree_to_radians(5);
+              const direction = Math.sign(angles.angle_signed_smallest_difference(element.position.rotation, element.target.rotation));
+              const new_angle = element.position.rotation + direction * angle_delta;
+              const new_direction = Math.sign(angles.angle_signed_smallest_difference(new_angle, element.target.rotation));
+              const would_overshoot = direction != new_direction;
+
+              if (would_overshoot) {
+                dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.target.rotation, idx));
+              } else {
+                dispatch(RobotActions.setPosition(element.position.x, element.position.y, new_angle, idx));
+              }
+            }
         });
 
         //TODO: This is a dummy-implementation
-        if(ball_target) {
-            dispatch(BallActions.updateBall(ball_target.x,ball_target.y))
+        if(ball.target) {
+            dispatch(BallActions.setPosition(ball.target.x,ball.target.y))
         }
 
         const canvas = canvasRef.current;
