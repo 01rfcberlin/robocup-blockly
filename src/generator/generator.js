@@ -39,7 +39,7 @@ Blockly.JavaScript['robot_add'] = function(block) {
 };
 
 /**
- * Calls the moveRobot(pos_x, pos_y, ind) function
+ * Calls the setRobotTargetPosition(pos_x, pos_y, ind) function
  * TODO: Robot index right now is hard-coded so it is always 0
  * @param block
  * @returns {string}
@@ -47,7 +47,7 @@ Blockly.JavaScript['robot_add'] = function(block) {
 Blockly.JavaScript['robot_move'] = function(block) {
     var value_pos_x = Blockly.JavaScript.valueToCode(block, 'pos_x', Blockly.JavaScript.ORDER_ATOMIC);
     var value_pos_y = Blockly.JavaScript.valueToCode(block, 'pos_y', Blockly.JavaScript.ORDER_ATOMIC);
-    return 'moveRobot(' + value_pos_x + ', ' + value_pos_y + ', 0);';
+    return 'setRobotTargetPosition(' + value_pos_x + ', ' + value_pos_y + ', 0);';
 };
 
 /**
@@ -60,24 +60,23 @@ Blockly.JavaScript['robot_move'] = function(block) {
 };
 
 /**
- * Calls the turnRobot(deg, ind) function
- * Calls the turnRobot(90, ind) function
+ * Calls the addRobotTargetRotation(90, ind) function
  * TODO: Robot index right now is hard-coded so it is always 0
  * @param block
  * @returns {string}
  */
 Blockly.JavaScript['turn_right'] = function(block) {
-    return 'turnRobot(90, 0);';
+    return 'addRobotTargetRotation(Math.PI/2, 0);';
 };
 
 /**
- * Calls the turnRobot(-90, ind) function
+ * Calls the addRobotTargetRotation(-90, ind) function
  * TODO: Robot index right now is hard-coded so it is always 0
  * @param block
  * @returns {string}
  */
 Blockly.JavaScript['turn_left'] = function(block) {
-    return 'turnRobot(-90, 0);';
+    return 'addRobotTargetRotation(-Math.PI/2, 0);';
 };
 
 /**

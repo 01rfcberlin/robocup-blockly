@@ -1,0 +1,65 @@
+{
+    "tasks": {
+        "task1": {
+            "own_robot": {
+                "position": {
+                    "x": 460,
+                    "y": 220,
+                    "rotation": 90
+                }
+            },
+            "ball": {
+                "position": {
+                    "x": 470,
+                    "y": 220
+                }
+            }
+        },
+        "task2": {
+            "own_robot": {
+                "position": {
+                    "x": 300,
+                    "y": 220,
+                    "rotation": 90
+                }
+            },
+            "ball": {
+                "position": {
+                    "x": 470,
+                    "y": 220
+                }
+            }
+        },
+        "task3": {
+            "own_robot": {
+                "position": {
+                    "x": 300,
+                    "y": 250,
+                    "rotation": 0
+                }
+            },
+            "ball": {
+                "position": {
+                    "x": 470,
+                    "y": 220
+                }
+            }
+        },
+        "task4": {
+            "own_robot": {
+                "position": {
+                    "x": 100,
+                    "y": 220,
+                    "rotation": 90
+                }
+            },
+            "ball": {
+                "position": {
+                    "x": 470,
+                    "y": 220
+                }
+            }
+        }
+    }
+}
+

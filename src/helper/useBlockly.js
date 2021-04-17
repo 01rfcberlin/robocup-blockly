@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import RobotActions from "../robocup/RobotActions";
 import BallActions from "../robocup/BallActions";
 import * as constants from "../constants.js";
+import {useState} from "react";
+import {useInterval} from "./useInterval";
 
 /**
  * Custom Hook that allows us to access the blockly Workspace and evaluation method inside the individual tasks
@@ -19,29 +21,65 @@ export function useBlockly() {
 
     const dispatch = useDispatch();
 
-    const { robotList } = useSelector(state => {
-        return state.RobotReducer;
+    const { robotListLeft } = useSelector(state => {
+        return state.gameState;
     });
 
-    const ball = useSelector(state => {
-        return state.BallReducer;
-    });
+
+    const [workspaceCodeInterpreter, setWorkspaceCodeInterpreter] = useState();
 
     /**
      * Blockly-method to generate the code from the current workspace, print it to console (just for debugging)
      * and then executing the code.
      */
     const generateCode = () => {
+        BlocklyJS.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+        BlocklyJS.addReservedWords('highlightBlock');
+
         var code = BlocklyJS.workspaceToCode(
             simpleWorkspace.current.workspace
         );
-        //console.log(code);
-        try {
-            eval(code);
-        } catch (e) {
-            alert(e);
+
+        // remove the highlight from all the last execution
+        simpleWorkspace.current.workspace.highlightBlock(null);
+
+        const initApi = ((workspace) => {
+          return (interpreter, globalObject) => {
+            interpreter.setProperty(globalObject, 'highlightBlock', interpreter.createNativeFunction((id) => highlightBlock(workspace, id)));
+            interpreter.setProperty(globalObject, 'addRobot', interpreter.createNativeFunction(addRobot));
+            interpreter.setProperty(globalObject, 'setRobotTargetPosition', interpreter.createNativeFunction(setRobotTargetPosition));
+            interpreter.setProperty(globalObject, 'ballKick', interpreter.createNativeFunction(ballKick));
+            interpreter.setProperty(globalObject, 'addRobotTargetRotation', interpreter.createNativeFunction(addRobotTargetRotation));
+            interpreter.setProperty(globalObject, 'moveForward', interpreter.createNativeFunction(moveForward));
+          }
+        })(simpleWorkspace.current.workspace);
+
+        const Interpreter = window["Interpreter"];
+        console.log(code);
+        const myInterpreter = new Interpreter(code, initApi);
+        setWorkspaceCodeInterpreter(myInterpreter);
+
+    };
+
+    const interpret = () => {
+        if(workspaceCodeInterpreter) {
+            const nextStep = (robotListLeft) => {
+                const rob = robotListLeft[0];
+                if (rob.isActive) {
+                    return;
+                }
+                workspaceCodeInterpreter.step();
+            };
+
+            nextStep(robotListLeft);
         }
     };
+
+    useInterval(interpret, 100);
+
+    function highlightBlock(workspace, id) {
+        workspace.highlightBlock(id);
+    }
 
     /**
      * Helper-function to translate the addRobot() function received from Blockly into dispatch
@@ -53,83 +91,38 @@ export function useBlockly() {
     };
 
     /**
-     * Helper-function to translate the moveRobot() function received from Blockly into dispatch
+     * Helper-function to translate the setRobotTargetPosition() function received from Blockly into dispatch
      * @param pos_x
      * @param pos_y
      * @param ind
      */
-    const moveRobot = (pos_x, pos_y, ind) => {
-      //console.log("moveRobot helper")
-        dispatch(RobotActions.moveRobot(pos_x,pos_y, ind));
+    const setRobotTargetPosition = (pos_x, pos_y, ind) => {
+        dispatch(RobotActions.setTargetPosition(pos_x,pos_y, ind));
     };
 
     /**
      * Helper-function to translate the ballKick() function received from Blockly into dispatch
      * @param block
-     * @param ind
+     * @param ind Index of the robot performing the kick
      */
-     const ballKick = (block, ind) => {
-        var robotCellX = Math.floor(robotList[ind].position.x/constants.cell_width);
-        var robotCellY = Math.floor(robotList[ind].position.y/constants.cell_height);
-        var ballCellX = Math.floor(ball.ball_position.x/constants.cell_width);
-        var ballCellY = Math.floor(ball.ball_position.y/constants.cell_height);
-
-        // console.log("Ball:", ballCellX, ballCellY)
-        // console.log("Robot:", robotCellX, robotCellY)
-        if(ballCellX == robotCellX && ballCellY == robotCellY) {
-            if(robotList[ind].position.rotation == 90) {
-                dispatch(BallActions.ballKick(ball.ball_position.x + (block * constants.cell_width), ball.ball_position.y));
-            }
-            else if(robotList[ind].position.rotation == 270) {
-                dispatch(BallActions.ballKick(ball.ball_position.x - (block * constants.cell_width), ball.ball_position.y));
-            }
-            else if(robotList[ind].position.rotation == 180) {
-                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y + (block * constants.cell_height)));
-            }
-            else if(robotList[ind].position.rotation == 0) {
-                dispatch(BallActions.ballKick(ball.ball_position.x, ball.ball_position.y - (block * constants.cell_height)));
-            }
-        }
+    const ballKick = (block, ind) => {
+        dispatch(BallActions.ballKick(block,ind));
     };
 
     /**
-     * Helper-function to translate the turnRobot() function received from Blockly into dispatch
-     * @param deg
-     * @param ind
+     * Helper-function to translate the addRobotTargetRotation() function received from Blockly into dispatch
      */
-    const turnRobot = (deg, ind) => {
-        dispatch(RobotActions.turnRobot(robotList[ind].position.rotation + deg, ind));
+    const addRobotTargetRotation = (radians, ind) => {
+        dispatch(RobotActions.addTargetRotation(radians, ind));
     };
 
     /**
      * Helper-function to translate the moveForward() function received from Blockly into dispatch
-     * @param deg
-     * @param ind
      */
     const moveForward = (block, ind) => {
-        var robotCellX = Math.floor(robotList[ind].position.x/constants.cell_width);
-        var robotCellY = Math.floor(robotList[ind].position.y/constants.cell_height);
-        var ballCellX = Math.floor(ball.ball_position.x/constants.cell_width);
-        var ballCellY = Math.floor(ball.ball_position.y/constants.cell_height);
+        dispatch(RobotActions.walkForward(block,ind));
+        ballKick(1, 0);
 
-        // console.log("Ball:", ballCellX, ballCellY)
-        // console.log("Robot:", robotCellX, robotCellY)
-
-        if(robotList[ind].position.rotation == 90) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x + (block * constants.cell_width), robotList[ind].position.y, ind));
-        }
-        else if(robotList[ind].position.rotation == 270) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x - (block * constants.cell_width), robotList[ind].position.y, ind));
-        }
-        else if(robotList[ind].position.rotation == 180) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y + (block * constants.cell_height), ind));
-        }
-        else if(robotList[ind].position.rotation == 0) {
-            dispatch(RobotActions.moveRobot(robotList[ind].position.x, robotList[ind].position.y - (block * constants.cell_height), ind));
-        }
-        if(ballCellX == robotCellX && ballCellY == robotCellY) {
-            ballKick(1, 0);       
-        }
     };
 
     return {simpleWorkspace, generateCode}
