@@ -78,7 +78,7 @@ export function useBlockly() {
         }
     };
 
-    useInterval(interpret, 100);
+    useInterval(interpret, constants.step_execution_interval);
 
     function highlightBlock(workspace, id) {
         workspace.highlightBlock(id);
