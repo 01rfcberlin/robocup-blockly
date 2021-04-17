@@ -111,17 +111,13 @@ export function useBlockly() {
 
     /**
      * Helper-function to translate the addRobotTargetRotation() function received from Blockly into dispatch
-     * @param deg
-     * @param ind
      */
-    const addRobotTargetRotation = (deg, ind) => {
-        dispatch(RobotActions.addTargetRotation(deg, ind));
+    const addRobotTargetRotation = (radians, ind) => {
+        dispatch(RobotActions.addTargetRotation(radians, ind));
     };
 
     /**
      * Helper-function to translate the moveForward() function received from Blockly into dispatch
-     * @param deg
-     * @param ind
      */
     const moveForward = (block, ind) => {
         dispatch(RobotActions.walkForward(block,ind));

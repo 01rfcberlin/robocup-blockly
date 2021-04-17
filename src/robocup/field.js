@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import RobotActions from "./RobotActions";
 import BallActions from "./BallActions";
 import * as constants from "../constants.js";
+import * as angles from "./angles";
 
 /**
  * Handles drawing the background of the field as well as the robot(s)
@@ -141,7 +142,7 @@ export const RoboCupField = ({grid_properties}) => {
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
             drawRotatedImage(ctx,
               robot_img,
-              2*Math.PI/360 * element.position.rotation,
+              element.position.rotation,
               element.position.x+constants.robot_width/2,
               element.position.y-constants.robot_height/2,
               constants.robot_width,
@@ -176,8 +177,9 @@ export const RoboCupField = ({grid_properties}) => {
         robotListLeft.forEach((element, idx) => {
             if (!element.target) return;
 
+            // TODO: use "is_active" from redux here instead
             const reached_target_position = !element.target.x || (element.target.x == element.position.x && element.target.y == element.position.y);
-            const reached_target_rotation = element.target.rotation == element.position.rotation;
+            const reached_target_rotation = angles.angle_almost_equals(element.target.rotation, element.position.rotation);
 
             if (reached_target_position && reached_target_rotation) return;
 
@@ -217,13 +219,19 @@ export const RoboCupField = ({grid_properties}) => {
 
                 dispatch(RobotActions.setPosition(new_x, new_y, element.position.rotation, idx));
             }
-            if(!reached_target_rotation) {
-                if(element.target.rotation >= 0 && element.position.rotation >= 0) {
-                    dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.position.rotation + 5, idx));
-                }
-                else {
-                    dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.position.rotation - 5, idx));
-                }
+
+            if (!reached_target_rotation) {
+              const angle_delta = angles.degree_to_radians(5);
+              const direction = Math.sign(angles.angle_signed_smallest_difference(element.position.rotation, element.target.rotation));
+              const new_angle = element.position.rotation + direction * angle_delta;
+              const new_direction = Math.sign(angles.angle_signed_smallest_difference(new_angle, element.target.rotation));
+              const would_overshoot = direction != new_direction;
+
+              if (would_overshoot) {
+                dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.target.rotation, idx));
+              } else {
+                dispatch(RobotActions.setPosition(element.position.x, element.position.y, new_angle, idx));
+              }
             }
         });
 

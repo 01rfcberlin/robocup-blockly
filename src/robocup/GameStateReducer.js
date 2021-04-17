@@ -1,6 +1,7 @@
 import ActionName from "../helper/ActionName";
 import * as constants from "../constants.js";
 import RobotActions from "./RobotActions";
+import * as angles from "./angles";
 
 // map a position for the robot to the center of a grid
 const closest_cell_center = (x, y) => {
@@ -9,6 +10,7 @@ const closest_cell_center = (x, y) => {
     y: Math.floor(y / constants.cell_height)*constants.cell_height + constants.cell_height/2 - constants.robot_height,
   };
 };
+
 
 const initialState = {
   teamNameLeft: "01.RFC Berlin",
@@ -84,17 +86,13 @@ function GameStateReducer(state, action) {
       copy_robot_list2.splice(action.index, 1);
       const is_active = (current_robot.target.x && current_robot.target.x != action.position.x) ||
                         (current_robot.target.y && current_robot.target.y != action.position.y) ||
-                        (current_robot.target.rotation &&current_robot.target.rotation != action.position.rotation);
+                        (current_robot.target.rotation && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation));
+
       let new_rot = 0;
-      if (action.position.rotation)
-      {
-        new_rot = action.position.rotation;
+      if (action.position.rotation) {
+        new_rot = angles.normalize_angle(action.position.rotation);
       }
-      if (new_rot >= 360) {
-        new_rot = new_rot - 360;
-      } else if (new_rot <= -360) {
-        new_rot = new_rot + 360;
-      }
+
       return {
         ...state,
         robotListLeft: [
@@ -115,12 +113,11 @@ function GameStateReducer(state, action) {
       current_robot = {...state.robotListLeft[action.index]};
       const copy_robot_list3 = [...state.robotListLeft];
       copy_robot_list3.splice(action.index, 1);
-      let new_rotation = current_robot.position.rotation + action.relativeTarget.rotation;
-      if (new_rotation >= 360) {
-        new_rotation = new_rotation - 360;
-      } else if (new_rotation <= -360) {
-        new_rotation = new_rotation + 360;
-      }
+
+      const new_rotation = angles.normalize_angle(current_robot.position.rotation + action.relativeTarget.rotation);
+      console.log("AddTargetRotation", new_rotation, current_robot.position.rotation, action.relativeTarget.rotation,
+current_robot.position.rotation + action.relativeTarget.rotation);
+
       return {
         ...state,
         robotListLeft: [
@@ -137,16 +134,15 @@ function GameStateReducer(state, action) {
       };
     case ActionName.Robot.WalkForward:
       current_robot = {...state.robotListLeft[action.index]};
-      if(current_robot.position.rotation == 90) {
+      const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
+
+      if (gaze_direction == angles.gaze_directions.right) {
         return setRobotTarget(state, action.index, current_robot.position.x + (action.blocks * constants.cell_width), current_robot.position.y);
-      }
-      else if(current_robot.position.rotation == 270) {
+      } else if (gaze_direction == angles.gaze_directions.left) {
         return setRobotTarget(state, action.index, current_robot.position.x - (action.blocks * constants.cell_width), current_robot.position.y);
-      }
-      else if(current_robot.position.rotation == 180) {
+      } else if (gaze_direction == angles.gaze_directions.bottom) {
         return setRobotTarget(state, action.index, current_robot.position.x, current_robot.position.y + (action.blocks * constants.cell_height));
-      }
-      else if(current_robot.position.rotation == 0) {
+      } else if (gaze_direction == angles.gaze_directions.top) {
         return setRobotTarget(state, action.index, current_robot.position.x, current_robot.position.y - (action.blocks * constants.cell_height));
       }
     case ActionName.Robot.Reset:
@@ -176,19 +172,19 @@ function GameStateReducer(state, action) {
       let new_ball_x = state.ball.position.x;
       let new_ball_y = state.ball.position.y;
       if(ballCellX == robotCellX && ballCellY == robotCellY) {
-        if(current_robot.position.rotation == 90) {
-          new_ball_x = state.ball.position.x + (action.target.blocks * constants.cell_width);
-        }
-        else if(current_robot.position.rotation == 270) {
+        const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
+
+        if (gaze_direction == angles.gaze_directions.left) {
           new_ball_x = state.ball.position.x - (action.target.blocks * constants.cell_width);
-        }
-        else if(current_robot.position.rotation == 180) {
+        } else if (gaze_direction == angles.gaze_directions.right) {
+          new_ball_x = state.ball.position.x + (action.target.blocks * constants.cell_width);
+        } else if (gaze_direction == angles.gaze_directions.bottom) {
           new_ball_y = state.ball.position.y + (action.target.blocks * constants.cell_height);
-        }
-        else if(current_robot.position.rotation == 0) {
+        } else if (gaze_direction == angles.gaze_directions.top) {
           new_ball_y = state.ball.position.y - (action.target.blocks * constants.cell_height);
         }
       }
+
       return {
         ...state,
         ball: {

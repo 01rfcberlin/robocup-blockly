@@ -60,14 +60,13 @@ Blockly.JavaScript['robot_move'] = function(block) {
 };
 
 /**
- * Calls the addRobotTargetRotation(deg, ind) function
  * Calls the addRobotTargetRotation(90, ind) function
  * TODO: Robot index right now is hard-coded so it is always 0
  * @param block
  * @returns {string}
  */
 Blockly.JavaScript['turn_right'] = function(block) {
-    return 'addRobotTargetRotation(90, 0);';
+    return 'addRobotTargetRotation(Math.PI/2, 0);';
 };
 
 /**
@@ -77,7 +76,7 @@ Blockly.JavaScript['turn_right'] = function(block) {
  * @returns {string}
  */
 Blockly.JavaScript['turn_left'] = function(block) {
-    return 'addRobotTargetRotation(-90, 0);';
+    return 'addRobotTargetRotation(-Math.PI/2, 0);';
 };
 
 /**

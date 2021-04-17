@@ -13,12 +13,12 @@ const RobotActions = {
       }
     }
   },
-  addTargetRotation: (degree, ind) => {
+  addTargetRotation: (radians, ind) => {
     return {
       type: ActionName.Robot.AddTargetRotation,
       index: ind,
       relativeTarget: {
-        rotation: degree
+        rotation: radians
       }
     }
   },
