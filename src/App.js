@@ -49,7 +49,8 @@ const App = () => {
         return state.gameState;
     });
 
-    const [showAlert, setShowAlert] = useState(false);
+    const [showGoalAlert, setShowGoalAlert] = useState(false);
+    const [showOwnGoalAlert, setShowOwnGoalAlert] = useState(false);
 
 
     //Contains the individual tasks that the students can work through.
@@ -65,18 +66,30 @@ const App = () => {
     ];
 
     useEffect(() => {
-        if(!showAlert && goalsLeft > 0) {
-            setShowAlert(true);
+        if(!showGoalAlert && goalsLeft > 0) {
+            setShowGoalAlert(true);
         }
     },[goalsLeft]);
 
+    useEffect(() => {
+        if(!showOwnGoalAlert && goalsRight > 0) {
+            setShowOwnGoalAlert(true);
+        }
+    },[goalsRight]);
+
     return (
       <div className="App">
-          {showAlert &&
-              <Alert variant={'success'} onClose={() => setShowAlert(false)} dismissible>
+          {showGoalAlert &&
+              <Alert variant={'success'} onClose={() => setShowGoalAlert(false)} dismissible>
                   <Alert.Heading>Toooooor!</Alert.Heading>
                   <p>Sehr gut, du hast die Aufgabe gelöst. Jetzt kannst du weiter mit der nächsten Aufgabe machen.</p>
               </Alert>
+          }
+          {showOwnGoalAlert &&
+          <Alert variant={'warning'} onClose={() => setShowGoalAlert(false)} dismissible>
+              <Alert.Heading>Eigentor!</Alert.Heading>
+              <p>Um das Spiel zu gewinnen, solltest du lieber auf das andere Tor schießen :D</p>
+          </Alert>
           }
         <div className="tasks">
           <div className="task-text">Aufgabe:</div>
@@ -90,7 +103,7 @@ const App = () => {
               return (
                 <div key={key} className={className} onClick={() => {
                     dispatch(ApplicationActions.setTask(i));
-                    setShowAlert(false);
+                    setShowGoalAlert(false);
                 }}>
                   {i+1}
                 </div>
