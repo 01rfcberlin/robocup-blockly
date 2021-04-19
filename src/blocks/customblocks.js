@@ -97,7 +97,7 @@ Blockly.Blocks['robot_move'] = {
   init: function() {
     this.jsonInit({
       "message0": 'Ball schießen',
-      "colour": 160,
+      "colour": "#A400AC",
       "previousStatement": null,
       "nextStatement": null,
       "tooltip": "Schießt den Ball 3 Felder vorwärts",
@@ -113,7 +113,7 @@ Blockly.Blocks['move_one_block_ahead'] = {
   init: function() {
     this.jsonInit({
       "message0": 'Gehe einen Schritt vor',
-      "colour": 160,
+      "colour": "#A400AC",
       "previousStatement": null,
       "nextStatement": null,
       "tooltip": "Der Roboter läuft einen Schritt geradeaus (also in die Richtung, in die er schaut).",
@@ -129,7 +129,7 @@ Blockly.Blocks['turn_right'] = {
   init: function() {
     this.jsonInit({
       "message0": 'Drehe nach rechts',
-      "colour": 160,
+      "colour": "#A400AC",
       "previousStatement": null,
       "nextStatement": null,
       "tooltip": "Der Roboter dreht sich nach rechts.",
@@ -145,7 +145,7 @@ Blockly.Blocks['turn_left'] = {
   init: function() {
     this.jsonInit({
       "message0": 'Drehe nach links',
-      "colour": 160,
+      "colour": "#A400AC",
       "previousStatement": null,
       "nextStatement": null,
       "tooltip": "Der Roboter dreht sich nach links.",
@@ -161,7 +161,7 @@ Blockly.Blocks['turn_left'] = {
     init: function() {
       this.jsonInit({
         "message0": 'Start:',
-        "colour": 900,
+        "colour": "#79B473",
         "nextStatement": null,
         "tooltip": "Start Block",
       });
@@ -190,7 +190,7 @@ Blockly.Blocks['repeat'] = {
         "type": "input_statement",
         "name": "do"
       }],
-      "colour": 160,
+      "colour": "#41658A",
       "previousStatement": null,
       "nextStatement": null,
       "tooltip": "Mit diesem Block kannst du dafür sorgen, dass der Roboter eine Aktion genau so oft ausführt, wie du oben im Block einträgst",
@@ -216,7 +216,7 @@ Blockly.Blocks['repeat_until'] = {
         "type": "input_statement",
         "name": "do"
       }],
-      "colour": 160,
+      "colour": "#41658A",
       "previousStatement": null,
       "nextStatement": null,
       "tooltip": "Mit diesem Block kannst du dafür sorgen, dass der Roboter eine Aktion genau so oft ausführt, bis eine bestimmte Bedingung erfüllt ist",
@@ -234,7 +234,7 @@ Blockly.Blocks['next_to_ball'] = {
       "message0": 'Roboter am Ball',
       "output": null,
       "type": Boolean,
-      "colour": 160,
+      "colour": "#B1B7BC",
       "tooltip": "Dieser Block sagt euch, ob der Roboter den Ball bereits erreicht hat",
     });
   }
