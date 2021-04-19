@@ -112,9 +112,9 @@ function GameStateReducer(state, action) {
       current_robot = {...state.robotListLeft[action.index]};
       const copy_robot_list2 = [...state.robotListLeft];
       copy_robot_list2.splice(action.index, 1);
-      const is_active = (current_robot.target.x && current_robot.target.x != action.position.x) ||
-                        (current_robot.target.y && current_robot.target.y != action.position.y) ||
-                        (current_robot.target.rotation && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation));
+      const is_active = (current_robot.target && current_robot.target.x && current_robot.target.x != action.position.x) ||
+                        (current_robot.target && current_robot.target.y && current_robot.target.y != action.position.y) ||
+                        (current_robot.target && current_robot.target.rotation && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation));
 
       let new_rot = 0;
       if (action.position.rotation) {
