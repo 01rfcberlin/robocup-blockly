@@ -55,10 +55,10 @@ const setRobotTarget = (state, index, x, y) => {
 };
 
 const isBallKickable = (state, current_robot) => {
-  const robotCellX = Math.floor(current_robot.position.x/constants.cell_width);
-  const robotCellY = Math.floor(current_robot.position.y/constants.cell_height);
-  const ballCellX = Math.floor(state.ball.position.x/constants.cell_width);
-  const ballCellY = Math.floor(state.ball.position.y/constants.cell_height);
+  const robotCellX = Math.round(current_robot.position.x/constants.cell_width);
+  const robotCellY = Math.round(current_robot.position.y/constants.cell_height);
+  const ballCellX = Math.round(state.ball.position.x/constants.cell_width);
+  const ballCellY = Math.round(state.ball.position.y/constants.cell_height);
 
   let ball_in_range = false;
   if(ballCellX == robotCellX && ballCellY == robotCellY) {

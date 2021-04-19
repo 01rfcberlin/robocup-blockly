@@ -154,7 +154,7 @@ export function useBlockly() {
     const ballInRange = () => {
         const ball_out_of_range = !robotListLeft[0].isBallKickable;
 
-        console.log("Ball in Range? " + ball_out_of_range);
+        console.log("Ball in Range? " + !ball_out_of_range);
         return ball_out_of_range;
     };
 
