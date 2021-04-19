@@ -19,7 +19,7 @@ import ExecuteResetButton from "../helper/ExecuteResetButton";
  * @returns {*}
  * @constructor
  */
-const Walk = ({task_properties}) => {
+const WalkAndRepeatUntil = ({task_properties}) => {
 
     const blockly = useBlockly();
 
@@ -41,7 +41,7 @@ const Walk = ({task_properties}) => {
         dispatch(BallActions.setPosition(task_properties.ball.position.x,task_properties.ball.position.y));
     };
 
-    useEffect(reset, []);
+    useEffect(reset, [task_properties]);
 
     return(
         <div>
@@ -69,4 +69,4 @@ const Walk = ({task_properties}) => {
 
 };
 
-export default Walk
+export default WalkAndRepeatUntil

@@ -40,7 +40,7 @@ const Walk = ({task_properties}) => {
         dispatch(BallActions.setPosition(task_properties.ball.position.x,task_properties.ball.position.y));
     };
 
-    useEffect(reset, []);
+    useEffect(reset, [task_properties]);
 
     useEffect(() => {
         let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('start_block');
