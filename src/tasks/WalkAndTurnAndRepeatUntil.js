@@ -28,13 +28,19 @@ const Walk = ({task_properties}) => {
     const [currentNumberBlocks, setCurrentNumberBlocks] = useState(0);
 
     // Initialize the robot position on the field for the given task
-    const reset = () => {
+    const init = () => {
         blockly.setInterpreterIsActive(false);
         blockly.simpleWorkspace.current.workspace.clear();
         let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('start_block');
         parentBlock.initSvg();
         parentBlock.render();
         parentBlock.moveBy(20,20)
+        reset();
+    };
+
+    // Resets the robot position on the field to the original position
+    const reset = () => {
+        blockly.setInterpreterIsActive(false);
         dispatch(RobotActions.reset());
         dispatch(RobotActions.addRobot(
           task_properties.own_robot.position.x,
@@ -42,17 +48,11 @@ const Walk = ({task_properties}) => {
           task_properties.own_robot.position.rotation * 2*Math.PI/360,
             "left"
         ));
-        dispatch(RobotActions.addRobot(
-            task_properties.opponent_robot.position.x,
-            task_properties.opponent_robot.position.y,
-            task_properties.opponent_robot.position.rotation * 2*Math.PI/360,
-            "right"
-        ));
         dispatch(BallActions.setPosition(task_properties.ball.position.x,task_properties.ball.position.y));
     };
 
     useEffect(() => {
-        reset();
+        init();
     }, [task_properties]);
 
     return(
