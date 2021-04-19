@@ -30,6 +30,7 @@ const Kick = ({task_properties}) => {
     // Initialize the robot position on the field for the given task
     const reset = () => {
         blockly.setInterpreterIsActive(false);
+        blockly.simpleWorkspace.current.workspace.clear();
         dispatch(RobotActions.reset());
         dispatch(RobotActions.addRobot(
           task_properties.own_robot.position.x,
