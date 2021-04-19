@@ -219,12 +219,12 @@ current_robot.position.rotation + action.relativeTarget.rotation);
 
       if(ballPos.x >= constants.num_x_cells-1 && goalCellsY.includes(ballPos.y)) {
         console.log("TOOR Home Team")
-        // TODO: add goal for Hometeam or succes windows or whatever
+        state.goalsLeft += 1;
       }
 
       if(ballPos.x <= 0 && goalCellsY.includes(ballPos.y)) {
         console.log("TOOR Away Team")
-        // TODO: add goal for Hometeam or succes windows or whatever
+        state.goalsRight += 1;
       }
 
       return {

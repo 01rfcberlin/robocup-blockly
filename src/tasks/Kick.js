@@ -48,8 +48,6 @@ const Kick = ({task_properties}) => {
         parentBlock.moveBy(20,20)
     }, []);
 
-
-
     return(
         <div>
             <div>

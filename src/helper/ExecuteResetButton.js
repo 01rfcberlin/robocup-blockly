@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { Button } from 'reactstrap';
 
 export default function ExecuteResetButton(props) {
   const [showing_execute_button, set_showing_execute_button] = useState(true);
@@ -12,7 +13,7 @@ export default function ExecuteResetButton(props) {
 
   return (
     <React.Fragment>
-      <button onClick={() => {
+      <Button onClick={() => {
         if (showing_execute_button) {
           set_showing_execute_button(false);
           props.execute();
@@ -20,7 +21,7 @@ export default function ExecuteResetButton(props) {
           set_showing_execute_button(true);
           props.reset();
         }
-      }}>{text}</button>
+      }}>{text}</Button>
     </React.Fragment>
   );
 }

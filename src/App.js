@@ -21,7 +21,7 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 
 import './blocks/customblocks';
@@ -35,6 +35,7 @@ import Task from "./tasks/task.json";
 import WalkAndRepeat from "./tasks/WalkAndRepeat";
 import WalkAndRepeatUntil from "./tasks/WalkAndRepeatUntil";
 import WalkAndTurnAndRepeatUntil from "./tasks/WalkAndTurnAndRepeatUntil";
+import Alert from 'react-bootstrap/Alert'
 
 const App = () => {
 
@@ -43,6 +44,12 @@ const App = () => {
     const { currentTask } = useSelector(state => {
         return state.application;
     });
+
+    const { goalsLeft, goalsRight } = useSelector(state => {
+        return state.gameState;
+    });
+
+    const [showAlert, setShowAlert] = useState(false);
 
 
     //Contains the individual tasks that the students can work through.
@@ -57,8 +64,20 @@ const App = () => {
         <WalkAndTurnAndRepeatUntil task_properties={Task.tasks.task8}/>,
     ];
 
+    useEffect(() => {
+        if(!showAlert && goalsLeft > 0) {
+            setShowAlert(true);
+        }
+    },[goalsLeft]);
+
     return (
       <div className="App">
+          {showAlert &&
+              <Alert variant={'success'} onClose={() => setShowAlert(false)} dismissible>
+                  <Alert.Heading>Toooooor!</Alert.Heading>
+                  <p>Sehr gut, du hast die Aufgabe gelöst. Jetzt kannst du weiter mit der nächsten Aufgabe machen.</p>
+              </Alert>
+          }
         <div className="tasks">
           <div className="task-text">Aufgabe:</div>
           {
@@ -69,7 +88,10 @@ const App = () => {
               }
               const key = "task-" + i;
               return (
-                <div key={key} className={className} onClick={() => {dispatch(ApplicationActions.setTask(i))}}>
+                <div key={key} className={className} onClick={() => {
+                    dispatch(ApplicationActions.setTask(i));
+                    setShowAlert(false);
+                }}>
                   {i+1}
                 </div>
               )
