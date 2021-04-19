@@ -29,6 +29,7 @@ const Walk = ({task_properties}) => {
 
     // Initialize the robot position on the field for the given task
     const reset = () => {
+        blockly.setInterpreterIsActive(false);
         dispatch(RobotActions.reset());
         dispatch(RobotActions.addRobot(
           task_properties.own_robot.position.x,

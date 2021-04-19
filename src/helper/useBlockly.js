@@ -28,6 +28,8 @@ export function useBlockly() {
 
     const [workspaceCodeInterpreter, setWorkspaceCodeInterpreter] = useState();
 
+    const [interpreterIsActive, setInterpreterIsActive] = useState(false);
+
     /**
      * Blockly-method to generate the code from the current workspace, print it to console (just for debugging)
      * and then executing the code.
@@ -62,7 +64,7 @@ export function useBlockly() {
         console.log(code);
         const myInterpreter = new Interpreter(code, initApi);
         setWorkspaceCodeInterpreter(myInterpreter);
-
+        setInterpreterIsActive(true);
     };
 
     const interpret = () => {
@@ -80,6 +82,13 @@ export function useBlockly() {
     };
 
     useInterval(interpret, constants.step_execution_interval);
+
+    useEffect(() => {
+        console.log("Received a reset")
+        if(workspaceCodeInterpreter && !interpreterIsActive) {
+            setWorkspaceCodeInterpreter(null);
+        }
+    }, [interpreterIsActive])
 
     function highlightBlock(workspace, id) {
         workspace.highlightBlock(id);
@@ -149,5 +158,5 @@ export function useBlockly() {
         return ball_out_of_range;
     };
 
-    return {simpleWorkspace, generateCode}
+    return {simpleWorkspace, generateCode, setInterpreterIsActive}
 }
