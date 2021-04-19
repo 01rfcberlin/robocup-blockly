@@ -48,6 +48,12 @@ const Walk = ({task_properties}) => {
           task_properties.own_robot.position.rotation * 2*Math.PI/360,
             "left"
         ));
+        dispatch(RobotActions.addRobot(
+            task_properties.opponent_robot.position.x,
+            task_properties.opponent_robot.position.y,
+            task_properties.opponent_robot.position.rotation * 2*Math.PI/360,
+            "right"
+        ));
         dispatch(BallActions.setPosition(task_properties.ball.position.x,task_properties.ball.position.y));
     };
 
