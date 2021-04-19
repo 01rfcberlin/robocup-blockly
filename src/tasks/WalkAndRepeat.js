@@ -32,6 +32,10 @@ const WalkAndRepeat = ({task_properties}) => {
     const reset = () => {
         blockly.setInterpreterIsActive(false);
         blockly.simpleWorkspace.current.workspace.clear();
+        let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('start_block');
+        parentBlock.initSvg();
+        parentBlock.render();
+        parentBlock.moveBy(20,20)
         dispatch(RobotActions.reset());
         dispatch(RobotActions.addRobot(
           task_properties.own_robot.position.x,
@@ -44,10 +48,6 @@ const WalkAndRepeat = ({task_properties}) => {
 
     useEffect(() => {
         reset();
-        let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('start_block');
-        parentBlock.initSvg();
-        parentBlock.render();
-        parentBlock.moveBy(20,20)
     }, [task_properties]);
 
     return(
