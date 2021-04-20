@@ -45,12 +45,13 @@ const App = () => {
         return state.application;
     });
 
-    const { goalsLeft, goalsRight } = useSelector(state => {
+    const { goalsLeft, goalsRight, outOfBound } = useSelector(state => {
         return state.gameState;
     });
 
     const [showGoalAlert, setShowGoalAlert] = useState(false);
     const [showOwnGoalAlert, setShowOwnGoalAlert] = useState(false);
+    const [showOutofBoundAlert, setShowOutofBoundAlert] = useState(false);
 
 
     //Contains the individual tasks that the students can work through.
@@ -77,6 +78,12 @@ const App = () => {
         }
     },[goalsRight]);
 
+    useEffect(() => {
+        if(!showOutofBoundAlert && outOfBound == true) {
+            setShowOutofBoundAlert(true);
+        }
+    },[outOfBound]);
+
     return (
       <div className="App">
           {showGoalAlert &&
@@ -89,6 +96,12 @@ const App = () => {
           <Alert variant={'warning'} onClose={() => setShowGoalAlert(false)} dismissible>
               <Alert.Heading>Eigentor!</Alert.Heading>
               <p>Um das Spiel zu gewinnen, solltest du lieber auf das andere Tor schießen :D</p>
+          </Alert>
+          }
+          {showOutofBoundAlert &&
+          <Alert variant={'warning'} onClose={() => setShowOutofBoundAlert(false)} dismissible>
+              <Alert.Heading>Roboter hat das Spielfeld verlassen!</Alert.Heading>
+              <p>Du soltest lieber mit deinem Roboter im Spielfeld bleiben :D</p>
           </Alert>
           }
         <div className="tasks">
@@ -104,6 +117,7 @@ const App = () => {
                 <div key={key} className={className} onClick={() => {
                     dispatch(ApplicationActions.setTask(i));
                     setShowGoalAlert(false);
+                    setShowOutofBoundAlert(false);
                 }}>
                   {i+1}
                 </div>

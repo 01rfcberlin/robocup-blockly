@@ -35,7 +35,8 @@ const initialState = {
   // depending on this.
   ball: {},
   goalsLeft: 0,
-  goalsRight: 0
+  goalsRight: 0,
+  outOfBound: false
 };
 
 const setRobotTarget = (state, index, x, y) => {
@@ -44,6 +45,17 @@ const setRobotTarget = (state, index, x, y) => {
   //console.log("Robot.SetTargetPosition: Current robot: " + current_robot)
   const copy_robot_list = [...state.robotListLeft];
   copy_robot_list.splice(index, 1);
+
+  // Check if robot moves to a cell out of the field
+  if(
+      getGridCell({x, y}).x >= 10 ||
+      getGridCell({x, y}).x <= 0 ||
+      getGridCell({x, y}).y <= 0 ||
+      getGridCell({x, y}).y >= 8
+  ) {
+    state.outOfBound = true;
+  }
+
   return {
     ...state,
     robotListLeft: [
@@ -184,7 +196,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         return setRobotTarget(state, action.index, current_robot.position.x, current_robot.position.y + (action.blocks * constants.cell_height));
       } else if (gaze_direction == angles.gaze_directions.top) {
         return setRobotTarget(state, action.index, current_robot.position.x, current_robot.position.y - (action.blocks * constants.cell_height));
-      }
+      };
+
     case ActionName.Robot.Reset:
       return initialState;
     case ActionName.Ball.SetTargetPosition:
@@ -232,12 +245,12 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       const ballPos = getGridCell({x: new_ball_x, y: new_ball_y});
 
       if(ballPos.x >= constants.num_x_cells-1 && goalCellsY.includes(ballPos.y)) {
-        console.log("TOOR Home Team")
+        // console.log("TOOR Home Team")
         state.goalsLeft += 1;
       }
 
       if(ballPos.x <= 0 && goalCellsY.includes(ballPos.y)) {
-        console.log("TOOR Away Team")
+        // console.log("TOOR Away Team")
         state.goalsRight += 1;
       }
 

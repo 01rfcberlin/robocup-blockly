@@ -32,6 +32,9 @@ const draw_all_interval = 20;
 // how many pixels the robot should move per second
 const robot_movement_per_second = 50;
 
+// how many pixels the ball should move per second
+const ball_movement_per_second = 50;
+
 // how many radians the robot should rotate per second. an absolute value.
 const robot_rotation_speed = Math.PI * 1.1;
 
@@ -40,4 +43,6 @@ const calls_to_draw_all_per_second = 1000 / draw_all_interval;
 const robot_movement_per_draw_all = robot_movement_per_second / calls_to_draw_all_per_second;
 const robot_rotation_per_draw_all = robot_rotation_speed / calls_to_draw_all_per_second;
 
-export { canvas_width, canvas_height, num_x_cells, num_y_cells, cell_width, cell_height, robot_width, robot_height, ball_width, ball_height, draw_all_interval, robot_movement_per_draw_all, robot_rotation_per_draw_all, step_execution_interval };
+const ball_movement_per_draw_all = ball_movement_per_second / calls_to_draw_all_per_second;
+
+export { canvas_width, canvas_height, num_x_cells, num_y_cells, cell_width, cell_height, robot_width, robot_height, ball_width, ball_height, draw_all_interval, robot_movement_per_draw_all, robot_rotation_per_draw_all, ball_movement_per_draw_all,step_execution_interval };
