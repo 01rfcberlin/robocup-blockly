@@ -100,7 +100,7 @@ Blockly.Blocks['robot_move'] = {
       "colour": "#A400AC",
       "previousStatement": null,
       "nextStatement": null,
-      "tooltip": "Schießt den Ball 3 Felder vorwärts",
+      "tooltip": "Der Roboter schießt den Ball 3 Felder vorwärts",
     });
   }
 };

@@ -29,6 +29,9 @@ const Walk = ({task_properties}) => {
 
     const [currentNumberBlocks, setCurrentNumberBlocks] = useState(0);
 
+    const [showTip, setShowTip] = useState(false);
+
+
     // Initialize the robot position on the field for the given task
     const init = () => {
         blockly.setInterpreterIsActive(false);
@@ -61,6 +64,22 @@ const Walk = ({task_properties}) => {
         dispatch(BallActions.setPosition(task_properties.ball.position.x,task_properties.ball.position.y));
     };
 
+    const toggleTip = () => {
+        setShowTip(!showTip);
+    };
+
+    const taskBody = () => {
+        return task_properties.task.body.map(element => {
+            return <p> {element} </p>
+        })
+    };
+
+    const taskTip = () => {
+        return task_properties.task.tip.map(element => {
+            return <p> {element} </p>
+        })
+    };
+
     useEffect(() => {
         init();
     }, [task_properties]);
@@ -78,7 +97,17 @@ const Walk = ({task_properties}) => {
                             <Col xs={1}/>
                             <Col xs={10}>
                                 <h3>{task_properties.task.heading}</h3>
-                                <p style={{marginTop: "10px"}}>{task_properties.task.body}</p>
+                                <p style={{marginTop: "10px"}}>{taskBody()}</p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={8}>
+                                {
+                                    showTip && <p>{taskTip()}</p>
+                                }
+                            </Col>
+                            <Col xs={4}>
+                                <img height={"100px"} src={"/bueroklammer.jpg"} onClick={() => {toggleTip()}}></img>
                             </Col>
                         </Row>
                     </Col>
