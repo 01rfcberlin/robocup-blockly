@@ -7,6 +7,7 @@ import {useDispatch} from "react-redux";
 import BallActions from "../robocup/BallActions";
 import ExecuteResetButton from "../helper/ExecuteResetButton";
 import Blockly from 'blockly/core';
+import {Col, Row} from "reactstrap";
 
 /**
  * TASK
@@ -65,32 +66,55 @@ const Walk = ({task_properties}) => {
     }, [task_properties]);
 
     return(
-        <div>
-            <div>
-                <RoboCupField/>
-            </div>
-            <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
-            Optimale Anzahl Blöcke: {currentNumberBlocks}/{task_properties.optimal_blocks}
-
-            <BlocklyComponent ref={blockly.simpleWorkspace}
-                              readOnly={false} trashcan={true}
-                              move={{
-                                  scrollbars: true,
-                                  drag: true,
-                                  wheel: true
-                              }}>
-                <Block type="move_one_block_ahead"/>
-                <Block type="ball_kick"/>
-                <Block type="turn_left"/>
-                <Block type="turn_right"/>
-                <Block type="repeat"/>
-                <Block type="repeat_until"/>
-                <Block type="next_to_ball"/>
-            </BlocklyComponent>
-        </div>
+        <Row style={{minHeight: "90vh"}}>
+            <Col xs={1}/>
+            <Col xs={10}>
+                <Row>
+                    <Col xs={4}>
+                        <Row>
+                            <RoboCupField/>
+                        </Row>
+                        <Row style={{marginTop: "20px"}}>
+                            <Col xs={1}/>
+                            <Col xs={10}>
+                                <h3>{task_properties.task.heading}</h3>
+                                <p style={{marginTop: "10px"}}>{task_properties.task.body}</p>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col xs={1}/>
+                    <Col xs={7}>
+                        <Row style={{height: "80vh"}}>
+                            <BlocklyComponent ref={blockly.simpleWorkspace}
+                                              readOnly={false} trashcan={true}
+                                              move={{
+                                                  scrollbars: true,
+                                                  drag: true,
+                                                  wheel: true
+                                              }}>
+                                <Block type="ball_kick"/>
+                                <Block type="move_one_block_ahead"/>
+                                <Block type="turn_right"/>
+                                <Block type="turn_left"/>
+                                <Block type="repeat"/>
+                                <Block type="repeat_until"/>
+                                <Block type="next_to_ball"/>
+                            </BlocklyComponent>
+                        </Row>
+                        <Row>
+                            <Col xs={2}>
+                                <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
+                            </Col>
+                            <Col xs={1}/>
+                            <Col xs={5}>
+                                <h4><b>Optimale Anzahl Blöcke: {currentNumberBlocks}/{task_properties.optimal_blocks}</b></h4>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
     )
-
-
 };
 
 export default Walk

@@ -14,6 +14,11 @@
                     "x": 470,
                     "y": 220
                 }
+            },
+            "task": {
+                "heading": "Die erste Challenge: Dein Roboter möchte ein Tor schießen! ",
+                "body": "Unten steht der Bereich, wo du Programmcode für deinen Roboter bauen kannst. Dafür ziehst du Code-Blöcke von links unter den „Start“- Block. Wenn du auf „Code ausführen“ klickst, kannst du dein Programm testen. Du löschst einen Code-Block, wenn du ihn in den Mülleimer verschiebst. Jetzt aber zur Aufgabe: Dein Roboter möchte ein Tor schießen. Kannst du deinem Roboter helfen?",
+                "tip": "Gib deinem Roboter mit einem Code-Block die Anweisung ein Tor zu schießen."
             }
         },
         "task2": {
@@ -30,6 +35,11 @@
                     "x": 470,
                     "y": 220
                 }
+            },
+            "task": {
+                "heading": "Die ersten Schritte mit deinem Roboter",
+                "body": "Jetzt möchte dein Roboter erst einmal zum Ball laufen. Dein Roboter kann ein Tor schießen, wenn er direkt vor dem Bald steht. Wie viele Felder muss der Roboter dafür nach vorne gehen? Ein Schritt entspricht dabei einem Feld. Kannst du deinem Roboter helfen?",
+                "tip": "Gib deinem Roboter die Anweisung zum Ball zu laufen und lasse deinen Roboter ein Tor schießen. <br><br>Wie viele Felder muss der Roboter nach vorne gehen um direkt vor dem Ball zu stehen? Du kannst den gleichen Block auch mehrmals untereinander setzen."
             }
         },
         "task3": {
@@ -46,6 +56,11 @@
                     "x": 470,
                     "y": 220
                 }
+            },
+            "task": {
+                "heading": "Links rum, rechts rum?",
+                "body": "Dein Roboter steht jetzt ja gar nicht mehr vor dem Ball! Hilf deinem Roboter in die richtige Position für einen Torschuss zu kommen und lasse ihn ein Tor schießen. Gib deinen Roboter die Anweisung sich auf einer Linie mit dem Ball zu positionieren. Nun muss dein Roboter sich in die richtige Richtung drehen und auf den Ball zulaufen.",
+                "tip": "Du kannst deinen Code auch ausprobieren und ihn nachträglich anpassen. Mit ein bisschen probieren, kriegst du es sicher hin!"
             }
         },
         "task4": {
@@ -62,6 +77,11 @@
                     "x": 470,
                     "y": 220
                 }
+            },
+            "task": {
+                "heading": "Der lange Weg",
+                "body": "Dein Roboter steht weit entfernt vom Ball. Da muss er wohl einige Schritte laufen, um ein Tor schießen zu können. Das ist ja ganz schön anstrengend so viele Code-Blöcke zu setzen...",
+                "tip": "Lass den Roboter die richtige Anzahl an Schritten zurücklegen und schieße ein Tor."
             }
         },
         "task5": {
@@ -78,6 +98,11 @@
                     "x": 470,
                     "y": 220
                 }
+            },
+            "task": {
+                "heading": "Der lange Weg - in kurz",
+                "body": "Jetzt versuchen wir die gleiche Aufgabe mit einem anderen Code-Block zu vereinfachen. Du kannst im Code-Block \"Wiederhole X mal\" angeben, wie oft der darin steckende Code-Block ausgeführt werden soll. Lass den Roboter die richtige Anzahl an Schritten zurücklegen und schieße ein Tor.",
+                "tip": "Statt ganz oft einen Schritt hintereinander zu gehen, kann der Roboter das Schritte gehen auch wiederholen."
             }
         },
         "task6": {
@@ -94,6 +119,11 @@
                     "x": 300,
                     "y": 218
                 }
+            },
+            "task": {
+                "heading": "Wiederhole die Wiederholung",
+                "body": "In dieser Challenge liegt der Ball mitten auf dem Spielfeld. Dein Roboter kann den Ball, wenn er direkt davor steht, auch kicken. Ein Schuss bewegt den Ball um drei Felder nach vorne. Schaffst du es deinem Roboter mit vier Blöcken einen Torschuss machen zu lassen?",
+                "tip": "Vielleicht gibt dir der Name der Challenge einen Hinweis, wie du die Aufgabe mit vier Blöcken lösen kannst?\n\n"
             }
         },
         "task7": {
@@ -110,6 +140,11 @@
                     "x": 470,
                     "y": 220
                 }
+            },
+            "task": {
+                "heading": "Der Weg zum Ball ist das Ziel?",
+                "body": "Statt die Anzahl der Wiederholungen anzugeben, kannst du deinem Roboter auch sagen, dass er eine Aktion so lange ausführen soll bis ein bestimmter Zustand erreicht ist.<br>In dem Code-Block \"Wiederhole solange bis: X. Aktion: X\" kannst du bestimmen, was dein Roboter solange machen soll, bis er einen Zustand erreicht hat.<br>Was würdest du deinem Roboter jetzt also für eine Anweisung geben?",
+                "tip": "Die Form der Code-Blöcke liefert dir Hinweise, welche Teile zusammengesteckt werden können und welche nicht.<br>Beim Programmieren bestimmt man den Zustand zuerst und dann die Aktion. \"Wiederhole so lange X bis X\""
             }
         },
         "task8": {
@@ -133,6 +168,11 @@
                     "x": 130,
                     "y": 270
                 }
+            },
+            "task": {
+                "heading": "Die letzte Aufgabe",
+                "body": "In dieser Aufgabe kommt alles zusammen. Sich drehen, ein Hindernis umgehen. Diese Aufgabe ist zum kniffeln. Welche Anweisung soll hier gegeben werden?",
+                "tip": "Du kannst dich auch langsam an eine Lösung annähern, in dem du Stück für Stück Code hinzufügst"
             }
         }
     }
