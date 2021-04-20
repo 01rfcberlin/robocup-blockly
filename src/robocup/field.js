@@ -182,24 +182,23 @@ export const RoboCupField = ({grid_properties}) => {
      * but not reached) and handles the update.
      */
     const draw_all = () => {
+        // TODO This should have NEVER happened if we used React correctly :/
         if (canvasRef.current === null) return;
 
         robotListLeft.forEach((element, idx) => {
+            // The following code is about reaching the target. But if there is
+            // not target, this code should be skipped.
             if (!element.target) return;
 
-            // TODO: use "is_active" from redux here instead
-            const reached_target_position = !element.target.x || (element.target.x == element.position.x && element.target.y == element.position.y);
-            const reached_target_rotation = angles.angle_almost_equals(element.target.rotation, element.position.rotation);
+            // If we reached the final state, there is no need to move the robot.
+            if (!element.isActive) return;
 
-            if (reached_target_position && reached_target_rotation) return;
-
-            if(!reached_target_position) {
+            if (element.isActiveDueToMoving) {
                 // Assumption: We either move left/right or top/bottom. We never move
                 // in both directions at the same time. Or put differently,
                 // element.target and element.position only differ in at most one
                 // component.
                 console.assert(element.target.x == element.position.x || element.target.y == element.position.y);
-
 
                 const delta_x = element.target.x - element.position.x;
                 const delta_y = element.target.y - element.position.y;
@@ -229,7 +228,7 @@ export const RoboCupField = ({grid_properties}) => {
                 dispatch(RobotActions.setPosition(new_x, new_y, element.position.rotation, idx));
             }
 
-            if (!reached_target_rotation) {
+            if (element.isActiveDueToRotating) {
               const direction = Math.sign(angles.angle_signed_smallest_difference(element.position.rotation, element.target.rotation));
               const new_angle = element.position.rotation + direction * constants.robot_rotation_per_draw_all;
               const new_direction = Math.sign(angles.angle_signed_smallest_difference(new_angle, element.target.rotation));
@@ -262,6 +261,7 @@ export const RoboCupField = ({grid_properties}) => {
     /**
      * This re-draws the elements on the canvas every 200 ms
      */
+    // TODO: I think this should be a useEffect on the Redux state and not useInterval!
     useInterval(() => draw_all(), constants.draw_all_interval);
 
     return <canvas ref={canvasRef} width={constants.canvas_width} height={constants.canvas_height} key={"robocupfield"}/>

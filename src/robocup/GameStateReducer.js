@@ -3,20 +3,27 @@ import * as constants from "../constants.js";
 import RobotActions from "./RobotActions";
 import * as angles from "./angles";
 
-// map a position for the robot to the center of a grid
-const closest_cell_center = (x, y) => {
+function getGridCell(pos) {
   return {
-    x: Math.floor(x / constants.cell_width)*constants.cell_width + constants.cell_width/2 - constants.robot_width,
-    y: Math.floor(y / constants.cell_height)*constants.cell_height + constants.cell_height/2 - constants.robot_height,
+    x: Math.floor(pos.x / constants.cell_width),
+    y: Math.floor(pos.y / constants.cell_height),
   };
-};
+}
 
-const getGridCell = (x, y) => {
-    return {
-      x: Math.floor(x / constants.cell_width),
-      y: Math.floor(y / constants.cell_height),
-    };
+// map a position for the robot to the center of a grid
+function getGridCellRobotCenter(pos) {
+  const cell = getGridCell(pos);
+  return {
+    x: cell.x*constants.cell_width + constants.cell_width/2 - constants.robot_width,
+    y: cell.y*constants.cell_height + constants.cell_height/2 - constants.robot_height,
   };
+}
+
+function ballKickable(ballPos, robotPos) {
+  const robotCell = getGridCell(robotPos);
+  const ballCell = getGridCell(ballPos);
+  return ballCell.x == robotCell.x && ballCell.y == robotCell.y;
+};
 
 const initialState = {
   teamNameLeft: "01.RFC Berlin",
@@ -48,23 +55,17 @@ const setRobotTarget = (state, index, x, y) => {
           x: x,
           y: y
         },
-        isActive: true
+        // "is active" means if the robot is moving (either rotating or
+        // changing its position). Originally isActive was called
+        // reachedTargetPosition and reachedTargetRotation which (but only
+        // negated) which emphasizes that "is active" is only about whether the
+        // robot reached its target position or not.
+        isActive: true,
+        isActiveDueToMoving: true,
+        // don't overwrite isActiveDueToRotating here. keep the current value
       }
     ]
   };
-};
-
-const isBallKickable = (state, current_robot) => {
-  const robotCellX = Math.floor(current_robot.position.x/constants.cell_width);
-  const robotCellY = Math.floor(current_robot.position.y/constants.cell_height);
-  const ballCellX = Math.floor(state.ball.position.x/constants.cell_width);
-  const ballCellY = Math.floor(state.ball.position.y/constants.cell_height);
-
-  let ball_in_range = false;
-  if(ballCellX == robotCellX && ballCellY == robotCellY) {
-    ball_in_range = true;
-  }
-  return ball_in_range;
 };
 
 /**
@@ -87,11 +88,13 @@ function GameStateReducer(state, action) {
   switch (action.type) {
     case ActionName.Robot.AddRobot:
       //Handles adding a new robot to the field
-      const pos = closest_cell_center(action.robot.position.x, action.robot.position.y);
+      const pos = getGridCellRobotCenter(action.robot.position);
       action.robot.position.x = pos.x;
       action.robot.position.y = pos.y;
       action.robot.position.rotation = action.robot.position.rotation;
       action.robot.isActive = false;
+      action.robot.isActiveDueToMoving = false;
+      action.robot.isActiveDueToRotating = false;
       action.robot.isBallKickable = false;
       if (action.field_half == "left") {
         return {
@@ -112,17 +115,18 @@ function GameStateReducer(state, action) {
       current_robot = {...state.robotListLeft[action.index]};
       const copy_robot_list2 = [...state.robotListLeft];
       copy_robot_list2.splice(action.index, 1);
-      const is_active = (current_robot.target && current_robot.target.x && current_robot.target.x != action.position.x) ||
-                        (current_robot.target && current_robot.target.y && current_robot.target.y != action.position.y) ||
-                        (current_robot.target && current_robot.target.rotation && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation));
+
+      const isActiveDueToMoving =
+          (current_robot.target && current_robot.target.x && current_robot.target.x != action.position.x) ||
+          (current_robot.target && current_robot.target.y && current_robot.target.y != action.position.y);
+      const isActiveDueToRotating = current_robot.target && current_robot.target.rotation && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation);
 
       let new_rot = 0;
       if (action.position.rotation) {
         new_rot = angles.normalize_angle(action.position.rotation);
       }
 
-      const ballKickable = isBallKickable(state, current_robot);
-      console.log("Robot state says: " + ballKickable);
+      const isBallKickable = ballKickable(state.ball.position, current_robot.position);
 
       return {
         ...state,
@@ -135,8 +139,10 @@ function GameStateReducer(state, action) {
               x: action.position.x,
               y: action.position.y
             },
-            isActive: is_active,
-            isBallKickable: ballKickable
+            isActive: isActiveDueToMoving || isActiveDueToRotating,
+            isActiveDueToMoving,
+            isActiveDueToRotating,
+            isBallKickable,
           }
         ]
       };
@@ -160,7 +166,9 @@ current_robot.position.rotation + action.relativeTarget.rotation);
               ...current_robot.target,
               rotation: new_rotation
             },
-            is_active: true
+            isActive: true,
+            isActiveDueToRotating: true,
+            // don't overwrite isActiveDueToMoving here. keep the current value
           }
         ]
       };
@@ -201,7 +209,7 @@ current_robot.position.rotation + action.relativeTarget.rotation);
 
       let new_ball_x = state.ball.position.x;
       let new_ball_y = state.ball.position.y;
-      if(isBallKickable(state,current_robot)) {
+      if (current_robot.isBallKickable) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
         if (gaze_direction == angles.gaze_directions.left) {
@@ -215,7 +223,7 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         }
       }
 
-      const ballPos = getGridCell(new_ball_x, new_ball_y);
+      const ballPos = getGridCell({x: new_ball_x, y: new_ball_y});
 
       if(ballPos.x >= constants.num_x_cells-1 && goalCellsY.includes(ballPos.y)) {
         console.log("TOOR Home Team")
