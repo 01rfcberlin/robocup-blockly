@@ -203,12 +203,18 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       //Handles setting a new target position for the ball on the field.
       current_robot = {...state.robotListLeft[action.robot.index]};
 
+    // In the event ActionName.Robot.SetPosition: wasn't called (eg task 1),
+    // we can't rely on the redux state
+      current_robot.isBallKickable = ballKickable(state.ball.position, current_robot.position);
+
     //   const goalCellsX = [1, 10];
       const goalCellsY = [3, 4, 5]
 
-
       let new_ball_x = state.ball.position.x;
       let new_ball_y = state.ball.position.y;
+
+
+
       if (current_robot.isBallKickable) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
