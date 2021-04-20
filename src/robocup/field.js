@@ -244,11 +244,9 @@ export const RoboCupField = ({grid_properties}) => {
 
         // Had to do a check if ball.position is already set
         if(ball.target && !Number.isNaN(ball.position.x) && !Number.isNaN(ball.position.y)) {
-            console.log("target:", ball.target, "posi:", ball.position)
 
             // If the ball does not move, set the target to the same spot
             if (ball.target.x == ball.position.x && ball.target.y == ball.position.y) {
-                console.log("HIER");
                 dispatch(BallActions.setPosition(ball.target.x, ball.target.y))
             } else {
 
