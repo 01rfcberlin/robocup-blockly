@@ -242,9 +242,50 @@ export const RoboCupField = ({grid_properties}) => {
             }
         });
 
-        //TODO: This is a dummy-implementation
-        if(ball.target) {
-            dispatch(BallActions.setPosition(ball.target.x,ball.target.y))
+        // Had to do a check if ball.position is already set
+        if(ball.target && !Number.isNaN(ball.position.x) && !Number.isNaN(ball.position.y)) {
+            console.log("target:", ball.target, "posi:", ball.position)
+
+            // If the ball does not move, set the target to the same spot
+            if (ball.target.x == ball.position.x && ball.target.y == ball.position.y) {
+                console.log("HIER");
+                dispatch(BallActions.setPosition(ball.target.x, ball.target.y))
+            } else {
+
+                // Assumption: We either kick left/right or top/bottom. We never kick
+                // in both directions at the same time. Or put differently,
+                // ball.target and ball.position only differ in at most one
+                // component.
+                console.assert(ball.target.x != ball.position.x || ball.target.y != ball.position.y);
+
+                const delta_x = ball.target.x - ball.position.x;
+                const delta_y = ball.target.y - ball.position.y;
+
+                const delta_vec_length = Math.sqrt(delta_x ** 2 + delta_y ** 2);
+                const normalized_delta_vec_x = delta_x / delta_vec_length;
+                const normalized_delta_vec_y = delta_y / delta_vec_length;
+
+                const movement_vec_x = normalized_delta_vec_x * constants.ball_movement_per_draw_all;
+                const movement_vec_y = normalized_delta_vec_y * constants.ball_movement_per_draw_all;
+
+                let new_ball_x = ball.position.x + movement_vec_x;
+                let new_ball_y = ball.position.y + movement_vec_y;
+
+                // Avoid overshooting: Since we know that we only go along one
+                // coordinate, we can just set the position to the target.
+                const ball_would_overshoot = 
+                    ball.target.x > ball.position.x && new_ball_x > ball.target.x
+                    || ball.target.x < ball.position.x && new_ball_x < ball.target.x
+                    || ball.target.y > ball.position.y && new_ball_y > ball.target.y
+                    || ball.target.y < ball.position.y && new_ball_y < ball.target.y;
+                if (ball_would_overshoot) {
+                    new_ball_x = ball.target.x;
+                    new_ball_y = ball.target.y;
+                }
+
+            dispatch(BallActions.setPosition(new_ball_x, new_ball_y))
+            }
+
         }
 
         const canvas = canvasRef.current;
