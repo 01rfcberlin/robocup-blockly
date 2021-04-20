@@ -17,7 +17,7 @@
             },
             "task": {
                 "heading": "Die erste Challenge: Dein Roboter möchte ein Tor schießen! ",
-                "body": ["Unten steht der Bereich, wo du Programmcode für deinen Roboter bauen kannst. Dafür ziehst du Code-Blöcke von links unter den „Start“- Block. Wenn du auf „Code ausführen“ klickst, kannst du dein Programm testen. Du löschst einen Code-Block, wenn du ihn in den Mülleimer verschiebst. Jetzt aber zur Aufgabe: Dein Roboter möchte ein Tor schießen. Kannst du deinem Roboter helfen?"],
+                "body": ["Auf der rechten Seite kannst du Programmcode für deinen Roboter zusammen bauen. Dafür ziehst du Code-Blöcke von links unter den „Start“- Block. Wenn du auf „Code ausführen“ klickst, kannst du dein Programm testen. Du löschst einen Code-Block, wenn du ihn in den Mülleimer verschiebst. Jetzt aber zur Aufgabe: Dein Roboter möchte ein Tor schießen. Kannst du deinem Roboter helfen?"],
                 "tip": ["Gib deinem Roboter mit einem Code-Block die Anweisung ein Tor zu schießen."]
             }
         },
@@ -142,8 +142,8 @@
                 }
             },
             "task": {
-                "heading": "Der Weg zum Ball ist das Ziel?",
-                "body": ["Statt die Anzahl der Wiederholungen anzugeben, kannst du deinem Roboter auch sagen, dass er eine Aktion so lange ausführen soll bis ein bestimmter Zustand erreicht ist.","In dem Code-Block \"Wiederhole solange bis: X. Aktion: X\" kannst du bestimmen, was dein Roboter solange machen soll, bis er einen Zustand erreicht hat.<br>Was würdest du deinem Roboter jetzt also für eine Anweisung geben?"],
+                "heading": "Der Weg zum Ball ist das Ziel",
+                "body": ["Statt die Anzahl der Wiederholungen anzugeben, kannst du deinem Roboter auch sagen, dass er eine Aktion so lange ausführen soll bis ein bestimmter Zustand erreicht ist.","In dem Code-Block \"Wiederhole solange bis: X. Aktion: X\" kannst du bestimmen, was dein Roboter solange machen soll, bis er einen Zustand erreicht hat. Was würdest du deinem Roboter jetzt also für eine Anweisung geben?"],
                 "tip": ["Die Form der Code-Blöcke liefert dir Hinweise, welche Teile zusammengesteckt werden können und welche nicht.","Beim Programmieren bestimmt man den Zustand zuerst und dann die Aktion. \"Wiederhole so lange X bis X\""]
             }
         },
@@ -171,8 +171,8 @@
             },
             "task": {
                 "heading": "Die letzte Aufgabe",
-                "body": ["In dieser Aufgabe kommt alles zusammen. Sich drehen, ein Hindernis umgehen. Diese Aufgabe ist zum kniffeln. Welche Anweisung soll hier gegeben werden?"],
-                "tip": ["Du kannst dich auch langsam an eine Lösung annähern, in dem du Stück für Stück Code hinzufügst"]
+                "body": ["In dieser Aufgabe kommt alles zusammen. Sich drehen, den Ball über das Spielfeld bewegen und dann auch noch ein Gegenspieler. Diese Aufgabe ist zum kniffeln. Welche Anweisung soll hier gegeben werden?"],
+                "tip": ["Du kannst dich auch langsam an eine Lösung annähern, in dem du Stück für Stück Code hinzufügst und ihn immer wieder ausführst"]
             }
         }
     }
