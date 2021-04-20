@@ -117,7 +117,7 @@ const Kick = ({task_properties}) => {
                                 <Block type="ball_kick"/>
                             </BlocklyComponent>
                         </Row>
-                        <Row>
+                        <Row style={{marginTop: "20px"}}>
                             <Col xs={2}>
                                 <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
                             </Col>

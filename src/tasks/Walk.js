@@ -118,7 +118,7 @@ const Walk = ({task_properties}) => {
                                 <Block type="move_one_block_ahead"/>
                             </BlocklyComponent>
                         </Row>
-                        <Row>
+                        <Row style={{marginTop: "20px"}}>
                             <Col xs={2}>
                                 <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
                             </Col>

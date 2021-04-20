@@ -124,7 +124,7 @@ const WalkAndRepeatUntil = ({task_properties}) => {
                                 <Block type="next_to_ball"/>
                             </BlocklyComponent>
                         </Row>
-                        <Row>
+                        <Row style={{marginTop: "20px"}}>
                             <Col xs={2}>
                                 <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
                             </Col>

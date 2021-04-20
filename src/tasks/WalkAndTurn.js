@@ -122,7 +122,7 @@ const WalkAndTurn = ({task_properties}) => {
                                 <Block type="turn_left"/>
                             </BlocklyComponent>
                         </Row>
-                        <Row>
+                        <Row style={{marginTop: "20px"}}>
                             <Col xs={2}>
                                 <ExecuteResetButton execute={blockly.generateCode} reset={reset} />
                             </Col>

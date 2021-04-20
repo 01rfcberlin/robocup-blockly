@@ -42,9 +42,6 @@
 }
 
 .task {
-  display: inline-block;
-  padding: 5px 10px;
-  user-select: none;
   background-color: lightgrey;
 }
 
@@ -54,9 +51,20 @@
 }
 
 .current-task {
-  background-color: grey;
+  background-color: #A400AC;
 }
 
 #playingField {
     width: 100%;
+}
+
+.bar {
+  display: inline-block;
+  border: 1px solid #d5d5da;
+  position: relative;
+  width: 80px;
+  height: 6px;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
 }
