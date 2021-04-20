@@ -56,3 +56,7 @@
 .current-task {
   background-color: grey;
 }
+
+#playingField {
+    width: 100%;
+}

@@ -303,5 +303,5 @@ export const RoboCupField = ({grid_properties}) => {
     // TODO: I think this should be a useEffect on the Redux state and not useInterval!
     useInterval(() => draw_all(), constants.draw_all_interval);
 
-    return <canvas ref={canvasRef} width={constants.canvas_width} height={constants.canvas_height} key={"robocupfield"}/>
+    return <canvas id="playingField" ref={canvasRef} width={constants.canvas_width} height={constants.canvas_height} key={"robocupfield"}/>
 }
