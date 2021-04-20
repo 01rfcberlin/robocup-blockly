@@ -6,6 +6,7 @@ import RobotActions from "../robocup/RobotActions";
 import {useDispatch} from "react-redux";
 import BallActions from "../robocup/BallActions";
 import ExecuteResetButton from "../helper/ExecuteResetButton";
+import Blockly from 'blockly/core';
 
 /**
  * TASK
@@ -32,6 +33,7 @@ const Walk = ({task_properties}) => {
         blockly.setInterpreterIsActive(false);
         blockly.simpleWorkspace.current.workspace.clear();
         let parentBlock = blockly.simpleWorkspace.current.workspace.newBlock('start_block');
+        blockly.simpleWorkspace.current.workspace.addChangeListener(Blockly.Events.disableOrphans);
         parentBlock.initSvg();
         parentBlock.render();
         parentBlock.moveBy(20,20)
