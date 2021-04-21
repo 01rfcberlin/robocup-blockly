@@ -35,6 +35,8 @@ class BlocklyComponent extends React.Component {
         super(props);
         this.blocklyDiv = React.createRef();
         this.toolbox = React.createRef();
+        this.childrenAtLastRenderCall = React.createRef();
+        this.childrenLastInjected = React.createRef();
     }
 
     componentDidMount() {
@@ -57,6 +59,28 @@ class BlocklyComponent extends React.Component {
     // actual blocks, we first need to reset the HTML and then injecting the new
     // blocks.
     componentDidUpdate() {
+        // Only update the blocklyDiv if props.children changed. We do this via
+        // the key property of the blocks.
+        const childrenAtLastRenderCall = this.childrenAtLastRenderCall.current;
+        const childrenLastInjected = this.childrenLastInjected.current;
+
+        const undefd = childrenAtLastRenderCall === null || childrenLastInjected === null;
+        if (!undefd) {
+          const lengthEq = childrenAtLastRenderCall.length == childrenLastInjected.length;
+          if (lengthEq) {
+            let elementAreEqual = true;
+            for (let i = 0; i < childrenAtLastRenderCall.length; i = i+1) {
+              if (childrenAtLastRenderCall[i].key != childrenLastInjected[i].key) {
+                elementAreEqual = false;
+              }
+            }
+
+            if (elementAreEqual) return;
+          }
+        }
+
+        this.childrenLastInjected.current = childrenAtLastRenderCall;
+
         document.getElementById('blocklyDiv').innerHTML = '';
         this.componentDidMount()
     }
@@ -71,6 +95,8 @@ class BlocklyComponent extends React.Component {
 
     render() {
         const { children } = this.props;
+
+        this.childrenAtLastRenderCall.current = children;
 
         return <React.Fragment>
             <div ref={this.blocklyDiv} id="blocklyDiv" />
