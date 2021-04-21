@@ -97,6 +97,8 @@ function GameStateReducer(state, action) {
     return initialState;
   }
 
+  console.log("GameStateReducer:", action.type);
+
   switch (action.type) {
     case ActionName.Robot.AddRobot:
       //Handles adding a new robot to the field
