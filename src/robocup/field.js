@@ -111,6 +111,20 @@ export const RoboCupField = ({grid_properties}) => {
 
     };
 
+    const drawDebugCellCoords = (ctx) => {
+        for (var x = 0; x <= 10; x++) {
+            for (var y = 0; y <= 8; y++) {
+                ctx.strokeStyle = 'black';
+                ctx.strokeRect(x * constants.cell_width, y * constants.cell_height-(0.5*constants.cell_height), constants.cell_width, constants.cell_height);
+
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 17px serif';
+                const margin = 2;
+                ctx.fillText("(" + x + "," + y + ")", x * constants.cell_width + margin, y * constants.cell_height);
+            }
+        }
+    };
+
     // with angle == 0, this function is equivalent to:
     // ctx.drawImage(img, x, y, w, h);
     const drawRotatedImage = (ctx, img, angle, x, y, w, h) => {
@@ -295,6 +309,10 @@ export const RoboCupField = ({grid_properties}) => {
         draw_ball(canvas, context); //ball needs to be drawn first, otherwise the ball potentially covers the robot
 
         draw_robots(canvas, context);
+
+        if (constants.debugDrawCellCoords) {
+          drawDebugCellCoords(context);
+        }
     };
 
     /**
