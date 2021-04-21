@@ -24,7 +24,7 @@ const ActionName = {
   Interface: {
     ToggleGoalAlert: 'Interface.ToggleGoalAlert',
     ToggleOwnGoalAlert: 'Interface.ToggleOwnGoalAlert',
-    ToggleOutOfBounds: 'Interface.ToggleOutOfBounds',
+    ToggleOutOfBoundsAlert: 'Interface.ToggleOutOfBoundsAlert',
   }
 };
 

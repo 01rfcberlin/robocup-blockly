@@ -13,9 +13,9 @@ const InterfaceActions = {
       showAlert: showAlert
     }
   },
-  toggleOutOfBounds: (showAlert) => {
+  toggleOutOfBoundsAlert: (showAlert) => {
     return {
-      type: ActionName.Interface.ToggleOutOfBounds,
+      type: ActionName.Interface.ToggleOutOfBoundsAlert,
       showAlert: showAlert
     }
   },

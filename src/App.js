@@ -83,7 +83,7 @@ const App = () => {
                             dispatch(ApplicationActions.setTask(i));
                             dispatch(InterfaceActions.toggleOwnGoalAlert(false));
                             dispatch(InterfaceActions.toggleGoalAlert(false));
-                            dispatch(InterfaceActions.toggleOwnGoalAlert(false));
+                            dispatch(InterfaceActions.toggleOutOfBoundsAlert(false));
                         }}>
                           {i+1}
                         </button>

@@ -61,7 +61,9 @@ const setRobotTarget = (state, index, x, y) => {
 
   // Check if robot moves to a cell out of the field
   let outofbounds = state.outOfBound;
-  let toggleOut = state.toggleOutOfBounds;
+  let toggleOut = state.toggleOutOfBoundsAlert;
+  let goalt = state.toggleGoalAlert;
+  let owngoalt = state.toggleOwnGoalAlert;
   if(
       getGridCell({x, y}).x >= 10 ||
       getGridCell({x, y}).x <= 0 ||
@@ -70,6 +72,8 @@ const setRobotTarget = (state, index, x, y) => {
   ) {
     outofbounds = true;
     toggleOut = true;
+    goalt = false;
+    owngoalt = false;
   }
 
   return {
@@ -94,7 +98,9 @@ const setRobotTarget = (state, index, x, y) => {
       }
     ],
     outOfBound: outofbounds,
-    toggleOutOfBounds: toggleOut
+    toggleOutOfBoundsAlert: toggleOut,
+    toggleGoalAlert: goalt,
+    toggleOwnGoalAlert: owngoalt
   };
 };
 
@@ -278,17 +284,22 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       let goalsR = state.goalsRight;
       let toggleGoal = state.toggleGoalAlert;
       let toggleOwnGoal = state.toggleOwnGoalAlert;
+      let toggleOut = state.toggleOutOfBoundsAlert;
 
       if(ballPos.x >= constants.num_x_cells-1 && goalCellsY.includes(ballPos.y)) {
         // console.log("TOOR Home Team")
         goalsL += 1;
         toggleGoal = true;
+        toggleOwnGoal = false;
+        toggleOut = false;
       }
 
       if(ballPos.x <= 0 && goalCellsY.includes(ballPos.y)) {
         // console.log("TOOR Away Team")
         goalsR += 1;
         toggleOwnGoal = true;
+        toggleGoal = false;
+        toggleOut = false;
       }
 
       return {
@@ -304,6 +315,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         goalsRight: goalsR,
         toggleGoalAlert: toggleGoal,
         toggleOwnGoalAlert: toggleOwnGoal,
+        toggleOutOfBoundsAlert: toggleOut,
+
       };
     case ActionName.Ball.SetPosition:
       //Actually updates the position of the ball on the field
