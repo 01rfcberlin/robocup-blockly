@@ -249,6 +249,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
     case ActionName.Ball.BallKick:
       //Handles setting a new target position for the ball on the field.
       current_robot = {...state.robotListLeft[action.robot.index]};
+      const copy_robot_list4 = [...state.robotListLeft];
+      copy_robot_list4.splice(action.index, 1);
 
     // In the event ActionName.Robot.SetPosition: wasn't called (eg task 1),
     // we can't rely on the redux state
@@ -264,7 +266,7 @@ current_robot.position.rotation + action.relativeTarget.rotation);
 
 
 
-      if (current_robot.isBallKickable) {
+      if (isbk) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
         if (gaze_direction == angles.gaze_directions.left) {
@@ -311,14 +313,18 @@ current_robot.position.rotation + action.relativeTarget.rotation);
             y: new_ball_y
           }
         },
+        robotListLeft: [
+          ...copy_robot_list4,
+          {
+            ...current_robot,
+            isBallKickable: isbk,
+            isNextToBall: isnb
+          }],
         goalsLeft: goalsL,
         goalsRight: goalsR,
         toggleGoalAlert: toggleGoal,
         toggleOwnGoalAlert: toggleOwnGoal,
         toggleOutOfBoundsAlert: toggleOut,
-        isBallKickable: isbk,
-        isNextToBall: isnb
-
       };
     case ActionName.Ball.SetPosition:
       //Actually updates the position of the ball on the field
@@ -344,7 +350,7 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         ...state,
         toggleOwnGoalAlert: action.showAlert
       };
-    case ActionName.Interface.ToggleOutOfBounds:
+    case ActionName.Interface.toggleOutOfBoundsAlert:
       return {
         ...state,
         toggleOutOfBoundsAlert: action.showAlert
