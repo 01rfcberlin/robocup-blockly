@@ -31,6 +31,7 @@ import ApplicationActions from "./applicationLogic/ApplicationActions";
 import TaskDetails from "./tasks/task.json";
 import Alert from 'react-bootstrap/Alert'
 import Task from "./tasks/Task";
+import {Col, Container, Row} from "reactstrap";
 
 const App = () => {
 
@@ -80,7 +81,7 @@ const App = () => {
     },[outOfBound]);
 
     return (
-      <div className="App">
+      <Container style={{minWidth: "90vw", minHeight: "95vh"}} className="App">
           {showGoalAlert &&
               <Alert variant={'success'} onClose={() => setShowGoalAlert(false)} dismissible>
                   <Alert.Heading>Toooooor!</Alert.Heading>
@@ -99,36 +100,41 @@ const App = () => {
               <p>Du soltest lieber mit deinem Roboter im Spielfeld bleiben :D</p>
           </Alert>
           }
-        <div className="tasks" style={{marginBottom: "20px"}}>
-          <h4 className="task-text">Aufgabe:</h4>
-          {
-            taskList.map((task, i) => {
-              let className = "task";
-              let barName = "bar";
-              if (i<=currentTask) {
-                className += " current-task";
+        <Row className="tasks" style={{marginTop: "10px", marginBottom: "10px"}}>
+            <Col xs={1}>
+                <img width={"50px"} src={"/logo.png"}/>
+            </Col>
+            <Col className={"justify-content-md-center"} xs={11}>
+            <h4 className="task-text">Aufgabe:</h4>
+              {
+                taskList.map((task, i) => {
+                  let className = "task";
+                  let barName = "bar";
+                  if (i<=currentTask) {
+                    className += " current-task";
+                  }
+                  if (i<currentTask) {
+                    barName += " current-task";
+                  }
+                  const key = "task-" + i;
+                  return (
+                      <span>
+                        <button style={{borderRadius: "50%"}} className={className} key={key} onClick={() => {
+                            dispatch(ApplicationActions.setTask(i));
+                            setShowGoalAlert(false);
+                            setShowOutofBoundAlert(false);
+                        }}>
+                          {i+1}
+                        </button>
+                          { (i < taskList.length -1) && <span className={barName}></span> }
+                      </span>
+                  )
+                })
               }
-              if (i<currentTask) {
-                barName += " current-task";
-              }
-              const key = "task-" + i;
-              return (
-                  <span key={key}>
-                    <button style={{borderRadius: "50%"}} className={className} onClick={() => {
-                        dispatch(ApplicationActions.setTask(i));
-                        setShowGoalAlert(false);
-                        setShowOutofBoundAlert(false);
-                    }}>
-                      {i+1}
-                    </button>
-                      { (i < taskList.length -1) && <span className={barName}></span> }
-                  </span>
-              )
-            })
-          }
-        </div>
+            </Col>
+        </Row>
           <Task task_properties={taskList[currentTask]}/>
-      </div>
+      </Container>
     );
 };
 

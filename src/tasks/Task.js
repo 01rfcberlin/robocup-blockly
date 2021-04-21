@@ -1,7 +1,7 @@
 import {RoboCupField} from "../robocup/field";
 import BlocklyComponent, {Block} from "../Blockly";
 import {useEffect, useState, useRef} from "react";
-import { Button } from 'reactstrap';
+import {Button, Container} from 'reactstrap';
 import RobotActions from "../robocup/RobotActions";
 import BlocklyJS from "blockly/javascript";
 import {useDispatch, useSelector} from "react-redux";
@@ -187,7 +187,6 @@ export default function Task(props) {
     const Interpreter = window["Interpreter"];
     const myInterpreter = new Interpreter(code, initApi);
     console.log(code)
-    const myInterpreter = new Interpreter(code, initApi);
     reachedCodeEnd.current = false;
     workspaceInterpreterRef.current = myInterpreter;
   }
@@ -265,9 +264,9 @@ export default function Task(props) {
   }
 
   return(
-      <Row style={{minHeight: "90vh"}}>
-          <Col xs={1}/>
-          <Col xs={10}>
+      <Container style={{minWidth: "100%", minHeight: "100%"}}>
+          <Row>
+          <Col xs={12}>
               <Row>
                   <Col xs={4}>
                       <Row>
@@ -299,14 +298,14 @@ export default function Task(props) {
                                             move={{
                                                 scrollbars: true,
                                                 drag: true,
-                                                wheel: true
+                                                wheel: false
                                             }}>
                               {blocklyBlocks()}
                           </BlocklyComponent>
                       </Row>
                       <Row style={{marginTop: "20px"}}>
-                          <Col xs={4}>
-                              <Button onClick={() => {
+                          <Col xs={12}>
+                              <Button size="lg" block onClick={() => {
                                 if (workspaceInterpreterRef.current !== null) {
                                   reset();
                                   triggerRendering(curTriggerRendering + 1);
@@ -316,15 +315,17 @@ export default function Task(props) {
                                 }
                               }}>{buttonText}</Button>
                           </Col>
-                          <Col xs={1}/>
-                          <Col xs={5}>
-                              <b>Anzahl benutzter Blöcke: {workspaceRef.current && workspaceRef.current.workspace.getAllBlocks(true).length-1}</b>
-                              <h4><b>Optimale Anzahl Blöcke: {props.task_properties.optimal_blocks}</b></h4>
+                      </Row>
+                      <Row className={"justify-content-md-center"} style={{marginTop: "10px"}}>
+                          <Col xs={12}>
+                              <b>Optimale Anzahl Blöcke: {props.task_properties.optimal_blocks}</b>
                           </Col>
                       </Row>
                   </Col>
               </Row>
           </Col>
-      </Row>
+          <Col xs={1}/>
+          </Row>
+      </Container>
   )
 }
