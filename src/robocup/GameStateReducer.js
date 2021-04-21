@@ -252,8 +252,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
 
     // In the event ActionName.Robot.SetPosition: wasn't called (eg task 1),
     // we can't rely on the redux state
-      current_robot.isBallKickable = ballKickable(state.ball.position, current_robot.position);
-      current_robot.isNextToBall = nextToBall(state.ball.position, current_robot.position);
+      let isbk = ballKickable(state.ball.position, current_robot.position);
+      let isnb = nextToBall(state.ball.position, current_robot.position);
       console.log(action.type, "isNextToBall :=", current_robot.isNextToBall, "isBallKickable :=", current_robot.isBallKickable );
 
     //   const goalCellsX = [1, 10];
@@ -316,6 +316,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         toggleGoalAlert: toggleGoal,
         toggleOwnGoalAlert: toggleOwnGoal,
         toggleOutOfBoundsAlert: toggleOut,
+        isBallKickable: isbk,
+        isNextToBall: isnb
 
       };
     case ActionName.Ball.SetPosition:
