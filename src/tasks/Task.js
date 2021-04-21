@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import BallActions from "../robocup/BallActions";
 import * as constants from "../constants.js";
 import {Col, Row} from "reactstrap";
+import Blockly from 'blockly/core';
 
 // These are the functions that are made available inside the JS interpreter.
 // These functions just wrap calls to dispatch and thus function as glue
@@ -118,6 +119,7 @@ export default function Task(props) {
     //
     // TODO: The position of the start block should be fixed (not movable)
     let parentBlock = workspaceRef.current.workspace.newBlock('start_block');
+    workspaceRef.current.workspace.addChangeListener(Blockly.Events.disableOrphans);
     parentBlock.initSvg();
     parentBlock.render();
     parentBlock.moveBy(20,20);
