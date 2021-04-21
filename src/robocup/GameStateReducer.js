@@ -311,7 +311,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
           target: {
             x: new_ball_x,
             y: new_ball_y
-          }
+          },
+          isMoving: true
         },
         robotListLeft: [
           ...copy_robot_list4,
@@ -328,6 +329,10 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       };
     case ActionName.Ball.SetPosition:
       //Actually updates the position of the ball on the field
+      const isBallMoving =
+          (state.ball.target && (typeof state.ball.target.x !== 'undefined') && state.ball.target.x != action.position.x) ||
+          (state.ball.target && (typeof state.ball.target.y !== 'undefined') && state.ball.target.y != action.position.y)
+
       return {
         ...state,
         ball:{
@@ -335,7 +340,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
           position: {
             x: action.position.x,
             y: action.position.y
-          }
+          },
+          isMoving: isBallMoving
         }
       };
     case ActionName.Ball.Reset:

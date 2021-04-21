@@ -327,13 +327,13 @@ export const RoboCupField = ({grid_properties}) => {
 
     return (
         <div>
-            {toggleGoalAlert &&
+            {toggleGoalAlert && !ball.isMoving &&
             <Alert variant={'success'} style={{position: "absolute", zIndex:10}} onClose={() => dispatch(InterfaceActions.toggleGoalAlert(false))} dismissible>
                 <Alert.Heading>Toooooor!</Alert.Heading>
                 <p>Sehr gut, du hast die Aufgabe gelöst. Jetzt kannst du weiter mit der nächsten Aufgabe machen.</p>
             </Alert>
             }
-            {toggleOwnGoalAlert &&
+            {toggleOwnGoalAlert && !ball.isMoving &&
             <Alert variant={'warning'} style={{position: "absolute", zIndex:10}} onClose={() => dispatch(InterfaceActions.toggleOwnGoalAlert(false))} dismissible>
                 <Alert.Heading>Eigentor!</Alert.Heading>
                 <p>Um das Spiel zu gewinnen, solltest du lieber auf das andere Tor schießen :D</p>
