@@ -2,6 +2,7 @@
     "tasks": {
         "task1": {
             "optimal_blocks": 1,
+            "codeBlocks": ["ball_kick"],
             "own_robot": {
                 "position": {
                     "x": 460,
@@ -23,6 +24,7 @@
         },
         "task2": {
             "optimal_blocks": 4,
+            "codeBlocks": ["ball_kick", "move_one_block_ahead"],
             "own_robot": {
                 "position": {
                     "x": 300,
@@ -44,6 +46,7 @@
         },
         "task3": {
             "optimal_blocks": 6,
+            "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right"],
             "own_robot": {
                 "position": {
                     "x": 300,
@@ -65,6 +68,7 @@
         },
         "task4": {
             "optimal_blocks": 8,
+            "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right"],
             "own_robot": {
                 "position": {
                     "x": 100,
@@ -86,6 +90,7 @@
         },
         "task5": {
             "optimal_blocks": 3,
+            "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat"],
             "own_robot": {
                 "position": {
                     "x": 100,
@@ -107,6 +112,7 @@
         },
         "task6": {
             "optimal_blocks": 4,
+            "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat"],
             "own_robot": {
                 "position": {
                     "x": 150,
@@ -128,6 +134,7 @@
         },
         "task7": {
             "optimal_blocks": 4,
+            "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat", "repeat_until", "next_to_ball"],
             "own_robot": {
                 "position": {
                     "x": 100,
@@ -149,6 +156,7 @@
         },
         "task8": {
             "optimal_blocks": 42,
+            "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat", "repeat_until", "next_to_ball"],
             "own_robot": {
                 "position": {
                     "x": 100,

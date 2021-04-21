@@ -28,14 +28,9 @@ import './blocks/customblocks';
 import './generator/generator';
 import {useDispatch, useSelector} from "react-redux";
 import ApplicationActions from "./applicationLogic/ApplicationActions";
-import Walk from "./tasks/Walk";
-import Kick from "./tasks/Kick";
-import WalkAndTurn from "./tasks/WalkAndTurn";
-import Task from "./tasks/task.json";
-import WalkAndRepeat from "./tasks/WalkAndRepeat";
-import WalkAndRepeatUntil from "./tasks/WalkAndRepeatUntil";
-import WalkAndTurnAndRepeatUntil from "./tasks/WalkAndTurnAndRepeatUntil";
+import TaskDetails from "./tasks/task.json";
 import Alert from 'react-bootstrap/Alert'
+import Task from "./tasks/Task";
 
 const App = () => {
 
@@ -56,14 +51,14 @@ const App = () => {
 
     //Contains the individual tasks that the students can work through.
     const taskList = [
-        <Kick task_properties={Task.tasks.task1}/>,
-        <Walk task_properties={Task.tasks.task2}/>,
-        <WalkAndTurn task_properties={Task.tasks.task3}/>,
-        <Walk task_properties={Task.tasks.task4}/>,
-        <WalkAndRepeat task_properties={Task.tasks.task5}/>,
-        <WalkAndRepeat task_properties={Task.tasks.task6}/>,
-        <WalkAndRepeatUntil task_properties={Task.tasks.task7}/>,
-        <WalkAndTurnAndRepeatUntil task_properties={Task.tasks.task8}/>,
+        TaskDetails.tasks.task1,
+        TaskDetails.tasks.task2,
+        TaskDetails.tasks.task3,
+        TaskDetails.tasks.task4,
+        TaskDetails.tasks.task5,
+        TaskDetails.tasks.task6,
+        TaskDetails.tasks.task7,
+        TaskDetails.tasks.task8,
     ];
 
     useEffect(() => {
@@ -118,8 +113,8 @@ const App = () => {
               }
               const key = "task-" + i;
               return (
-                  <span>
-                    <button style={{borderRadius: "50%"}} className={className} key={key} onClick={() => {
+                  <span key={key}>
+                    <button style={{borderRadius: "50%"}} className={className} onClick={() => {
                         dispatch(ApplicationActions.setTask(i));
                         setShowGoalAlert(false);
                         setShowOutofBoundAlert(false);
@@ -132,7 +127,7 @@ const App = () => {
             })
           }
         </div>
-        {taskList[currentTask]}
+          <Task task_properties={taskList[currentTask]}/>
       </div>
     );
 };

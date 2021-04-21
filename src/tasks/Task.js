@@ -1,5 +1,5 @@
 import {RoboCupField} from "../robocup/field";
-import BlocklyComponent from "../Blockly";
+import BlocklyComponent, {Block} from "../Blockly";
 import {useEffect, useState, useRef} from "react";
 import { Button } from 'reactstrap';
 import RobotActions from "../robocup/RobotActions";
@@ -125,6 +125,13 @@ export default function Task(props) {
     reset();
   }
 
+  function blocklyBlocks() {
+        return props.task_properties.codeBlocks.map(blockName => {
+            const key = "blockType_" + blockName;
+            return <Block key={key} type={blockName} />
+        });
+    }
+
   // Called when clicking on the reset button. Resets the robot position on the
   // field to the original position and abort execution
   // machen, sondern nur über hooks dinge ändern in der "klasse"?
@@ -136,7 +143,7 @@ export default function Task(props) {
     dispatch(RobotActions.reset());
 
     // Reset the position of the robot to the original position. This depends on the actual task and thus has to be passed via the props.
-    props.reset();
+    resetGameState();
 
     // Abort execution
     workspaceInterpreterRef.current = null;
@@ -183,6 +190,25 @@ export default function Task(props) {
     reachedCodeEnd.current = false;
     workspaceInterpreterRef.current = myInterpreter;
   }
+
+    // Resets the robot position on the field to the original position
+    function resetGameState () {
+        dispatch(RobotActions.addRobot(
+            props.task_properties.own_robot.position.x,
+            props.task_properties.own_robot.position.y,
+            props.task_properties.own_robot.position.rotation * 2*Math.PI/360,
+            "left"
+        ));
+        dispatch(BallActions.setPosition(props.task_properties.ball.position.x,props.task_properties.ball.position.y));
+        if(props.task_properties.opponent_robot) {
+            dispatch(RobotActions.addRobot(
+                props.task_properties.opponent_robot.position.x,
+                props.task_properties.opponent_robot.position.y,
+                props.task_properties.opponent_robot.position.rotation * 2*Math.PI/360,
+                "right"
+            ));
+        }
+    };
 
   // Note that you should pass all the state you need in the step function via
   // React refs in the function.
@@ -274,11 +300,11 @@ export default function Task(props) {
                                                 drag: true,
                                                 wheel: true
                                             }}>
-                              { props.children }
+                              {blocklyBlocks()}
                           </BlocklyComponent>
                       </Row>
                       <Row style={{marginTop: "20px"}}>
-                          <Col xs={2}>
+                          <Col xs={4}>
                               <Button onClick={() => {
                                 if (workspaceInterpreterRef.current !== null) {
                                   reset();
@@ -291,6 +317,7 @@ export default function Task(props) {
                           </Col>
                           <Col xs={1}/>
                           <Col xs={5}>
+                              <b>Blocks auf dem Feld: {workspaceRef.current && workspaceRef.current.workspace.getAllBlocks(true).length}</b>
                               <h4><b>Optimale Anzahl Blöcke: {props.task_properties.optimal_blocks}</b></h4>
                           </Col>
                       </Row>

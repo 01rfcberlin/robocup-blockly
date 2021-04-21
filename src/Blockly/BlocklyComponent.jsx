@@ -52,6 +52,15 @@ class BlocklyComponent extends React.Component {
         }
     }
 
+    // We call Blockly.inject after each render() call only calling render()
+    // will not actual reflect the new children property. To also update the
+    // actual blocks, we first need to reset the HTML and then injecting the new
+    // blocks.
+    componentDidUpdate() {
+        document.getElementById('blocklyDiv').innerHTML = '';
+        this.componentDidMount()
+    }
+
     get workspace() {
         return this.primaryWorkspace;
     }
