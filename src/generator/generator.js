@@ -135,7 +135,8 @@ Blockly.JavaScript['next_to_ball'] = function(block) {
 const randomNameGenerator = () => {
     let res = '';
     for(let i = 0; i < 5; i++){
-        const random = Math.floor(Math.random() * 27);
+        // important: here we only want to generate characters from a to z
+        const random = Math.floor(Math.random() * 26);
         res += String.fromCharCode(97 + random);
     };
     return res;
