@@ -46,7 +46,10 @@ const initialState = {
   ball: {},
   goalsLeft: 0,
   goalsRight: 0,
-  outOfBound: false
+  outOfBound: false,
+  toggleGoalAlert: false,
+  toogleOwnGoalAlert: false,
+  toggleOutOfBoundsAlert: false,
 };
 
 const setRobotTarget = (state, index, x, y) => {
@@ -57,13 +60,16 @@ const setRobotTarget = (state, index, x, y) => {
   copy_robot_list.splice(index, 1);
 
   // Check if robot moves to a cell out of the field
+  let outofbounds = state.outOfBound;
+  let toggleOut = state.toggleOutOfBounds;
   if(
       getGridCell({x, y}).x >= 10 ||
       getGridCell({x, y}).x <= 0 ||
       getGridCell({x, y}).y <= 0 ||
       getGridCell({x, y}).y >= 8
   ) {
-    state.outOfBound = true;
+    outofbounds = true;
+    toggleOut = true;
   }
 
   return {
@@ -86,7 +92,9 @@ const setRobotTarget = (state, index, x, y) => {
         isActiveDueToMoving: true,
         // don't overwrite isActiveDueToRotating here. keep the current value
       }
-    ]
+    ],
+    outOfBound: outofbounds,
+    toggleOutOfBounds: toggleOut
   };
 };
 
@@ -266,14 +274,21 @@ current_robot.position.rotation + action.relativeTarget.rotation);
 
       const ballPos = getGridCell({x: new_ball_x, y: new_ball_y});
 
+      let goalsL = state.goalsLeft;
+      let goalsR = state.goalsRight;
+      let toggleGoal = state.toggleGoalAlert;
+      let toggleOwnGoal = state.toggleOwnGoalAlert;
+
       if(ballPos.x >= constants.num_x_cells-1 && goalCellsY.includes(ballPos.y)) {
         // console.log("TOOR Home Team")
-        state.goalsLeft += 1;
+        goalsL += 1;
+        toggleGoal = true;
       }
 
       if(ballPos.x <= 0 && goalCellsY.includes(ballPos.y)) {
         // console.log("TOOR Away Team")
-        state.goalsRight += 1;
+        goalsR += 1;
+        toggleOwnGoal = true;
       }
 
       return {
@@ -284,7 +299,11 @@ current_robot.position.rotation + action.relativeTarget.rotation);
             x: new_ball_x,
             y: new_ball_y
           }
-        }
+        },
+        goalsLeft: goalsL,
+        goalsRight: goalsR,
+        toggleGoalAlert: toggleGoal,
+        toggleOwnGoalAlert: toggleOwnGoal,
       };
     case ActionName.Ball.SetPosition:
       //Actually updates the position of the ball on the field
@@ -300,6 +319,21 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       };
     case ActionName.Ball.Reset:
       return initialState;
+    case ActionName.Interface.ToggleGoalAlert:
+      return {
+        ...state,
+        toggleGoalAlert: action.showAlert
+      };
+    case ActionName.Interface.ToggleOwnGoalAlert:
+      return {
+        ...state,
+        toggleOwnGoalAlert: action.showAlert
+      };
+    case ActionName.Interface.ToggleOutOfBounds:
+      return {
+        ...state,
+        toggleOutOfBoundsAlert: action.showAlert
+      };
     default:
       return state;
   }

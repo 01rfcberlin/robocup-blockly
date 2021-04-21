@@ -5,6 +5,9 @@ import RobotActions from "./RobotActions";
 import BallActions from "./BallActions";
 import * as constants from "../constants.js";
 import * as angles from "./angles";
+import Alert from "react-bootstrap/Alert";
+import {Container} from "reactstrap";
+import InterfaceActions from "./InterfaceActions";
 
 /**
  * Handles drawing the background of the field as well as the robot(s)
@@ -16,7 +19,7 @@ import * as angles from "./angles";
 export const RoboCupField = ({grid_properties}) => {
     const dispatch = useDispatch();
 
-    const { robotListLeft, robotListRight, ball } = useSelector(state => {
+    const { robotListLeft, robotListRight, ball, toggleGoalAlert, toggleOwnGoalAlert, toggleOutOfBoundsAlert } = useSelector(state => {
         return state.gameState;
     });
 
@@ -144,6 +147,7 @@ export const RoboCupField = ({grid_properties}) => {
       // move back to original origin
       ctx.translate(-center_x, -center_y);
     };
+
 
     /**
      * Draws all robots at their current position.
@@ -321,5 +325,27 @@ export const RoboCupField = ({grid_properties}) => {
     // TODO: I think this should be a useEffect on the Redux state and not useInterval!
     useInterval(() => draw_all(), constants.draw_all_interval);
 
-    return <canvas id="playingField" ref={canvasRef} width={constants.canvas_width} height={constants.canvas_height} key={"robocupfield"}/>
+    return (
+        <div>
+            {toggleGoalAlert &&
+            <Alert variant={'success'} style={{position: "absolute", zIndex:10}} onClose={() => dispatch(InterfaceActions.toggleGoalAlert(false))} dismissible>
+                <Alert.Heading>Toooooor!</Alert.Heading>
+                <p>Sehr gut, du hast die Aufgabe gelöst. Jetzt kannst du weiter mit der nächsten Aufgabe machen.</p>
+            </Alert>
+            }
+            {toggleOwnGoalAlert &&
+            <Alert variant={'warning'} style={{position: "absolute", zIndex:10}} onClose={() => dispatch(InterfaceActions.toggleOwnGoalAlert(false))} dismissible>
+                <Alert.Heading>Eigentor!</Alert.Heading>
+                <p>Um das Spiel zu gewinnen, solltest du lieber auf das andere Tor schießen :D</p>
+            </Alert>
+            }
+            {toggleOutOfBoundsAlert &&
+            <Alert variant={'warning'} style={{position: "absolute", zIndex:10}} onClose={() => dispatch(InterfaceActions.toggleOutOfBounds(false))} dismissible>
+                <Alert.Heading>Roboter hat das Spielfeld verlassen!</Alert.Heading>
+                <p>Du soltest lieber mit deinem Roboter im Spielfeld bleiben :D</p>
+            </Alert>
+            }
+            <canvas id="playingField" ref={canvasRef} width={constants.canvas_width} height={constants.canvas_height} key={"robocupfield"}/>
+        </div>
+    )
 }

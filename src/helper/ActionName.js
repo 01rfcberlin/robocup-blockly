@@ -20,6 +20,11 @@ const ActionName = {
     SetPosition: 'Ball.SetPosition',
     BallKick: 'Ball.BallKick',
     Reset: 'Ball.Reset'
+  },
+  Interface: {
+    ToggleGoalAlert: 'Interface.ToggleGoalAlert',
+    ToggleOwnGoalAlert: 'Interface.ToggleOwnGoalAlert',
+    ToggleOutOfBounds: 'Interface.ToggleOutOfBounds',
   }
 };
 

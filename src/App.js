@@ -32,6 +32,7 @@ import TaskDetails from "./tasks/task.json";
 import Alert from 'react-bootstrap/Alert'
 import Task from "./tasks/Task";
 import {Col, Container, Row} from "reactstrap";
+import InterfaceActions from "./robocup/InterfaceActions";
 
 const App = () => {
 
@@ -45,11 +46,6 @@ const App = () => {
         return state.gameState;
     });
 
-    const [showGoalAlert, setShowGoalAlert] = useState(false);
-    const [showOwnGoalAlert, setShowOwnGoalAlert] = useState(false);
-    const [showOutofBoundAlert, setShowOutofBoundAlert] = useState(false);
-
-
     //Contains the individual tasks that the students can work through.
     const taskList = [
         TaskDetails.tasks.task1,
@@ -62,50 +58,14 @@ const App = () => {
         TaskDetails.tasks.task8,
     ];
 
-    useEffect(() => {
-        if(!showGoalAlert && goalsLeft > 0) {
-            setShowGoalAlert(true);
-        }
-    },[goalsLeft]);
-
-    useEffect(() => {
-        if(!showOwnGoalAlert && goalsRight > 0) {
-            setShowOwnGoalAlert(true);
-        }
-    },[goalsRight]);
-
-    useEffect(() => {
-        if(!showOutofBoundAlert && outOfBound == true) {
-            setShowOutofBoundAlert(true);
-        }
-    },[outOfBound]);
-
     return (
       <Container style={{minWidth: "90vw", minHeight: "95vh"}} className="App">
-          {showGoalAlert &&
-              <Alert variant={'success'} onClose={() => setShowGoalAlert(false)} dismissible>
-                  <Alert.Heading>Toooooor!</Alert.Heading>
-                  <p>Sehr gut, du hast die Aufgabe gelöst. Jetzt kannst du weiter mit der nächsten Aufgabe machen.</p>
-              </Alert>
-          }
-          {showOwnGoalAlert &&
-          <Alert variant={'warning'} onClose={() => setShowGoalAlert(false)} dismissible>
-              <Alert.Heading>Eigentor!</Alert.Heading>
-              <p>Um das Spiel zu gewinnen, solltest du lieber auf das andere Tor schießen :D</p>
-          </Alert>
-          }
-          {showOutofBoundAlert &&
-          <Alert variant={'warning'} onClose={() => setShowOutofBoundAlert(false)} dismissible>
-              <Alert.Heading>Roboter hat das Spielfeld verlassen!</Alert.Heading>
-              <p>Du soltest lieber mit deinem Roboter im Spielfeld bleiben :D</p>
-          </Alert>
-          }
         <Row className="tasks" style={{marginTop: "10px", marginBottom: "10px"}}>
             <Col xs={1}>
                 <img width={"50px"} src={"/logo.png"}/>
             </Col>
             <Col className={"justify-content-md-center"} xs={11}>
-            <h4 className="task-text">Aufgabe:</h4>
+            <h3 className="task-text" style={{marginRight: "10px"}}>Aufgabe:</h3>
               {
                 taskList.map((task, i) => {
                   let className = "task";
@@ -121,8 +81,9 @@ const App = () => {
                       <span>
                         <button style={{borderRadius: "50%"}} className={className} key={key} onClick={() => {
                             dispatch(ApplicationActions.setTask(i));
-                            setShowGoalAlert(false);
-                            setShowOutofBoundAlert(false);
+                            dispatch(InterfaceActions.toggleOwnGoalAlert(false));
+                            dispatch(InterfaceActions.toggleGoalAlert(false));
+                            dispatch(InterfaceActions.toggleOwnGoalAlert(false));
                         }}>
                           {i+1}
                         </button>
