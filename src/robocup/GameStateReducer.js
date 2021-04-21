@@ -160,8 +160,8 @@ function GameStateReducer(state, action) {
       copy_robot_list2.splice(action.index, 1);
 
       const isActiveDueToMoving =
-          (current_robot.target && current_robot.target.x && current_robot.target.x != action.position.x) ||
-          (current_robot.target && current_robot.target.y && current_robot.target.y != action.position.y);
+          (current_robot.target && (typeof current_robot.target.x !== 'undefined') && current_robot.target.x != action.position.x) ||
+          (current_robot.target && (typeof current_robot.target.y !== 'undefined') && current_robot.target.y != action.position.y);
       const isActiveDueToRotating = current_robot.target && (typeof current_robot.target.rotation !== 'undefined') && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation);
       
       let new_rot = 0;
