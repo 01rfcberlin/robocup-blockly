@@ -55,13 +55,9 @@ const blocklyFunctions = {
     }
   ),
 
-  // TODO: this is not evaluated correctly yet!
-  ballInRange: ({dispatch, robot}) => (
+  nextToBall: ({dispatch, robotListLeftRef}) => (
     () => {
-      const ball_out_of_range = !robot.isBallKickable;
-
-      console.log("Ball out of Range? " + ball_out_of_range);
-      return ball_out_of_range;
+      return robotListLeftRef.current[0].isNextToBall;
     }
   ),
 
@@ -166,13 +162,17 @@ export default function Task(props) {
         const fun = blocklyFunctions[funName]({
           dispatch,
           workspaceRef,
-          robot: robotListLeft[0],
           reachedCodeEnd,
+          robotListLeftRef,
         });
 
         interpreter.setProperty(globalObject, funName, interpreter.createNativeFunction((...args) => {
           console.log("Interpreter:", funName);
-          fun(...args);
+          const ret = fun(...args);
+          if (typeof ret !== "undefined") {
+            console.log("Interpreter:", funName, "=>", ret);
+          }
+          return ret;
         }));
       }
     };

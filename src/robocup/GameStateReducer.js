@@ -19,11 +19,21 @@ function getGridCellRobotCenter(pos) {
   };
 }
 
+// A ball is only "kickable" if the robot is not moving, i.e. if the ball and
+// the robot are on the same cell. this is different from "nextToBall" where
+// the robot is allowed to be in motion and the robot and ball are allowed to
+// be on different cells.
 function ballKickable(ballPos, robotPos) {
   const robotCell = getGridCell(robotPos);
   const ballCell = getGridCell(ballPos);
+  console.log("I'm ballKickable:", robotCell, ballCell);
   return ballCell.x == robotCell.x && ballCell.y == robotCell.y;
-};
+}
+
+// TODO: the whole "nextToBall" state should be removed again in favor of "ballKickable"
+function nextToBall(ballPos, robotPos) {
+  return Math.abs(ballPos.x - robotPos.x) < constants.cell_width && Math.abs(ballPos.y - robotPos.y) < constants.cell_height;
+}
 
 const initialState = {
   teamNameLeft: "01.RFC Berlin",
@@ -97,12 +107,16 @@ function GameStateReducer(state, action) {
     return initialState;
   }
 
-  console.log("GameStateReducer:", action.type);
+  //console.log("GameStateReducer:", action.type);
+//  if (state.robotListLeft && state.robotListLeft.length > 0) {
+//    console.log("redux", state.robotListLeft[0].isBallKickable);
+//  }
 
   switch (action.type) {
     case ActionName.Robot.AddRobot:
       //Handles adding a new robot to the field
       const pos = getGridCellRobotCenter(action.robot.position);
+      console.log(action.type, "isNextToBall := isBallKickable :=", false);
       action.robot.position.x = pos.x;
       action.robot.position.y = pos.y;
       action.robot.position.rotation = action.robot.position.rotation;
@@ -110,6 +124,7 @@ function GameStateReducer(state, action) {
       action.robot.isActiveDueToMoving = false;
       action.robot.isActiveDueToRotating = false;
       action.robot.isBallKickable = false;
+      action.robot.isNextToBall = false;
       if (action.field_half == "left") {
         return {
           ...state,
@@ -141,6 +156,8 @@ function GameStateReducer(state, action) {
       }
 
       const isBallKickable = ballKickable(state.ball.position, current_robot.position);
+      const isNextToBall = nextToBall(state.ball.position, current_robot.position);
+      console.log(action.type, "isNextToBall :=", isNextToBall, "isBallKickable :=", isBallKickable);
 
       return {
         ...state,
@@ -157,6 +174,7 @@ function GameStateReducer(state, action) {
             isActiveDueToMoving,
             isActiveDueToRotating,
             isBallKickable,
+            isNextToBall,
           }
         ]
       };
@@ -221,6 +239,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
     // In the event ActionName.Robot.SetPosition: wasn't called (eg task 1),
     // we can't rely on the redux state
       current_robot.isBallKickable = ballKickable(state.ball.position, current_robot.position);
+      current_robot.isNextToBall = nextToBall(state.ball.position, current_robot.position);
+      console.log(action.type, "isNextToBall :=", current_robot.isNextToBall, "isBallKickable :=", current_robot.isBallKickable );
 
     //   const goalCellsX = [1, 10];
       const goalCellsY = [3, 4, 5]

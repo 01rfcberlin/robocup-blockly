@@ -119,8 +119,16 @@ Blockly.JavaScript['repeat'] = function(block) {
 Blockly.JavaScript['repeat_until'] = function(block) {
     var boolean_in = Blockly.JavaScript.valueToCode(block, 'sensor_in', Blockly.JavaScript.ORDER_ATOMIC);
     var statements_name = Blockly.JavaScript.statementToCode(block, 'do');
+
+    const noConditionDefined = boolean_in === '';
+    if (noConditionDefined) {
+      // do nothing
+      return '';
+    }
+
     const variable_name = randomNameGenerator();
-    return 'while(' + boolean_in + '){' + statements_name + '}';
+    // negate the condition in while() to make a "do until" loop out of the "do while" loop
+    return 'do {' + statements_name + '} while (!(' + boolean_in + '))';
 };
 
 /**
@@ -129,7 +137,7 @@ Blockly.JavaScript['repeat_until'] = function(block) {
  * @returns {string}
  */
 Blockly.JavaScript['next_to_ball'] = function(block) {
-    return ['ballInRange()', Blockly.JavaScript.ORDER_ATOMIC];
+    return ['nextToBall()', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 const randomNameGenerator = () => {
