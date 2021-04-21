@@ -185,6 +185,7 @@ export default function Task(props) {
     };
 
     const Interpreter = window["Interpreter"];
+    const myInterpreter = new Interpreter(code, initApi);
     console.log(code)
     const myInterpreter = new Interpreter(code, initApi);
     reachedCodeEnd.current = false;
