@@ -317,7 +317,7 @@ export default function Task(props) {
                           </Col>
                           <Col xs={1}/>
                           <Col xs={5}>
-                              <b>Blocks auf dem Feld: {workspaceRef.current && workspaceRef.current.workspace.getAllBlocks(true).length}</b>
+                              <b>Anzahl benutzter Blöcke: {workspaceRef.current && workspaceRef.current.workspace.getAllBlocks(true).length-1}</b>
                               <h4><b>Optimale Anzahl Blöcke: {props.task_properties.optimal_blocks}</b></h4>
                           </Col>
                       </Row>

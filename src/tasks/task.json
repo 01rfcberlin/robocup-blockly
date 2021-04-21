@@ -155,7 +155,7 @@
             }
         },
         "task8": {
-            "optimal_blocks": 42,
+            "optimal_blocks": 8,
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat", "repeat_until", "next_to_ball"],
             "own_robot": {
                 "position": {
