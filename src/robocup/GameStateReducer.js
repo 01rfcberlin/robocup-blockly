@@ -162,8 +162,8 @@ function GameStateReducer(state, action) {
       const isActiveDueToMoving =
           (current_robot.target && current_robot.target.x && current_robot.target.x != action.position.x) ||
           (current_robot.target && current_robot.target.y && current_robot.target.y != action.position.y);
-      const isActiveDueToRotating = current_robot.target && current_robot.target.rotation && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation);
-
+      const isActiveDueToRotating = current_robot.target && (typeof current_robot.target.rotation !== 'undefined') && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation);
+      
       let new_rot = 0;
       if (action.position.rotation) {
         new_rot = angles.normalize_angle(action.position.rotation);
@@ -171,7 +171,7 @@ function GameStateReducer(state, action) {
 
       const isBallKickable = ballKickable(state.ball.position, current_robot.position);
       const isNextToBall = nextToBall(state.ball.position, current_robot.position);
-      console.log(action.type, "isNextToBall :=", isNextToBall, "isBallKickable :=", isBallKickable);
+    //   console.log(action.type, "isNextToBall :=", isNextToBall, "isBallKickable :=", isBallKickable);
 
       return {
         ...state,
