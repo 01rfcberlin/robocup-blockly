@@ -272,12 +272,9 @@ export default function Task(props) {
                       <Row>
                           <RoboCupField/>
                       </Row>
-                      <Row style={{marginTop: "20px"}}>
-                          <Col xs={1}/>
-                          <Col xs={10}>
+                      <Row className={"justify-content-md-center"} style={{marginTop: "20px"}}>
                               <h3>{props.task_properties.task.heading}</h3>
                               <p style={{marginTop: "10px"}}>{taskBody()}</p>
-                          </Col>
                       </Row>
                       <Row>
                           <Col xs={8}>
