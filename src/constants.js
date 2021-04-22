@@ -6,9 +6,27 @@ const canvas_height = 400;
 const num_x_cells = 11;
 const num_y_cells = 8;
 
+function roundToMutipleOfTwo(float_) {
+  const int_ = Math.floor(float_);
+
+  if (float_ === int_) {
+    return int_;
+  }
+
+  if (int_ % 2 == 0) {
+    return int_;
+  } else {
+    return int_ + 1;
+  }
+}
+
 // in pixel
-const cell_width = canvas_width / num_x_cells;
-const cell_height = canvas_height / num_y_cells;
+//
+// Important: cell_width and cell_height have to be an integer and has to be
+// dividable by two, otherwise the translations.js will not yield correct
+// result
+const cell_width = roundToMutipleOfTwo(canvas_width / num_x_cells);
+const cell_height = roundToMutipleOfTwo(canvas_height / num_y_cells);
 
 // width of 0.5 meter
 const robot_size_meters = 0.5;

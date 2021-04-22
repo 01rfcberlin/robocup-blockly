@@ -1,12 +1,12 @@
 import ActionName from "../helper/ActionName";
 
 const BallActions = {
-  setTargetPosition: (pos_x, pos_y) => {
+  setTargetPosition: (ballCellX, ballCellY) => {
     return {
       type: ActionName.Ball.SetTargetPosition,
       target: {
-        x: pos_x,
-        y: pos_y
+        x: ballCellX,
+        y: ballCellY,
       }
     }
   },
@@ -21,12 +21,21 @@ const BallActions = {
       }
     }
   },
-  setPosition: (new_x, new_y) => {
+  setPosition: (ballPixelX, ballPixelY) => {
     return {
       type: ActionName.Ball.SetPosition,
       position: {
-        x: new_x,
-        y: new_y
+        x: ballPixelX,
+        y: ballPixelY,
+      }
+    }
+  },
+  addBall: (ballCellX, ballCellY) => {
+    return {
+      type: ActionName.Ball.AddBall,
+      position: {
+        x: ballCellX,
+        y: ballCellY,
       }
     }
   },

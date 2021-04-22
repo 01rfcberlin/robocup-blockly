@@ -2,42 +2,20 @@ import ActionName from "../helper/ActionName";
 import * as constants from "../constants.js";
 import RobotActions from "./RobotActions";
 import * as angles from "./angles";
-
-function getGridCell(pos) {
-  return {
-    x: Math.floor(pos.x / constants.cell_width),
-    y: Math.floor(pos.y / constants.cell_height),
-  };
-}
-
-// map a position for the robot to the center of a grid
-function getGridCellRobotCenter(pos) {
-  const cell = getGridCell(pos);
-  return {
-    x: cell.x*constants.cell_width + constants.cell_width/2 - constants.robot_width,
-    y: cell.y*constants.cell_height + constants.cell_height/2 - constants.robot_height,
-  };
-}
+import * as translations from "./translations.js";
 
 // A ball is only "kickable" if the robot is not moving, i.e. if the ball and
-// the robot are on the same cell. this is different from "nextToBall" where
-// the robot is allowed to be in motion and the robot and ball are allowed to
-// be on different cells.
+// the robot are on the same cell.
 function ballKickable(ballPos, robotPos) {
-  const robotCell = getGridCell(robotPos);
-  const ballCell = getGridCell(ballPos);
-  console.log("I'm ballKickable:", robotCell, ballCell);
+  const robotCell = translations.pixelToCell(robotPos);
+  const ballCell = translations.pixelToCell(ballPos);
   return ballCell.x == robotCell.x && ballCell.y == robotCell.y;
-}
-
-// TODO: the whole "nextToBall" state should be removed again in favor of "ballKickable"
-function nextToBall(ballPos, robotPos) {
-  return Math.abs(ballPos.x - robotPos.x) < constants.cell_width && Math.abs(ballPos.y - robotPos.y) < constants.cell_height;
 }
 
 const initialState = {
   teamNameLeft: "01.RFC Berlin",
   teamNameRight: "Hamburg Bit-Bots",
+  // The robot position is the center of the robot.
   robotListLeft: [],
   robotListRight: [],
   // Don't already define position and target here because the code checks if
@@ -52,29 +30,26 @@ const initialState = {
   toggleOutOfBoundsAlert: false,
 };
 
-const setRobotTarget = (state, index, x, y) => {
+const setRobotTarget = (state, index, robotCell) => {
   //Handles setting a new target position for the robot on the field.
   let current_robot = {...state.robotListLeft[index]};
   //console.log("Robot.SetTargetPosition: Current robot: " + current_robot)
   const copy_robot_list = [...state.robotListLeft];
   copy_robot_list.splice(index, 1);
 
-  // Check if robot moves to a cell out of the field
+  // Check if robot will move to a cell out of the field
   let outofbounds = state.outOfBound;
   let toggleOut = state.toggleOutOfBoundsAlert;
   let goalt = state.toggleGoalAlert;
   let owngoalt = state.toggleOwnGoalAlert;
-  if(
-      getGridCell({x, y}).x >= 10 ||
-      getGridCell({x, y}).x <= 0 ||
-      getGridCell({x, y}).y <= 0 ||
-      getGridCell({x, y}).y >= 8
-  ) {
+  if (robotCell.x >= 10 || robotCell.x <= 0 || robotCell.y <= 0 || robotCell.y >= 8) {
     outofbounds = true;
     toggleOut = true;
     goalt = false;
     owngoalt = false;
   }
+
+  const robotPixel = translations.cellToPixelWithCenteredRobot(robotCell);
 
   return {
     ...state,
@@ -84,8 +59,7 @@ const setRobotTarget = (state, index, x, y) => {
         ...current_robot,
         target: {
           ...current_robot.position,
-          x: x,
-          y: y
+          ...robotPixel,
         },
         // "is active" means if the robot is moving (either rotating or
         // changing its position). Originally isActive was called
@@ -128,9 +102,7 @@ function GameStateReducer(state, action) {
 
   switch (action.type) {
     case ActionName.Robot.AddRobot:
-      //Handles adding a new robot to the field
-      const pos = getGridCellRobotCenter(action.robot.position);
-      console.log(action.type, "isNextToBall := isBallKickable :=", false);
+      const pos = translations.cellToPixelWithCenteredRobot(action.robot.position);
       action.robot.position.x = pos.x;
       action.robot.position.y = pos.y;
       action.robot.position.rotation = action.robot.position.rotation;
@@ -138,7 +110,6 @@ function GameStateReducer(state, action) {
       action.robot.isActiveDueToMoving = false;
       action.robot.isActiveDueToRotating = false;
       action.robot.isBallKickable = false;
-      action.robot.isNextToBall = false;
       if (action.field_half == "left") {
         return {
           ...state,
@@ -152,7 +123,7 @@ function GameStateReducer(state, action) {
         };
       }
     case ActionName.Robot.SetTargetPosition:
-      return setRobotTarget(state, action.index, action.target.x, action.target.y);
+      return setRobotTarget(state, action.index, action.target);
     case ActionName.Robot.SetPosition:
       //Actually updates the position of a robot on the field
       current_robot = {...state.robotListLeft[action.index]};
@@ -170,8 +141,6 @@ function GameStateReducer(state, action) {
       }
 
       const isBallKickable = ballKickable(state.ball.position, current_robot.position);
-      const isNextToBall = nextToBall(state.ball.position, current_robot.position);
-    //   console.log(action.type, "isNextToBall :=", isNextToBall, "isBallKickable :=", isBallKickable);
 
       return {
         ...state,
@@ -188,7 +157,6 @@ function GameStateReducer(state, action) {
             isActiveDueToMoving,
             isActiveDueToRotating,
             isBallKickable,
-            isNextToBall,
           }
         ]
       };
@@ -222,14 +190,16 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       current_robot = {...state.robotListLeft[action.index]};
       const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
+      const robotCell = translations.pixelToCell(current_robot.position);
+
       if (gaze_direction == angles.gaze_directions.right) {
-        return setRobotTarget(state, action.index, current_robot.position.x + (action.blocks * constants.cell_width), current_robot.position.y);
+        return setRobotTarget(state, action.index, {x:robotCell.x + action.blocks, y:robotCell.y});
       } else if (gaze_direction == angles.gaze_directions.left) {
-        return setRobotTarget(state, action.index, current_robot.position.x - (action.blocks * constants.cell_width), current_robot.position.y);
+        return setRobotTarget(state, action.index, {x:robotCell.x - action.blocks, y:robotCell.y});
       } else if (gaze_direction == angles.gaze_directions.bottom) {
-        return setRobotTarget(state, action.index, current_robot.position.x, current_robot.position.y + (action.blocks * constants.cell_height));
+        return setRobotTarget(state, action.index, {x:robotCell.x, y:robotCell.y + action.blocks});
       } else if (gaze_direction == angles.gaze_directions.top) {
-        return setRobotTarget(state, action.index, current_robot.position.x, current_robot.position.y - (action.blocks * constants.cell_height));
+        return setRobotTarget(state, action.index, {x:robotCell.x, y:robotCell.y - action.blocks});
       };
 
     case ActionName.Robot.Reset:
@@ -255,32 +225,26 @@ current_robot.position.rotation + action.relativeTarget.rotation);
     // In the event ActionName.Robot.SetPosition: wasn't called (eg task 1),
     // we can't rely on the redux state
       let isbk = ballKickable(state.ball.position, current_robot.position);
-      let isnb = nextToBall(state.ball.position, current_robot.position);
-      console.log(action.type, "isNextToBall :=", current_robot.isNextToBall, "isBallKickable :=", current_robot.isBallKickable );
 
     //   const goalCellsX = [1, 10];
       const goalCellsY = [3, 4, 5]
 
-      let new_ball_x = state.ball.position.x;
-      let new_ball_y = state.ball.position.y;
-
-
+      const ballCell = translations.pixelToCell(state.ball.position);
+      let newBallCell = ballCell;
 
       if (isbk) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
         if (gaze_direction == angles.gaze_directions.left) {
-          new_ball_x = state.ball.position.x - (action.target.blocks * constants.cell_width);
+          newBallCell.x -= action.target.blocks;
         } else if (gaze_direction == angles.gaze_directions.right) {
-          new_ball_x = state.ball.position.x + (action.target.blocks * constants.cell_width);
+          newBallCell.x += action.target.blocks;
         } else if (gaze_direction == angles.gaze_directions.bottom) {
-          new_ball_y = state.ball.position.y + (action.target.blocks * constants.cell_height);
+          newBallCell.y += action.target.blocks;
         } else if (gaze_direction == angles.gaze_directions.top) {
-          new_ball_y = state.ball.position.y - (action.target.blocks * constants.cell_height);
+          newBallCell.y -= action.target.blocks;
         }
       }
-
-      const ballPos = getGridCell({x: new_ball_x, y: new_ball_y});
 
       let goalsL = state.goalsLeft;
       let goalsR = state.goalsRight;
@@ -288,7 +252,7 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       let toggleOwnGoal = state.toggleOwnGoalAlert;
       let toggleOut = state.toggleOutOfBoundsAlert;
 
-      if(ballPos.x >= constants.num_x_cells-1 && goalCellsY.includes(ballPos.y)) {
+      if(newBallCell.x >= constants.num_x_cells-1 && goalCellsY.includes(newBallCell.y)) {
         // console.log("TOOR Home Team")
         goalsL += 1;
         toggleGoal = true;
@@ -296,7 +260,7 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         toggleOut = false;
       }
 
-      if(ballPos.x <= 0 && goalCellsY.includes(ballPos.y)) {
+      if(newBallCell.x <= 0 && goalCellsY.includes(newBallCell.y)) {
         // console.log("TOOR Away Team")
         goalsR += 1;
         toggleOwnGoal = true;
@@ -304,14 +268,13 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         toggleOut = false;
       }
 
+      const newBallPixel = translations.cellToPixelWithEastBall(newBallCell);
+
       return {
         ...state,
         ball: {
           ...state.ball,
-          target: {
-            x: new_ball_x,
-            y: new_ball_y
-          },
+          target: newBallPixel,
           isMoving: true
         },
         robotListLeft: [
@@ -319,7 +282,6 @@ current_robot.position.rotation + action.relativeTarget.rotation);
           {
             ...current_robot,
             isBallKickable: isbk,
-            isNextToBall: isnb
           }],
         goalsLeft: goalsL,
         goalsRight: goalsR,
@@ -327,6 +289,15 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         toggleOwnGoalAlert: toggleOwnGoal,
         toggleOutOfBoundsAlert: toggleOut,
       };
+    case ActionName.Ball.AddBall:
+      const ballPixel = translations.cellToPixelWithEastBall(action.position);
+      return {
+        ...state,
+        ball: {
+          ...state.ball,
+          position: ballPixel,
+         }
+       };
     case ActionName.Ball.SetPosition:
       //Actually updates the position of the ball on the field
       const isBallMoving =

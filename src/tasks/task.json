@@ -5,15 +5,15 @@
             "codeBlocks": ["ball_kick"],
             "own_robot": {
                 "position": {
-                    "x": 460,
-                    "y": 220,
+                    "x": 8,
+                    "y": 4,
                     "rotation": 90
                 }
             },
             "ball": {
                 "position": {
-                    "x": 470,
-                    "y": 220
+                    "x": 8,
+                    "y": 4
                 }
             },
             "task": {
@@ -27,15 +27,15 @@
             "codeBlocks": ["ball_kick", "move_one_block_ahead"],
             "own_robot": {
                 "position": {
-                    "x": 300,
-                    "y": 220,
+                    "x": 5,
+                    "y": 4,
                     "rotation": 90
                 }
             },
             "ball": {
                 "position": {
-                    "x": 470,
-                    "y": 220
+                    "x": 8,
+                    "y": 4
                 }
             },
             "task": {
@@ -49,15 +49,15 @@
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right"],
             "own_robot": {
                 "position": {
-                    "x": 300,
-                    "y": 250,
+                    "x": 5,
+                    "y": 5,
                     "rotation": 0
                 }
             },
             "ball": {
                 "position": {
-                    "x": 470,
-                    "y": 220
+                    "x": 8,
+                    "y": 4
                 }
             },
             "task": {
@@ -71,15 +71,15 @@
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right"],
             "own_robot": {
                 "position": {
-                    "x": 100,
-                    "y": 220,
+                    "x": 1,
+                    "y": 4,
                     "rotation": 90
                 }
             },
             "ball": {
                 "position": {
-                    "x": 470,
-                    "y": 220
+                    "x": 8,
+                    "y": 4
                 }
             },
             "task": {
@@ -93,15 +93,15 @@
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat"],
             "own_robot": {
                 "position": {
-                    "x": 100,
-                    "y": 220,
+                    "x": 1,
+                    "y": 4,
                     "rotation": 90
                 }
             },
             "ball": {
                 "position": {
-                    "x": 470,
-                    "y": 220
+                    "x": 8,
+                    "y": 4
                 }
             },
             "task": {
@@ -115,15 +115,15 @@
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat"],
             "own_robot": {
                 "position": {
-                    "x": 150,
-                    "y": 220,
+                    "x": 2,
+                    "y": 4,
                     "rotation": 90
                 }
             },
             "ball": {
                 "position": {
-                    "x": 300,
-                    "y": 218
+                    "x": 5,
+                    "y": 4
                 }
             },
             "task": {
@@ -137,15 +137,15 @@
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat", "repeat_until", "next_to_ball"],
             "own_robot": {
                 "position": {
-                    "x": 100,
-                    "y": 220,
+                    "x": 1,
+                    "y": 4,
                     "rotation": 90
                 }
             },
             "ball": {
                 "position": {
-                    "x": 470,
-                    "y": 220
+                    "x": 8,
+                    "y": 4
                 }
             },
             "task": {
@@ -159,22 +159,22 @@
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat", "repeat_until", "next_to_ball"],
             "own_robot": {
                 "position": {
-                    "x": 100,
-                    "y": 220,
+                    "x": 1,
+                    "y": 4,
                     "rotation": 90
                 }
             },
             "opponent_robot": {
                 "position": {
-                    "x": 420,
-                    "y": 220,
+                    "x": 7,
+                    "y": 4,
                     "rotation": -90
                 }
             },
             "ball": {
                 "position": {
-                    "x": 130,
-                    "y": 320
+                    "x": 2,
+                    "y": 6
                 }
             },
             "task": {

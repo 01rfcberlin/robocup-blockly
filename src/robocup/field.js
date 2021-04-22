@@ -148,6 +148,25 @@ export const RoboCupField = ({grid_properties}) => {
       ctx.translate(-center_x, -center_y);
     };
 
+    // draw an image given the center of the image
+    function drawCenteredImage(ctx, img, centerX, centerY, w, h) {
+        ctx.drawImage(img,
+          centerX-w/2,
+          centerY-h/2,
+          w,
+          h);
+    };
+
+    // draw an image given the center of the image
+    function drawRotatedCenteredImage(ctx, img, angle, centerX, centerY, w, h) {
+        drawRotatedImage(ctx,
+          img,
+          angle,
+          centerX-w/2,
+          centerY-h/2,
+          w,
+          h);
+    };
 
     /**
      * Draws all robots at their current position.
@@ -158,22 +177,21 @@ export const RoboCupField = ({grid_properties}) => {
         robotListLeft.forEach(element => {
             var robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
-            drawRotatedImage(ctx,
-              robot_img,
+            // the position of the Redux state is the center of the robot
+            drawRotatedCenteredImage(ctx, robot_img,
               element.position.rotation,
-              element.position.x+constants.robot_width/2,
-              element.position.y-constants.robot_height/2,
+              element.position.x,
+              element.position.y,
               constants.robot_width,
               constants.robot_height)
         });
         robotListRight.forEach(element => {
             var robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/wolfgang.png';
-            drawRotatedImage(ctx,
-                robot_img,
+            drawRotatedCenteredImage(ctx, robot_img,
                 element.position.rotation,
-                element.position.x+constants.robot_width/2,
-                element.position.y-constants.robot_height/2,
+                element.position.x,
+                element.position.y,
                 constants.robot_width,
                 constants.robot_height)
         })
@@ -189,7 +207,11 @@ export const RoboCupField = ({grid_properties}) => {
             var ball_img = new Image();
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
             // -(0.5*constants.cell_height) we need to move the ball up according to the field
-            ctx.drawImage(ball_img, ball.position.x, ball.position.y-(0.5*constants.cell_height), constants.ball_width, constants.ball_height)
+            drawCenteredImage(ctx, ball_img,
+              ball.position.x,
+              ball.position.y,
+              constants.ball_width,
+              constants.ball_height)
         }
 
     };

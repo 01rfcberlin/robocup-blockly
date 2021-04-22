@@ -1,14 +1,14 @@
 import ActionName from "../helper/ActionName";
 
 const RobotActions = {
-  addRobot: (pos_x, pos_y, rotation, field_half) => {
+  addRobot: (robotCellX, robotCellY, rotation, field_half) => {
     return {
       type: ActionName.Robot.AddRobot,
       robot: {
         position: {
-          x: pos_x,
-          y: pos_y,
-          rotation: rotation
+          x: robotCellX,
+          y: robotCellY,
+          rotation: rotation,
         }
       },
       field_half: field_half
@@ -19,17 +19,17 @@ const RobotActions = {
       type: ActionName.Robot.AddTargetRotation,
       index: ind,
       relativeTarget: {
-        rotation: radians
+        rotation: radians,
       }
     }
   },
-  setTargetPosition: (pos_x, pos_y, ind) => {
+  setTargetPosition: (robotCellX, robotCellY, ind) => {
     return {
       type: ActionName.Robot.SetTargetPosition,
       index: ind,
       target: {
-        x: pos_x,
-        y: pos_y
+        x: robotCellX,
+        y: robotCellY,
       }
     }
   },
@@ -37,17 +37,17 @@ const RobotActions = {
     return {
       type: ActionName.Robot.WalkForward,
       index: ind,
-      blocks: blocks
+      blocks: blocks,
     }
   },
-  setPosition: (new_x, new_y, new_rot, idx) => {
+  setPosition: (robotPixelX, robotPixelY, new_rot, idx) => {
     return {
       type: ActionName.Robot.SetPosition,
       index: idx,
       position: {
         rotation: new_rot,
-        x: new_x,
-        y: new_y
+        x: robotPixelX,
+        y: robotPixelY,
       }
     }
   },

@@ -58,7 +58,7 @@ const blocklyFunctions = {
 
   nextToBall: ({dispatch, robotListLeftRef}) => (
     () => {
-      return robotListLeftRef.current[0].isNextToBall;
+      return robotListLeftRef.current[0].isBallKickable;
     }
   ),
 
@@ -201,7 +201,7 @@ export default function Task(props) {
             props.task_properties.own_robot.position.rotation * 2*Math.PI/360,
             "left"
         ));
-        dispatch(BallActions.setPosition(props.task_properties.ball.position.x,props.task_properties.ball.position.y));
+        dispatch(BallActions.addBall(props.task_properties.ball.position.x,props.task_properties.ball.position.y));
         if(props.task_properties.opponent_robot) {
             dispatch(RobotActions.addRobot(
                 props.task_properties.opponent_robot.position.x,

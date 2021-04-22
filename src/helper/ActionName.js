@@ -19,7 +19,8 @@ const ActionName = {
     SetTargetPosition: 'Ball.SetTargetPosition',
     SetPosition: 'Ball.SetPosition',
     BallKick: 'Ball.BallKick',
-    Reset: 'Ball.Reset'
+    AddBall: 'Ball.AddBall',
+    Reset: 'Ball.Reset',
   },
   Interface: {
     ToggleGoalAlert: 'Interface.ToggleGoalAlert',
