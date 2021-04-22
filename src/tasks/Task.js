@@ -155,6 +155,12 @@ export default function Task(props) {
     init();
   }, [props.task_properties]);
 
+    useEffect(() => {
+        console.log("Initializing");
+        init();
+    }, [workspaceRef.current]);
+
+
   function instantiateInterpreter() {
     BlocklyJS.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
     BlocklyJS.addReservedWords('highlightBlock');
