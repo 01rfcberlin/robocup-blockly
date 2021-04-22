@@ -265,11 +265,16 @@ export default function Task(props) {
   }, []);
 
   let buttonText;
+  let buttonClass;
   if (workspaceInterpreterRef.current !== null) {
     buttonText = "Reset!";
+    buttonClass = "button reset";
   } else {
     buttonText = "Code Ausführen!";
+    buttonClass = "button execute";
   }
+
+
 
   return(
       <Container style={{minWidth: "100%", minHeight: "100%"}}>
@@ -310,7 +315,7 @@ export default function Task(props) {
                       </Row>
                       <Row style={{marginTop: "20px"}}>
                           <Col xs={12}>
-                              <Button size="lg" block onClick={() => {
+                              <button size="lg" className={buttonClass} block onClick={() => {
                                 if (workspaceInterpreterRef.current !== null) {
                                   reset();
                                   triggerRendering(curTriggerRendering + 1);
@@ -318,7 +323,7 @@ export default function Task(props) {
                                   instantiateInterpreter();
                                   triggerRendering(curTriggerRendering + 1);
                                 }
-                              }}>{buttonText}</Button>
+                              }}>{buttonText}</button>
                           </Col>
                       </Row>
                       <Row className={"justify-content-md-center"} style={{marginTop: "10px"}}>
