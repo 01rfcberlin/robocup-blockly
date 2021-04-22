@@ -267,10 +267,10 @@ export default function Task(props) {
   let buttonText;
   let buttonClass;
   if (workspaceInterpreterRef.current !== null) {
-    buttonText = "Reset!";
+    buttonText = "Nochmal!";
     buttonClass = "button reset";
   } else {
-    buttonText = "Code Ausführen!";
+    buttonText = "Code ausführen!";
     buttonClass = "button execute";
   }
 
