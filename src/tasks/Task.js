@@ -156,13 +156,7 @@ export default function Task(props) {
 
   useEffect(() => {
     init();
-  }, [props.task_properties]);
-
-    useEffect(() => {
-        console.log("Initializing");
-        init();
-    }, [workspaceRef.current]);
-
+  }, [props.task_properties, workspaceRef.current]);
 
   function instantiateInterpreter() {
     BlocklyJS.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
@@ -242,8 +236,6 @@ export default function Task(props) {
 
     // If the robot is still moving (i.e. the robot is still executing the
     // last task), then don't begin the next task.
-      console.log(ballRef)
-      console.log(ballRef.isMoving)
     if (robot.isActive || ballRef.isMoving) {
       return;
     }
