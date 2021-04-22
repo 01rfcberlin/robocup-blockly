@@ -291,7 +291,7 @@ export default function Task(props) {
                               }
                           </Col>
                           <Col xs={4}>
-                              <img height={"100px"} src={"/bueroklammer.jpg"} onClick={() => {toggleTip()}}></img>
+                              <img height={"100px"} src={process.env.PUBLIC_URL + "/bueroklammer.jpg"} onClick={() => {toggleTip()}}></img>
                           </Col>
                       </Row>
                   </Col>

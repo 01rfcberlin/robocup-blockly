@@ -4,6 +4,16 @@
 
 In the project directory, run `npm install`
 
+## Build
+
+Assume we want to deploy the site to the path "/girlsday", then you can do:
+
+```
+PUBLIC_URL="/girlsday" npm run build
+```
+
+You can find the files to deploy in the build/ folder.
+
 ## Execute the Code
 
 `npm start` to run the app in the development mode.\

@@ -62,7 +62,7 @@ const App = () => {
       <Container style={{minWidth: "90vw", minHeight: "95vh"}} className="App">
         <Row className="tasks" style={{marginTop: "10px", marginBottom: "10px"}}>
             <Col xs={1}>
-                <img width={"50px"} src={"/logo.png"}/>
+                <a href="https://01.rfc-berlin.de"><img width={"50px"} src={process.env.PUBLIC_URL + "/logo.png"}/></a>
             </Col>
             <Col className={"justify-content-md-center"} xs={11}>
             <h3 className="task-text" style={{marginRight: "10px"}}>Aufgabe:</h3>
