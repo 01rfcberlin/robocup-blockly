@@ -234,7 +234,7 @@ Blockly.Blocks['next_to_ball'] = {
       "message0": 'Roboter am Ball',
       "output": null,
       "type": Boolean,
-      "colour": "#B1B7BC",
+      "colour": "#93a832",
       "tooltip": "Dieser Block sagt euch, ob der Roboter den Ball bereits erreicht hat",
     });
   }
