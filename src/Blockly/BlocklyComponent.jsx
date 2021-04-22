@@ -66,11 +66,11 @@ class BlocklyComponent extends React.Component {
 
         const undefd = childrenAtLastRenderCall === null || childrenLastInjected === null;
         if (!undefd) {
-          const lengthEq = childrenAtLastRenderCall.length == childrenLastInjected.length;
+          const lengthEq = childrenAtLastRenderCall.length === childrenLastInjected.length;
           if (lengthEq) {
             let elementAreEqual = true;
             for (let i = 0; i < childrenAtLastRenderCall.length; i = i+1) {
-              if (childrenAtLastRenderCall[i].key != childrenLastInjected[i].key) {
+              if (childrenAtLastRenderCall[i].key !== childrenLastInjected[i].key) {
                 elementAreEqual = false;
               }
             }

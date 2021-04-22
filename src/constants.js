@@ -13,7 +13,7 @@ function roundToMutipleOfTwo(float_) {
     return int_;
   }
 
-  if (int_ % 2 == 0) {
+  if (int_ % 2 === 0) {
     return int_;
   } else {
     return int_ + 1;

@@ -1,6 +1,5 @@
 import ActionName from "../helper/ActionName";
 import * as constants from "../constants.js";
-import RobotActions from "./RobotActions";
 import * as angles from "./angles";
 import * as translations from "./translations.js";
 
@@ -9,7 +8,7 @@ import * as translations from "./translations.js";
 function ballKickable(ballPos, robotPos) {
   const robotCell = translations.pixelToCell(robotPos);
   const ballCell = translations.pixelToCell(ballPos);
-  return ballCell.x == robotCell.x && ballCell.y == robotCell.y;
+  return ballCell.x === robotCell.x && ballCell.y === robotCell.y;
 }
 
 const initialState = {
@@ -105,12 +104,11 @@ function GameStateReducer(state, action) {
       const pos = translations.cellToPixelWithCenteredRobot(action.robot.position);
       action.robot.position.x = pos.x;
       action.robot.position.y = pos.y;
-      action.robot.position.rotation = action.robot.position.rotation;
       action.robot.isActive = false;
       action.robot.isActiveDueToMoving = false;
       action.robot.isActiveDueToRotating = false;
       action.robot.isBallKickable = false;
-      if (action.field_half == "left") {
+      if (action.field_half === "left") {
         return {
           ...state,
           robotListLeft: [...state.robotListLeft, action.robot]
@@ -131,8 +129,8 @@ function GameStateReducer(state, action) {
       copy_robot_list2.splice(action.index, 1);
 
       const isActiveDueToMoving =
-          (current_robot.target && (typeof current_robot.target.x !== 'undefined') && current_robot.target.x != action.position.x) ||
-          (current_robot.target && (typeof current_robot.target.y !== 'undefined') && current_robot.target.y != action.position.y);
+          (current_robot.target && (typeof current_robot.target.x !== 'undefined') && current_robot.target.x !== action.position.x) ||
+          (current_robot.target && (typeof current_robot.target.y !== 'undefined') && current_robot.target.y !== action.position.y);
       const isActiveDueToRotating = current_robot.target && (typeof current_robot.target.rotation !== 'undefined') && !angles.angle_almost_equals(current_robot.target.rotation, action.position.rotation);
       
       let new_rot = 0;
@@ -192,15 +190,18 @@ current_robot.position.rotation + action.relativeTarget.rotation);
 
       const robotCell = translations.pixelToCell(current_robot.position);
 
-      if (gaze_direction == angles.gaze_directions.right) {
+      if (gaze_direction === angles.gaze_directions.right) {
         return setRobotTarget(state, action.index, {x:robotCell.x + action.blocks, y:robotCell.y});
-      } else if (gaze_direction == angles.gaze_directions.left) {
+      } else if (gaze_direction === angles.gaze_directions.left) {
         return setRobotTarget(state, action.index, {x:robotCell.x - action.blocks, y:robotCell.y});
-      } else if (gaze_direction == angles.gaze_directions.bottom) {
+      } else if (gaze_direction === angles.gaze_directions.bottom) {
         return setRobotTarget(state, action.index, {x:robotCell.x, y:robotCell.y + action.blocks});
-      } else if (gaze_direction == angles.gaze_directions.top) {
+      } else if (gaze_direction === angles.gaze_directions.top) {
         return setRobotTarget(state, action.index, {x:robotCell.x, y:robotCell.y - action.blocks});
-      };
+      } else {
+        console.assert(false);
+        return {};
+      }
 
     case ActionName.Robot.Reset:
       return initialState;
@@ -235,14 +236,17 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       if (isbk) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
-        if (gaze_direction == angles.gaze_directions.left) {
+        if (gaze_direction === angles.gaze_directions.left) {
           newBallCell.x -= action.target.blocks;
-        } else if (gaze_direction == angles.gaze_directions.right) {
+        } else if (gaze_direction === angles.gaze_directions.right) {
           newBallCell.x += action.target.blocks;
-        } else if (gaze_direction == angles.gaze_directions.bottom) {
+        } else if (gaze_direction === angles.gaze_directions.bottom) {
           newBallCell.y += action.target.blocks;
-        } else if (gaze_direction == angles.gaze_directions.top) {
+        } else if (gaze_direction === angles.gaze_directions.top) {
           newBallCell.y -= action.target.blocks;
+        } else {
+          console.assert(false);
+          return {};
         }
       }
 
@@ -301,8 +305,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
     case ActionName.Ball.SetPosition:
       //Actually updates the position of the ball on the field
       const isBallMoving =
-          (state.ball.target && (typeof state.ball.target.x !== 'undefined') && state.ball.target.x != action.position.x) ||
-          (state.ball.target && (typeof state.ball.target.y !== 'undefined') && state.ball.target.y != action.position.y)
+          (state.ball.target && (typeof state.ball.target.x !== 'undefined') && state.ball.target.x !== action.position.x) ||
+          (state.ball.target && (typeof state.ball.target.y !== 'undefined') && state.ball.target.y !== action.position.y)
 
       return {
         ...state,

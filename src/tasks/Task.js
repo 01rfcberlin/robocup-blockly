@@ -71,7 +71,7 @@ const blocklyFunctions = {
 
 export default function Task(props) {
   const dispatch = useDispatch();
-  const { robotListLeft, ball } = useSelector(state => {
+  const { robotListLeft } = useSelector(state => {
     return state.gameState;
   });
 
@@ -291,7 +291,7 @@ export default function Task(props) {
                               }
                           </Col>
                           <Col xs={4}>
-                              <img height={"100px"} src={process.env.PUBLIC_URL + "/bueroklammer.jpg"} onClick={() => {toggleTip()}}></img>
+                              <img alt="Click this for hints" height={"100px"} src={process.env.PUBLIC_URL + "/bueroklammer.jpg"} onClick={() => {toggleTip()}}></img>
                           </Col>
                       </Row>
                   </Col>

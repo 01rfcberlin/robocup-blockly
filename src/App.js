@@ -21,7 +21,7 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
 
 import './blocks/customblocks';
@@ -29,7 +29,6 @@ import './generator/generator';
 import {useDispatch, useSelector} from "react-redux";
 import ApplicationActions from "./applicationLogic/ApplicationActions";
 import TaskDetails from "./tasks/task.json";
-import Alert from 'react-bootstrap/Alert'
 import Task from "./tasks/Task";
 import {Col, Container, Row} from "reactstrap";
 import InterfaceActions from "./robocup/InterfaceActions";
@@ -40,10 +39,6 @@ const App = () => {
 
     const { currentTask } = useSelector(state => {
         return state.application;
-    });
-
-    const { goalsLeft, goalsRight, outOfBound } = useSelector(state => {
-        return state.gameState;
     });
 
     //Contains the individual tasks that the students can work through.
@@ -62,7 +57,7 @@ const App = () => {
       <Container style={{minWidth: "90vw", minHeight: "95vh"}} className="App">
         <Row className="tasks" style={{marginTop: "10px", marginBottom: "10px"}}>
             <Col xs={1}>
-                <a href="https://01.rfc-berlin.de"><img width={"50px"} src={process.env.PUBLIC_URL + "/logo.png"}/></a>
+                <a href="https://01.rfc-berlin.de"><img alt="Logo of the RFC Berlin" width={"50px"} src={process.env.PUBLIC_URL + "/logo.png"}/></a>
             </Col>
             <Col className={"justify-content-md-center"} xs={11}>
             <h3 className="task-text" style={{marginRight: "10px"}}>Aufgabe:</h3>

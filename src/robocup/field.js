@@ -6,7 +6,6 @@ import BallActions from "./BallActions";
 import * as constants from "../constants.js";
 import * as angles from "./angles";
 import Alert from "react-bootstrap/Alert";
-import {Container} from "reactstrap";
 import InterfaceActions from "./InterfaceActions";
 
 /**
@@ -38,8 +37,8 @@ export const RoboCupField = ({grid_properties}) => {
         ctx.fillRect(0, 0, constants.canvas_width, constants.canvas_height);
 
         // draw grid
-        for (var i = 1; i <= 7; i++) {
-            for (var j = 1; j <= 9; j++) {
+        for (let i = 1; i <= 7; i++) {
+            for (let j = 1; j <= 9; j++) {
                 ctx.beginPath();
                 ctx.fillStyle = ["rgba(0,255,0,0.3)", "rgba(0,255,0,0.1)"][(i + j) % 2];
                 // -(0.5*constants.cell_height) moves the field up along the y-axis
@@ -49,7 +48,7 @@ export const RoboCupField = ({grid_properties}) => {
         }
 
         // draw border
-        for (var i = 1; i < 11; i++) { 
+        for (let i = 1; i < 11; i++) { 
             ctx.beginPath();
             ctx.fillStyle = 'green';
             ctx.fillRect(i * constants.cell_width, 0, constants.cell_width, constants.cell_height);
@@ -115,8 +114,8 @@ export const RoboCupField = ({grid_properties}) => {
     };
 
     const drawDebugCellCoords = (ctx) => {
-        for (var x = 0; x <= 10; x++) {
-            for (var y = 0; y <= 8; y++) {
+        for (let x = 0; x <= 10; x++) {
+            for (let y = 0; y <= 8; y++) {
                 ctx.strokeStyle = 'black';
                 ctx.strokeRect(x * constants.cell_width, y * constants.cell_height-(0.5*constants.cell_height), constants.cell_width, constants.cell_height);
 
@@ -175,7 +174,7 @@ export const RoboCupField = ({grid_properties}) => {
      */
     const draw_robots = (canvas, ctx) => {
         robotListLeft.forEach(element => {
-            var robot_img = new Image();
+            let robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
             // the position of the Redux state is the center of the robot
             drawRotatedCenteredImage(ctx, robot_img,
@@ -186,7 +185,7 @@ export const RoboCupField = ({grid_properties}) => {
               constants.robot_height)
         });
         robotListRight.forEach(element => {
-            var robot_img = new Image();
+            let robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/wolfgang.png';
             drawRotatedCenteredImage(ctx, robot_img,
                 element.position.rotation,
@@ -204,7 +203,7 @@ export const RoboCupField = ({grid_properties}) => {
      */
     const draw_ball = (canvas, ctx) => {
         if(ball.position) {
-            var ball_img = new Image();
+            let ball_img = new Image();
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
             // -(0.5*constants.cell_height) we need to move the ball up according to the field
             drawCenteredImage(ctx, ball_img,
@@ -238,7 +237,7 @@ export const RoboCupField = ({grid_properties}) => {
                 // in both directions at the same time. Or put differently,
                 // element.target and element.position only differ in at most one
                 // component.
-                console.assert(element.target.x == element.position.x || element.target.y == element.position.y);
+                console.assert(element.target.x === element.position.x || element.target.y === element.position.y);
 
                 const delta_x = element.target.x - element.position.x;
                 const delta_y = element.target.y - element.position.y;
@@ -256,10 +255,10 @@ export const RoboCupField = ({grid_properties}) => {
                 // Avoid overshooting: Since we know that we only go along one
                 // coordinate, we can just set the position to the target.
                 const would_overshoot =
-                    element.target.x > element.position.x && new_x > element.target.x
-                    || element.target.x < element.position.x && new_x < element.target.x
-                    || element.target.y > element.position.y && new_y > element.target.y
-                    || element.target.y < element.position.y && new_y < element.target.y;
+                    (element.target.x > element.position.x && new_x > element.target.x)
+                    || (element.target.x < element.position.x && new_x < element.target.x)
+                    || (element.target.y > element.position.y && new_y > element.target.y)
+                    || (element.target.y < element.position.y && new_y < element.target.y);
                 if (would_overshoot) {
                     new_x = element.target.x;
                     new_y = element.target.y;
@@ -272,7 +271,7 @@ export const RoboCupField = ({grid_properties}) => {
               const direction = Math.sign(angles.angle_signed_smallest_difference(element.position.rotation, element.target.rotation));
               const new_angle = element.position.rotation + direction * constants.robot_rotation_per_draw_all;
               const new_direction = Math.sign(angles.angle_signed_smallest_difference(new_angle, element.target.rotation));
-              const would_overshoot = direction != new_direction;
+              const would_overshoot = direction !== new_direction;
 
               if (would_overshoot) {
                 dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.target.rotation, idx));
@@ -286,7 +285,7 @@ export const RoboCupField = ({grid_properties}) => {
         if(ball.target && !Number.isNaN(ball.position.x) && !Number.isNaN(ball.position.y)) {
 
             // If the ball does not move, set the target to the same spot
-            if (ball.target.x == ball.position.x && ball.target.y == ball.position.y) {
+            if (ball.target.x === ball.position.x && ball.target.y === ball.position.y) {
                 dispatch(BallActions.setPosition(ball.target.x, ball.target.y))
             } else {
 
@@ -294,7 +293,7 @@ export const RoboCupField = ({grid_properties}) => {
                 // in both directions at the same time. Or put differently,
                 // ball.target and ball.position only differ in at most one
                 // component.
-                console.assert(ball.target.x != ball.position.x || ball.target.y != ball.position.y);
+                console.assert(ball.target.x !== ball.position.x || ball.target.y !== ball.position.y);
 
                 const delta_x = ball.target.x - ball.position.x;
                 const delta_y = ball.target.y - ball.position.y;
@@ -312,10 +311,10 @@ export const RoboCupField = ({grid_properties}) => {
                 // Avoid overshooting: Since we know that we only go along one
                 // coordinate, we can just set the position to the target.
                 const ball_would_overshoot = 
-                    ball.target.x > ball.position.x && new_ball_x > ball.target.x
-                    || ball.target.x < ball.position.x && new_ball_x < ball.target.x
-                    || ball.target.y > ball.position.y && new_ball_y > ball.target.y
-                    || ball.target.y < ball.position.y && new_ball_y < ball.target.y;
+                    (ball.target.x > ball.position.x && new_ball_x > ball.target.x)
+                    || (ball.target.x < ball.position.x && new_ball_x < ball.target.x)
+                    || (ball.target.y > ball.position.y && new_ball_y > ball.target.y)
+                    || (ball.target.y < ball.position.y && new_ball_y < ball.target.y);
                 if (ball_would_overshoot) {
                     new_ball_x = ball.target.x;
                     new_ball_y = ball.target.y;
