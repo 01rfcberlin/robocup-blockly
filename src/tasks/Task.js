@@ -71,7 +71,7 @@ const blocklyFunctions = {
 
 export default function Task(props) {
   const dispatch = useDispatch();
-  const { robotListLeft } = useSelector(state => {
+  const { robotListLeft, ball } = useSelector(state => {
     return state.gameState;
   });
 
@@ -237,7 +237,7 @@ export default function Task(props) {
 
     // If the robot is still moving (i.e. the robot is still executing the
     // last task), then don't begin the next task.
-    if (robot.isActive) {
+    if (robot.isActive && ball.isMoving) {
       return;
     }
 
