@@ -91,6 +91,9 @@ export default function Task(props) {
   const robotListLeftRef = useRef();
   robotListLeftRef.current = robotListLeft;
 
+  const ballStateRef = useRef();
+  ballStateRef.current = ball;
+
   const [showTip, setShowTip] = useState(false);
 
   const toggleTip = () => {
@@ -179,6 +182,7 @@ export default function Task(props) {
           workspaceRef,
           reachedCodeEnd,
           robotListLeftRef,
+          ballStateRef
         });
 
         interpreter.setProperty(globalObject, funName, interpreter.createNativeFunction((...args) => {
@@ -223,6 +227,7 @@ export default function Task(props) {
   function interpreterStep() {
     const workspaceInterpreter = workspaceInterpreterRef.current;
     const robot = robotListLeftRef.current[0];
+    const ballRef = ballStateRef.current
 
     //console.log("interpreterStep()",
     //  "interpreter?", workspaceInterpreter !== null,
@@ -237,7 +242,9 @@ export default function Task(props) {
 
     // If the robot is still moving (i.e. the robot is still executing the
     // last task), then don't begin the next task.
-    if (robot.isActive && ball.isMoving) {
+      console.log(ballRef)
+      console.log(ballRef.isMoving)
+    if (robot.isActive || ballRef.isMoving) {
       return;
     }
 
