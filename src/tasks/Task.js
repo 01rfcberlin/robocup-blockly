@@ -303,7 +303,9 @@ export default function Task(props) {
                   <Col xs={7}>
                       <Row style={{height: "80vh"}}>
                           <BlocklyComponent ref={workspaceRef}
-                                            readOnly={false} trashcan={true}
+                                            readOnly={false}
+                                            trashcan={true}
+                                            media={process.env.PUBLIC_URL + "/media/"}
                                             move={{
                                                 scrollbars: true,
                                                 drag: true,

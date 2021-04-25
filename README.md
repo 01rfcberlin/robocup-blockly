@@ -2,7 +2,7 @@
 
 ## Installation
 
-In the project directory, run `npm install`
+In the project directory, copy the media/ folder once like this: `cp -r blockly/media/ public/media`. Then run `npm install`.
 
 ## Build
 
@@ -10,6 +10,7 @@ Assume we want to deploy the site to the path "/girlsday", then you can do:
 
 ```
 PUBLIC_URL="/girlsday" npm run build
+cp -r blockly/media/ public/media
 ```
 
 You can find the files to deploy in the build/ folder.
