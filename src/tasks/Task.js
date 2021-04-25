@@ -298,6 +298,7 @@ export default function Task(props) {
                               <img alt="Click this for hints" height={"100px"} src={process.env.PUBLIC_URL + "/bueroklammer.jpg"} onClick={() => {toggleTip()}}></img>
                           </Col>
                       </Row>
+                      <Row><a href="https://01.rfc-berlin.de/privacy-policy/">Datenschutzerklärung</a></Row>
                   </Col>
                   <Col xs={1}/>
                   <Col xs={7}>
