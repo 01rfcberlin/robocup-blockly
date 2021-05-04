@@ -101,14 +101,14 @@ export default function Task(props) {
   };
 
   const taskBody = () => {
-      return props.task_properties.task.body.map(element => {
-          return <p> {element} </p>
+      return props.task_properties.task.body.map((element, index) => {
+          return <p key={`task-body-${index}`}> {element} </p>
       })
   };
 
   const taskTip = () => {
-      return props.task_properties.task.tip.map(element => {
-          return <p> {element} </p>
+      return props.task_properties.task.tip.map((element, index) => {
+          return <p key={`task-tip-${index}`}> {element} </p>
       })
   };
 
