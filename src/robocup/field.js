@@ -5,6 +5,7 @@ import RobotActions from "./RobotActions";
 import BallActions from "./BallActions";
 import * as constants from "../constants.js";
 import * as angles from "./angles";
+import * as canvas from "./canvas";
 import Alert from "react-bootstrap/Alert";
 import InterfaceActions from "./InterfaceActions";
 
@@ -28,10 +29,8 @@ export const RoboCupField = ({grid_properties}) => {
     /**
      * This draws the RoboCup field.
      * Field dimensions depends on canvas size
-     * @param canvas
-     * @param ctx
      */
-    const init_field = (canvas, ctx) => {
+    const init_field = (ctx) => {
         // let field = new Path2D();
         ctx.fillStyle = 'green';
         ctx.fillRect(0, 0, constants.canvas.width, constants.canvas.height);
@@ -127,57 +126,13 @@ export const RoboCupField = ({grid_properties}) => {
         }
     };
 
-    // with angle == 0, this function is equivalent to:
-    // ctx.drawImage(img, x, y, w, h);
-    const drawRotatedImage = (ctx, img, angle, x, y, w, h) => {
-      const center_x = x + w/2;
-      const center_y = y + w/2;
-
-      // move origin to center of image
-      ctx.translate(center_x, center_y);
-
-      ctx.rotate(angle);
-
-      // draw image centered around (0,0)
-      ctx.drawImage(img, -w/2, -h/2, w, h);
-
-      ctx.rotate(-angle);
-
-      // move back to original origin
-      ctx.translate(-center_x, -center_y);
-    };
-
-    // draw an image given the center of the image
-    function drawCenteredImage(ctx, img, centerX, centerY, w, h) {
-        ctx.drawImage(img,
-          centerX-w/2,
-          centerY-h/2,
-          w,
-          h);
-    };
-
-    // draw an image given the center of the image
-    function drawRotatedCenteredImage(ctx, img, angle, centerX, centerY, w, h) {
-        drawRotatedImage(ctx,
-          img,
-          angle,
-          centerX-w/2,
-          centerY-h/2,
-          w,
-          h);
-    };
-
-    /**
-     * Draws all robots at their current position.
-     * @param canvas
-     * @param ctx
-     */
-    const draw_robots = (canvas, ctx) => {
+    // Draws all robots at their current position.
+    const draw_robots = (ctx) => {
         robotListLeft.forEach(element => {
             let robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
             // the position of the Redux state is the center of the robot
-            drawRotatedCenteredImage(ctx, robot_img,
+            canvas.drawRotatedCenteredImage(ctx, robot_img,
               element.position.rotation,
               element.position.x,
               element.position.y,
@@ -187,7 +142,7 @@ export const RoboCupField = ({grid_properties}) => {
         robotListRight.forEach(element => {
             let robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/wolfgang.png';
-            drawRotatedCenteredImage(ctx, robot_img,
+            canvas.drawRotatedCenteredImage(ctx, robot_img,
                 element.position.rotation,
                 element.position.x,
                 element.position.y,
@@ -196,17 +151,13 @@ export const RoboCupField = ({grid_properties}) => {
         })
     };
 
-    /**
-     * Draws all robots at their current position.
-     * @param canvas
-     * @param ctx
-     */
-    const draw_ball = (canvas, ctx) => {
+    // Draws all robots at their current position.
+    const draw_ball = (ctx) => {
         if(ball.position) {
             let ball_img = new Image();
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
             // -(0.5*constants.cell.height) we need to move the ball up according to the field
-            drawCenteredImage(ctx, ball_img,
+            canvas.drawCenteredImage(ctx, ball_img,
               ball.position.x,
               ball.position.y,
               constants.ball.width,
@@ -325,15 +276,14 @@ export const RoboCupField = ({grid_properties}) => {
 
         }
 
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
+        const context = canvasRef.current.getContext('2d');
         context.clearRect(0, 0, constants.canvas.width, constants.canvas.height)
 
         //Draw field, robots and ball
-        init_field(canvas, context);
-        draw_ball(canvas, context); //ball needs to be drawn first, otherwise the ball potentially covers the robot
+        init_field(context);
+        draw_ball(context); //ball needs to be drawn first, otherwise the ball potentially covers the robot
 
-        draw_robots(canvas, context);
+        draw_robots(context);
 
         if (constants.debugDrawCellCoords) {
           drawDebugCellCoords(context);
