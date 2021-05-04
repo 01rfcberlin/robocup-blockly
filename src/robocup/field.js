@@ -6,6 +6,7 @@ import BallActions from "./BallActions";
 import * as constants from "../constants.js";
 import * as angles from "./angles";
 import * as canvas from "./canvas";
+import * as images from "./images";
 import Alert from "react-bootstrap/Alert";
 import InterfaceActions from "./InterfaceActions";
 
@@ -129,18 +130,14 @@ export const RoboCupField = ({grid_properties}) => {
     // Draws all robots at their current position.
     const draw_robots = (ctx) => {
         robotListLeft.forEach(element => {
-            let robot_img = new Image();
-            robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
             // the position of the Redux state is the center of the robot
-            canvas.drawRotatedCenteredImage(ctx, robot_img,
+            canvas.drawRotatedCenteredImage(ctx, images.rfcRobot,
               element.position.rotation,
               element.position,
               constants.robot)
         });
         robotListRight.forEach(element => {
-            let robot_img = new Image();
-            robot_img.src = process.env.PUBLIC_URL + '/wolfgang.png';
-            canvas.drawRotatedCenteredImage(ctx, robot_img,
+            canvas.drawRotatedCenteredImage(ctx, images.bitbotsRobot,
                 element.position.rotation,
                 element.position,
                 constants.robot)
@@ -150,10 +147,8 @@ export const RoboCupField = ({grid_properties}) => {
     // Draws all robots at their current position.
     const draw_ball = (ctx) => {
         if(ball.position) {
-            let ball_img = new Image();
-            ball_img.src = process.env.PUBLIC_URL + '/ball.png';
             // -(0.5*constants.cell.height) we need to move the ball up according to the field
-            canvas.drawCenteredImage(ctx, ball_img,
+            canvas.drawCenteredImage(ctx, images.ball,
               ball.position,
               constants.ball)
         }
