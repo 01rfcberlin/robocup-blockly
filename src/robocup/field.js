@@ -134,20 +134,16 @@ export const RoboCupField = ({grid_properties}) => {
             // the position of the Redux state is the center of the robot
             canvas.drawRotatedCenteredImage(ctx, robot_img,
               element.position.rotation,
-              element.position.x,
-              element.position.y,
-              constants.robot.width,
-              constants.robot.height)
+              element.position,
+              constants.robot)
         });
         robotListRight.forEach(element => {
             let robot_img = new Image();
             robot_img.src = process.env.PUBLIC_URL + '/wolfgang.png';
             canvas.drawRotatedCenteredImage(ctx, robot_img,
                 element.position.rotation,
-                element.position.x,
-                element.position.y,
-                constants.robot.width,
-                constants.robot.height)
+                element.position,
+                constants.robot)
         })
     };
 
@@ -158,10 +154,8 @@ export const RoboCupField = ({grid_properties}) => {
             ball_img.src = process.env.PUBLIC_URL + '/ball.png';
             // -(0.5*constants.cell.height) we need to move the ball up according to the field
             canvas.drawCenteredImage(ctx, ball_img,
-              ball.position.x,
-              ball.position.y,
-              constants.ball.width,
-              constants.ball.height)
+              ball.position,
+              constants.ball)
         }
 
     };
