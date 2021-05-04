@@ -38,17 +38,26 @@ const robot_size_meters = 0.5;
 // FIFA Size 1 (130mm) times 2.5
 const ball_size_meters = 0.325;
 
-// We think of each cell as a 1 meter times 1 meter square. This is what we use
-// to convert from meters to pixel.
-const robot = {
-  width: robot_size_meters * cell.width,
-  height: robot_size_meters * cell.height,
-};
+// translate meters to pixels
+function metersToPixel(pos) {
+  // We think of each cell as a 1 meter times 1 meter square. This is what we
+  // use to convert from meters to pixel.
+  return {
+    x: pos.x * cell.width,
+    y: pos.y * cell.height,
+  };
+}
 
-const ball = {
-  width: ball_size_meters * cell.width,
-  height: ball_size_meters * cell.height,
-};
+function posToDimension(pos) {
+  return {
+    width: pos.x,
+    height: pos.y,
+  };
+}
+
+const robot = posToDimension(metersToPixel({x: robot_size_meters, y: robot_size_meters}));
+
+const ball = posToDimension(metersToPixel({x: ball_size_meters, y: ball_size_meters}));
 
 // the interval between execution of the code blocks. in ms
 const step_execution_interval = 100;
