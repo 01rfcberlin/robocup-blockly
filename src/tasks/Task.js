@@ -95,6 +95,12 @@ const blocklyFunctions = {
   ),
 };
 
+function console_log(...args){
+  if (constants.debugInterpreterLogs) {
+    console.log(...args);
+  }
+}
+
 export default function Task(props) {
   const dispatch = useDispatch();
   const { robotListLeft, ball } = useSelector(state => {
@@ -171,7 +177,6 @@ export default function Task(props) {
     function getRandomRotation() {
       let potential_rotations = [0,90,180,270];
       let rand = potential_rotations[Math.floor(Math.random()*potential_rotations.length)];
-      console.log(rand)
       return rand;
     }
 
@@ -218,10 +223,10 @@ export default function Task(props) {
         });
 
         interpreter.setProperty(globalObject, funName, interpreter.createNativeFunction((...args) => {
-          console.log("Interpreter:", funName);
+          console_log("Interpreter:", funName);
           const ret = fun(...args);
           if (typeof ret !== "undefined") {
-            console.log("Interpreter:", funName, "=>", ret);
+            console_log("Interpreter:", funName, "=>", ret);
           }
           return ret;
         }));
@@ -230,7 +235,7 @@ export default function Task(props) {
 
     const Interpreter = window["Interpreter"];
     const myInterpreter = new Interpreter(code, initApi);
-    console.log(code)
+    console_log(code)
     reachedCodeEnd.current = false;
     workspaceInterpreterRef.current = myInterpreter;
   }
@@ -304,11 +309,6 @@ export default function Task(props) {
     const robot = robotListLeftRef.current[0];
     const ballRef = ballStateRef.current
 
-    //console.log("interpreterStep()",
-    //  "interpreter?", workspaceInterpreter !== null,
-    //  "reachedCodeEnd?", reachedCodeEnd.current,
-    //  "isActive?", robot.isActive);
-
     // Execution was stopped via the reset button (or never begun)
     if (workspaceInterpreter === null) return;
 
@@ -321,7 +321,7 @@ export default function Task(props) {
       return;
     }
 
-    console.log("interpreterStep()");
+    console_log("interpreterStep()");
 
     // Note: If you here get a JS error at this line that states
     // something like "ReferenceError: ... is not defined" this means

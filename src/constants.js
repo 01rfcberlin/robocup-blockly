@@ -82,5 +82,6 @@ const robot_rotation_per_draw_all = robot_rotation_speed / calls_to_draw_all_per
 const ball_movement_per_draw_all = ball_movement_per_second / calls_to_draw_all_per_second;
 
 const debugDrawCellCoords = false;
+const debugInterpreterLogs = false;
 
-export { canvas, num_x_cells, num_y_cells, cell, robot, ball, draw_all_interval, robot_movement_per_draw_all, robot_rotation_per_draw_all, ball_movement_per_draw_all, step_execution_interval, debugDrawCellCoords };
+export { canvas, num_x_cells, num_y_cells, cell, robot, ball, draw_all_interval, robot_movement_per_draw_all, robot_rotation_per_draw_all, ball_movement_per_draw_all, step_execution_interval, debugDrawCellCoords, debugInterpreterLogs };
