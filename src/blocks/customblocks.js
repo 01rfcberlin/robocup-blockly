@@ -243,6 +243,47 @@ Blockly.Blocks['next_to_ball'] = {
 };
 
 /**
+ * Custom block for checking alignment of the robot with the opponent goal.
+ *
+ * We compare the y coordinate of the robot and the goal and check if the robot
+ * is to the left or right of the goal - or if the goal is in front or behind
+ * the robot.
+ */
+Blockly.Blocks['is_robot_above_goal'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Roboter ist über dem Tor',
+      "output": null,
+      "type": Boolean,
+      "colour": "#93a832",
+      "tooltip": "TODO",
+    });
+  }
+};
+Blockly.Blocks['is_robot_beneath_goal'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Roboter ist unter dem Tor',
+      "output": null,
+      "type": Boolean,
+      "colour": "#93a832",
+      "tooltip": "TODO",
+    });
+  }
+};
+Blockly.Blocks['is_robot_centered_to_goal'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Roboter ist mittig zum Tor',
+      "output": null,
+      "type": Boolean,
+      "colour": "#93a832",
+      "tooltip": "TODO",
+    });
+  }
+};
+
+/**
  * Block that handles turning the robot 90 degrees to the right
  * @type {{init: Blockly.Blocks.wait.init}}
  */

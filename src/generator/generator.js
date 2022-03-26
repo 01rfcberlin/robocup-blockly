@@ -133,6 +133,16 @@ Blockly.JavaScript['next_to_ball'] = function(block) {
     return ['nextToBall()', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
+Blockly.JavaScript['is_robot_above_goal'] = function(block) {
+    return ['isRobotAboveGoal()', Blockly.JavaScript.ORDER_ATOMIC];
+};
+Blockly.JavaScript['is_robot_beneath_goal'] = function(block) {
+    return ['isRobotBeneathGoal()', Blockly.JavaScript.ORDER_ATOMIC];
+};
+Blockly.JavaScript['is_robot_centered_to_goal'] = function(block) {
+    return ['isRobotCenteredToGoal()', Blockly.JavaScript.ORDER_ATOMIC];
+};
+
 /**
  * Just do nothing
  * TODO: Robot index right now is hard-coded so it is always 0

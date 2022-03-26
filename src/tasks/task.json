@@ -246,7 +246,11 @@
                     "turn_right",
                     "repeat",
                     "repeat_until",
-                    "next_to_ball"
+                    "if",
+                    "next_to_ball",
+                    "is_robot_above_goal",
+                    "is_robot_beneath_goal",
+                    "is_robot_centered_to_goal"
                 ],
                 "own_robot": {
                     "rel_ball": {

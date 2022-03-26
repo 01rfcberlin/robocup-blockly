@@ -10,6 +10,7 @@ import * as constants from "../constants.js";
 import {ballKickable} from "../robocup/GameStateReducer.js";
 import {Col, Row} from "reactstrap";
 import Blockly from 'blockly/core';
+import * as translations from "../robocup/translations.js";
 
 // These are the functions that are made available inside the JS interpreter.
 // These functions just wrap calls to dispatch and thus function as glue
@@ -60,6 +61,25 @@ const blocklyFunctions = {
   nextToBall: ({dispatch, ballStateRef, robotListLeftRef}) => (
     () => {
       return ballKickable(ballStateRef.current.position, robotListLeftRef.current[0].position);
+    }
+  ),
+
+  isRobotAboveGoal: ({dispatch, robotListLeftRef}) => (
+    () => {
+      const y = translations.pixelToCell(robotListLeftRef.current[0].position).y;
+      return y < 3;
+    }
+  ),
+  isRobotBeneathGoal: ({dispatch, robotListLeftRef}) => (
+    () => {
+      const y = translations.pixelToCell(robotListLeftRef.current[0].position).y;
+      return y > 5;
+    }
+  ),
+  isRobotCenteredToGoal: ({dispatch, robotListLeftRef}) => (
+    () => {
+      const y = translations.pixelToCell(robotListLeftRef.current[0].position).y;
+      return y >= 3 && y <= 5;
     }
   ),
 
