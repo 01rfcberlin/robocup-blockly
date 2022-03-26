@@ -10,6 +10,7 @@ import * as constants from "../constants.js";
 import {ballKickable} from "../robocup/GameStateReducer.js";
 import {Col, Row} from "reactstrap";
 import Blockly from 'blockly/core';
+import InterfaceActions from "../robocup/InterfaceActions";
 import * as translations from "../robocup/translations.js";
 
 // These are the functions that are made available inside the JS interpreter.
@@ -243,6 +244,7 @@ export default function Task(props) {
     // Resets the robot position on the field to the original position
     function resetGameState () {
         //Determines whether the ball should be placed random or at a fixed position
+        dispatch(InterfaceActions.setVisibility(props.task_properties.visibility))
         let ball_x = -1;
         let ball_y = -1;
         if (props.task_properties.ball.random) {
@@ -403,7 +405,8 @@ export default function Task(props) {
                                   reset();
                                   triggerRendering(curTriggerRendering + 1);
                                 } else {
-                                  instantiateInterpreter();
+                                    dispatch(InterfaceActions.setVisibility(true))
+                                    instantiateInterpreter();
                                   triggerRendering(curTriggerRendering + 1);
                                 }
                               }}>{buttonText}</button>

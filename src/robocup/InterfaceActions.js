@@ -19,6 +19,12 @@ const InterfaceActions = {
       showAlert: showAlert
     }
   },
+  setVisibility: (visibility) => {
+    return {
+      type: ActionName.Interface.SetVisibility,
+      visibility: visibility
+    }
+  },
 
 };
 

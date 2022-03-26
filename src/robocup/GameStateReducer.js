@@ -27,6 +27,7 @@ const initialState = {
   toggleGoalAlert: false,
   toogleOwnGoalAlert: false,
   toggleOutOfBoundsAlert: false,
+  visible: true,
 };
 
 const setRobotTarget = (state, index, robotCell) => {
@@ -320,6 +321,12 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       return {
         ...state,
         toggleOutOfBoundsAlert: action.showAlert
+      };
+    case ActionName.Interface.SetVisibility:
+      console.log("Changing visibility to " + action.visibility)
+      return {
+        ...state,
+        visible: action.visibility
       };
     default:
       return state;

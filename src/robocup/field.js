@@ -21,7 +21,7 @@ import Particles from "react-tsparticles";
 export const RoboCupField = ({grid_properties}) => {
     const dispatch = useDispatch();
 
-    const { robotListLeft, robotListRight, ball, toggleGoalAlert, toggleOwnGoalAlert, toggleOutOfBoundsAlert } = useSelector(state => {
+    const { robotListLeft, robotListRight, ball, toggleGoalAlert, toggleOwnGoalAlert, toggleOutOfBoundsAlert, visible } = useSelector(state => {
         return state.gameState;
     });
 
@@ -130,30 +130,33 @@ export const RoboCupField = ({grid_properties}) => {
 
     // Draws all robots at their current position.
     const draw_robots = (ctx) => {
-        robotListLeft.forEach(element => {
-            // the position of the Redux state is the center of the robot
-            canvas.drawRotatedCenteredImage(ctx, images.rfcRobot,
-              element.position.rotation,
-              element.position,
-              constants.robot)
-        });
-        robotListRight.forEach(element => {
-            canvas.drawRotatedCenteredImage(ctx, images.bitbotsRobot,
-                element.position.rotation,
-                element.position,
-                constants.robot)
-        })
+        if (visible) {
+            robotListLeft.forEach(element => {
+                // the position of the Redux state is the center of the robot
+                canvas.drawRotatedCenteredImage(ctx, images.rfcRobot,
+                    element.position.rotation,
+                    element.position,
+                    constants.robot)
+            });
+            robotListRight.forEach(element => {
+                canvas.drawRotatedCenteredImage(ctx, images.bitbotsRobot,
+                    element.position.rotation,
+                    element.position,
+                    constants.robot)
+            })
+        }
     };
 
     // Draws all robots at their current position.
     const draw_ball = (ctx) => {
-        if(ball.position) {
-            // -(0.5*constants.cell.height) we need to move the ball up according to the field
-            canvas.drawCenteredImage(ctx, images.ball,
-              ball.position,
-              constants.ball)
+        if(visible) {
+            if (ball.position) {
+                // -(0.5*constants.cell.height) we need to move the ball up according to the field
+                canvas.drawCenteredImage(ctx, images.ball,
+                    ball.position,
+                    constants.ball)
+            }
         }
-
     };
 
     /**
