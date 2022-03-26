@@ -412,7 +412,7 @@ export const RoboCupField = ({grid_properties}) => {
   },
   "emitters": {
     "life": {
-      "count": 0,
+      "count": 5,
       "duration": 0.1,
       "delay": 0.4
     },
