@@ -126,8 +126,7 @@ Blockly.JavaScript['repeat_until'] = function(block) {
       return '';
     }
 
-    // negate the condition in while() to make a "do until" loop out of the "do while" loop
-    return 'do {' + statements_name + '} while (!(' + boolean_in + '));';
+    return 'while (!(' + boolean_in + ')) {' + statements_name + '};';
 };
 
 /**
