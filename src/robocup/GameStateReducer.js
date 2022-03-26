@@ -5,7 +5,7 @@ import * as translations from "./translations.js";
 
 // A ball is only "kickable" if the robot is not moving, i.e. if the ball and
 // the robot are on the same cell.
-function ballKickable(ballPos, robotPos) {
+export function ballKickable(ballPos, robotPos) {
   const robotCell = translations.pixelToCell(robotPos);
   const ballCell = translations.pixelToCell(ballPos);
   return ballCell.x === robotCell.x && ballCell.y === robotCell.y;
@@ -94,11 +94,6 @@ function GameStateReducer(state, action) {
     return initialState;
   }
 
-  //console.log("GameStateReducer:", action.type);
-//  if (state.robotListLeft && state.robotListLeft.length > 0) {
-//    console.log("redux", state.robotListLeft[0].isBallKickable);
-//  }
-
   switch (action.type) {
     case ActionName.Robot.AddRobot:
       const pos = translations.cellToPixelWithCenteredRobot(action.robot.position);
@@ -107,7 +102,6 @@ function GameStateReducer(state, action) {
       action.robot.isActive = false;
       action.robot.isActiveDueToMoving = false;
       action.robot.isActiveDueToRotating = false;
-      action.robot.isBallKickable = false;
       if (action.field_half === "left") {
         return {
           ...state,
@@ -138,8 +132,6 @@ function GameStateReducer(state, action) {
         new_rot = angles.normalize_angle(action.position.rotation);
       }
 
-      const isBallKickable = ballKickable(state.ball.position, current_robot.position);
-
       return {
         ...state,
         robotListLeft: [
@@ -154,7 +146,6 @@ function GameStateReducer(state, action) {
             isActive: isActiveDueToMoving || isActiveDueToRotating,
             isActiveDueToMoving,
             isActiveDueToRotating,
-            isBallKickable,
           }
         ]
       };
@@ -223,17 +214,12 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       const copy_robot_list4 = [...state.robotListLeft];
       copy_robot_list4.splice(action.index, 1);
 
-    // In the event ActionName.Robot.SetPosition: wasn't called (eg task 1),
-    // we can't rely on the redux state
-      let isbk = ballKickable(state.ball.position, current_robot.position);
-
-    //   const goalCellsX = [1, 10];
       const goalCellsY = [3, 4, 5]
 
       const ballCell = translations.pixelToCell(state.ball.position);
       let newBallCell = ballCell;
 
-      if (isbk) {
+      if (ballKickable(state.ball.position, current_robot.position)) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
         if (gaze_direction === angles.gaze_directions.left) {
@@ -285,7 +271,6 @@ current_robot.position.rotation + action.relativeTarget.rotation);
           ...copy_robot_list4,
           {
             ...current_robot,
-            isBallKickable: isbk,
           }],
         goalsLeft: goalsL,
         goalsRight: goalsR,
