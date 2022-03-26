@@ -131,6 +131,24 @@ Blockly.JavaScript['repeat_until'] = function(block) {
 };
 
 /**
+ * Custom code for an if statement
+ * @param block
+ * @returns {string}
+ */
+Blockly.JavaScript['if'] = function(block) {
+    var boolean_in = Blockly.JavaScript.valueToCode(block, 'sensor_in', Blockly.JavaScript.ORDER_ATOMIC);
+    var statements_name = Blockly.JavaScript.statementToCode(block, 'do');
+
+    const noConditionDefined = boolean_in === '';
+    if (noConditionDefined) {
+      // do nothing
+      return '';
+    }
+
+    return 'if (' + boolean_in + ') { '+ statements_name + ' }';
+};
+
+/**
  * Custom code that checks whether the robot is next to the ball
  * @param block
  * @returns {string}

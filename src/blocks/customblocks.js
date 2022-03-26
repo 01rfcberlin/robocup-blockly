@@ -225,6 +225,31 @@ Blockly.Blocks['repeat_until'] = {
 };
 
 /**
+ * Custom if block
+ */
+Blockly.Blocks['if'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Wenn %1',
+      "args0": [{
+        "type": "input_value",
+        "name": "sensor_in",
+        "check": "Boolean"
+      }],
+      "message1": "Aktion: %1",
+      "args1": [{
+        "type": "input_statement",
+        "name": "do"
+      }],
+      "colour": "#41658A",
+      "previousStatement": null,
+      "nextStatement": null,
+      "tooltip": "Mit diesem Block kannst du dafür sorgen, dass der Roboter eine Aktion nur ausführt, wenn eine bestimmte Bedingung erfüllt ist",
+    });
+  }
+};
+
+/**
  * Custom block for robot not next to ball
  * @type {{init: Blockly.Blocks.turn_right.init}}
  */
