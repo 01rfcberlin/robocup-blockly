@@ -60,16 +60,16 @@ const robot = posToDimension(metersToPixel({x: robot_size_meters, y: robot_size_
 const ball = posToDimension(metersToPixel({x: ball_size_meters, y: ball_size_meters}));
 
 // the interval between execution of the code blocks. in ms
-const step_execution_interval = 50;
+const step_execution_interval = 100;
 
 // in ms
 const draw_all_interval = 20;
 
 // how many pixels the robot should move per second
-const robot_movement_per_second = 50;
+const robot_movement_per_second = 100;
 
 // how many pixels the ball should move per second
-const ball_movement_per_second = 50;
+const ball_movement_per_second = 100;
 
 // how many radians the robot should rotate per second. an absolute value.
 const robot_rotation_speed = Math.PI * 1.1;
