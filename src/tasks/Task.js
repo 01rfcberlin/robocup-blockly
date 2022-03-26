@@ -1,7 +1,7 @@
 import {RoboCupField} from "../robocup/field";
 import BlocklyComponent, {Block} from "../Blockly";
 import {useEffect, useState, useRef} from "react";
-import {Button, Container} from 'reactstrap';
+import {Container} from 'reactstrap';
 import RobotActions from "../robocup/RobotActions";
 import BlocklyJS from "blockly/javascript";
 import {useDispatch, useSelector} from "react-redux";
@@ -106,14 +106,14 @@ export default function Task(props) {
   };
 
   const taskBody = () => {
-      return props.task_properties.task.body.map(element => {
-          return <p> {element} </p>
+      return props.task_properties.task.body.map((element, index) => {
+          return <p style={{marginTop: "10px"}} key={`task-body-${index}`}> {element} </p>
       })
   };
 
   const taskTip = () => {
-      return props.task_properties.task.tip.map(element => {
-          return <p> {element} </p>
+      return props.task_properties.task.tip.map((element, index) => {
+          return <p key={`task-tip-${index}`}> {element} </p>
       })
   };
 
@@ -291,7 +291,7 @@ export default function Task(props) {
                       </Row>
                       <Row className={"justify-content-md-center"} style={{marginTop: "20px"}}>
                               <h3>{props.task_properties.task.heading}</h3>
-                              <p style={{marginTop: "10px"}}>{taskBody()}</p>
+                              {taskBody()}
                       </Row>
                       <Row>
                           <Col xs={8}>
@@ -303,12 +303,15 @@ export default function Task(props) {
                               <img alt="Click this for hints" height={"100px"} src={process.env.PUBLIC_URL + "/bueroklammer.jpg"} onClick={() => {toggleTip()}}></img>
                           </Col>
                       </Row>
+                      <Row><a href="https://01.rfc-berlin.de/de/privacy-policy/">Datenschutzerklärung</a></Row>
                   </Col>
                   <Col xs={1}/>
                   <Col xs={7}>
                       <Row style={{height: "80vh"}}>
                           <BlocklyComponent ref={workspaceRef}
-                                            readOnly={false} trashcan={true}
+                                            readOnly={false}
+                                            trashcan={true}
+                                            media={process.env.PUBLIC_URL + "/media/"}
                                             move={{
                                                 scrollbars: true,
                                                 drag: true,
@@ -319,7 +322,7 @@ export default function Task(props) {
                       </Row>
                       <Row style={{marginTop: "20px"}}>
                           <Col xs={12}>
-                              <button size="lg" className={buttonClass} block onClick={() => {
+                              <button size="lg" className={buttonClass} onClick={() => {
                                 if (workspaceInterpreterRef.current !== null) {
                                   reset();
                                   triggerRendering(curTriggerRendering + 1);

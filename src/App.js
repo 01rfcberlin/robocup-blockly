@@ -73,8 +73,8 @@ const App = () => {
                   }
                   const key = "task-" + i;
                   return (
-                      <span>
-                        <button style={{borderRadius: "50%"}} className={className} key={key} onClick={() => {
+                      <span key={key}>
+                        <button style={{borderRadius: "50%"}} className={className} onClick={() => {
                             dispatch(ApplicationActions.setTask(i));
                             dispatch(InterfaceActions.toggleOwnGoalAlert(false));
                             dispatch(InterfaceActions.toggleGoalAlert(false));

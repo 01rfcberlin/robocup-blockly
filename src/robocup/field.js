@@ -5,8 +5,11 @@ import RobotActions from "./RobotActions";
 import BallActions from "./BallActions";
 import * as constants from "../constants.js";
 import * as angles from "./angles";
+import * as canvas from "./canvas";
+import * as images from "./images";
 import Alert from "react-bootstrap/Alert";
 import InterfaceActions from "./InterfaceActions";
+import Particles from "react-tsparticles";
 
 /**
  * Handles drawing the background of the field as well as the robot(s)
@@ -28,21 +31,19 @@ export const RoboCupField = ({grid_properties}) => {
     /**
      * This draws the RoboCup field.
      * Field dimensions depends on canvas size
-     * @param canvas
-     * @param ctx
      */
-    const init_field = (canvas, ctx) => {
+    const init_field = (ctx) => {
         // let field = new Path2D();
         ctx.fillStyle = 'green';
-        ctx.fillRect(0, 0, constants.canvas_width, constants.canvas_height);
+        ctx.fillRect(0, 0, constants.canvas.width, constants.canvas.height);
 
         // draw grid
         for (let i = 1; i <= 7; i++) {
             for (let j = 1; j <= 9; j++) {
                 ctx.beginPath();
                 ctx.fillStyle = ["rgba(0,255,0,0.3)", "rgba(0,255,0,0.1)"][(i + j) % 2];
-                // -(0.5*constants.cell_height) moves the field up along the y-axis
-                ctx.fillRect(j * constants.cell_width, i * constants.cell_height-(0.5*constants.cell_height), constants.cell_width, constants.cell_height);
+                // -(0.5*constants.cell.height) moves the field up along the y-axis
+                ctx.fillRect(j * constants.cell.width, i * constants.cell.height-(0.5*constants.cell.height), constants.cell.width, constants.cell.height);
                 ctx.closePath();
             }
         }
@@ -51,8 +52,8 @@ export const RoboCupField = ({grid_properties}) => {
         for (let i = 1; i < 11; i++) { 
             ctx.beginPath();
             ctx.fillStyle = 'green';
-            ctx.fillRect(i * constants.cell_width, 0, constants.cell_width, constants.cell_height);
-            ctx.fillRect(i * constants.cell_width, 7*constants.cell_height, constants.cell_width, constants.cell_height);
+            ctx.fillRect(i * constants.cell.width, 0, constants.cell.width, constants.cell.height);
+            ctx.fillRect(i * constants.cell.width, 7*constants.cell.height, constants.cell.width, constants.cell.height);
             ctx.closePath();       
         }
 
@@ -60,53 +61,53 @@ export const RoboCupField = ({grid_properties}) => {
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.strokeStyle = 'white';
-        ctx.rect(1*constants.cell_width, 1*constants.cell_height, 9*constants.cell_width, 6*constants.cell_height);
+        ctx.rect(1*constants.cell.width, 1*constants.cell.height, 9*constants.cell.width, 6*constants.cell.height);
         
         // mid line
-        ctx.moveTo(constants.canvas_width/2, 1*constants.cell_height);
-        ctx.lineTo(constants.canvas_width/2, 7*constants.cell_height);
+        ctx.moveTo(constants.canvas.width/2, 1*constants.cell.height);
+        ctx.lineTo(constants.canvas.width/2, 7*constants.cell.height);
 
         // goal area
         // 5m area (1m * 3m)
-        ctx.rect(1*constants.cell_width, constants.canvas_height/2-1.5*constants.cell_height, 1*constants.cell_width, 3*constants.cell_height);
-        ctx.rect(10*constants.cell_width-1*constants.cell_width, constants.canvas_height/2-1.5*constants.cell_height, 1*constants.cell_width, 3*constants.cell_height);
+        ctx.rect(1*constants.cell.width, constants.canvas.height/2-1.5*constants.cell.height, 1*constants.cell.width, 3*constants.cell.height);
+        ctx.rect(10*constants.cell.width-1*constants.cell.width, constants.canvas.height/2-1.5*constants.cell.height, 1*constants.cell.width, 3*constants.cell.height);
         // 16m area (2m * 5m)
-        ctx.rect(1*constants.cell_width, constants.canvas_height/2-2.5*constants.cell_height, 2*constants.cell_width, 5*constants.cell_height);
-        ctx.rect(10*constants.cell_width-2*constants.cell_width, constants.canvas_height/2-2.5*constants.cell_height, 2*constants.cell_width, 5*constants.cell_height);
+        ctx.rect(1*constants.cell.width, constants.canvas.height/2-2.5*constants.cell.height, 2*constants.cell.width, 5*constants.cell.height);
+        ctx.rect(10*constants.cell.width-2*constants.cell.width, constants.canvas.height/2-2.5*constants.cell.height, 2*constants.cell.width, 5*constants.cell.height);
         ctx.stroke();
         ctx.closePath();
         
         // penalty point
         // left side
         ctx.beginPath();
-        ctx.arc(1*constants.cell_width+1.5*constants.cell_width, constants.canvas_height/2, 2, 0, 2*Math.PI, false);
+        ctx.arc(1*constants.cell.width+1.5*constants.cell.width, constants.canvas.height/2, 2, 0, 2*Math.PI, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
         // right side
         ctx.beginPath();
-        ctx.arc(10*constants.cell_width-1.5*constants.cell_width, constants.canvas_height/2, 2, 0, 2*Math.PI, false);
+        ctx.arc(10*constants.cell.width-1.5*constants.cell.width, constants.canvas.height/2, 2, 0, 2*Math.PI, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
 
         // ctx.moveTo
-        // mid circle (dimension based on constants.cell_width)
+        // mid circle (dimension based on constants.cell.width)
         ctx.beginPath();
-        ctx.arc(constants.canvas_width/2, constants.canvas_height/2, 0.75*constants.cell_width, 0, 2*Math.PI, false);
+        ctx.arc(constants.canvas.width/2, constants.canvas.height/2, 0.75*constants.cell.width, 0, 2*Math.PI, false);
         ctx.stroke();
         ctx.closePath();
         // mid point
         ctx.beginPath();
-        ctx.arc(constants.canvas_width/2, constants.canvas_height/2, 2, 0, 2*Math.PI, false);
+        ctx.arc(constants.canvas.width/2, constants.canvas.height/2, 2, 0, 2*Math.PI, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
 
         // goals
         ctx.beginPath();
-        ctx.rect(1*constants.cell_width-0.6*constants.cell_width, constants.canvas_height/2-1.3*constants.cell_height, 0.6*constants.cell_width, 2.6*constants.cell_height);
-        ctx.rect(10*constants.cell_width, constants.canvas_height/2-1.3*constants.cell_height, 0.6*constants.cell_width, 2.6*constants.cell_height);
+        ctx.rect(1*constants.cell.width-0.6*constants.cell.width, constants.canvas.height/2-1.3*constants.cell.height, 0.6*constants.cell.width, 2.6*constants.cell.height);
+        ctx.rect(10*constants.cell.width, constants.canvas.height/2-1.3*constants.cell.height, 0.6*constants.cell.width, 2.6*constants.cell.height);
         ctx.lineWidth = 3.5;
         ctx.stroke();
         ctx.closePath();
@@ -117,100 +118,40 @@ export const RoboCupField = ({grid_properties}) => {
         for (let x = 0; x <= 10; x++) {
             for (let y = 0; y <= 8; y++) {
                 ctx.strokeStyle = 'black';
-                ctx.strokeRect(x * constants.cell_width, y * constants.cell_height-(0.5*constants.cell_height), constants.cell_width, constants.cell_height);
+                ctx.strokeRect(x * constants.cell.width, y * constants.cell.height-(0.5*constants.cell.height), constants.cell.width, constants.cell.height);
 
                 ctx.fillStyle = 'black';
                 ctx.font = 'bold 17px serif';
                 const margin = 2;
-                ctx.fillText("(" + x + "," + y + ")", x * constants.cell_width + margin, y * constants.cell_height);
+                ctx.fillText("(" + x + "," + y + ")", x * constants.cell.width + margin, y * constants.cell.height);
             }
         }
     };
 
-    // with angle == 0, this function is equivalent to:
-    // ctx.drawImage(img, x, y, w, h);
-    const drawRotatedImage = (ctx, img, angle, x, y, w, h) => {
-      const center_x = x + w/2;
-      const center_y = y + w/2;
-
-      // move origin to center of image
-      ctx.translate(center_x, center_y);
-
-      ctx.rotate(angle);
-
-      // draw image centered around (0,0)
-      ctx.drawImage(img, -w/2, -h/2, w, h);
-
-      ctx.rotate(-angle);
-
-      // move back to original origin
-      ctx.translate(-center_x, -center_y);
-    };
-
-    // draw an image given the center of the image
-    function drawCenteredImage(ctx, img, centerX, centerY, w, h) {
-        ctx.drawImage(img,
-          centerX-w/2,
-          centerY-h/2,
-          w,
-          h);
-    };
-
-    // draw an image given the center of the image
-    function drawRotatedCenteredImage(ctx, img, angle, centerX, centerY, w, h) {
-        drawRotatedImage(ctx,
-          img,
-          angle,
-          centerX-w/2,
-          centerY-h/2,
-          w,
-          h);
-    };
-
-    /**
-     * Draws all robots at their current position.
-     * @param canvas
-     * @param ctx
-     */
-    const draw_robots = (canvas, ctx) => {
+    // Draws all robots at their current position.
+    const draw_robots = (ctx) => {
         robotListLeft.forEach(element => {
-            let robot_img = new Image();
-            robot_img.src = process.env.PUBLIC_URL + '/robot-top.png';
             // the position of the Redux state is the center of the robot
-            drawRotatedCenteredImage(ctx, robot_img,
+            canvas.drawRotatedCenteredImage(ctx, images.rfcRobot,
               element.position.rotation,
-              element.position.x,
-              element.position.y,
-              constants.robot_width,
-              constants.robot_height)
+              element.position,
+              constants.robot)
         });
         robotListRight.forEach(element => {
-            let robot_img = new Image();
-            robot_img.src = process.env.PUBLIC_URL + '/wolfgang.png';
-            drawRotatedCenteredImage(ctx, robot_img,
+            canvas.drawRotatedCenteredImage(ctx, images.bitbotsRobot,
                 element.position.rotation,
-                element.position.x,
-                element.position.y,
-                constants.robot_width,
-                constants.robot_height)
+                element.position,
+                constants.robot)
         })
     };
 
-    /**
-     * Draws all robots at their current position.
-     * @param canvas
-     * @param ctx
-     */
-    const draw_ball = (canvas, ctx) => {
+    // Draws all robots at their current position.
+    const draw_ball = (ctx) => {
         if(ball.position) {
-            let ball_img = new Image();
-            ball_img.src = process.env.PUBLIC_URL + '/ball.png';
-            // -(0.5*constants.cell_height) we need to move the ball up according to the field
-            drawCenteredImage(ctx, ball_img,
-              ball.position.x,
-              ball.position.y,
-              constants.ball_width,
-              constants.ball_height)
+            // -(0.5*constants.cell.height) we need to move the ball up according to the field
+            canvas.drawCenteredImage(ctx, images.ball,
+              ball.position,
+              constants.ball)
         }
 
     };
@@ -325,15 +266,14 @@ export const RoboCupField = ({grid_properties}) => {
 
         }
 
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        context.clearRect(0, 0, constants.canvas_width, constants.canvas_height)
+        const context = canvasRef.current.getContext('2d');
+        context.clearRect(0, 0, constants.canvas.width, constants.canvas.height)
 
         //Draw field, robots and ball
-        init_field(canvas, context);
-        draw_ball(canvas, context); //ball needs to be drawn first, otherwise the ball potentially covers the robot
+        init_field(context);
+        draw_ball(context); //ball needs to be drawn first, otherwise the ball potentially covers the robot
 
-        draw_robots(canvas, context);
+        draw_robots(context);
 
         if (constants.debugDrawCellCoords) {
           drawDebugCellCoords(context);
@@ -348,11 +288,151 @@ export const RoboCupField = ({grid_properties}) => {
 
     return (
         <div>
-            {toggleGoalAlert && !ball.isMoving &&
+            {toggleGoalAlert && !ball.isMoving && <React.Fragment>
+            <Particles id="tsparticles"
+
+          width={constants.canvas.width}
+          height={constants.canvas.height}
+
+        style={{
+          position: "absolute",
+            left: 0,
+            top: 0,
+        }}
+
+      options={{
+
+  fullScreen: { enable: false },
+
+  "particles": {
+    "number": {
+      "value": 0
+    },
+    "color": {
+      "value": [
+        "#00FFFC",
+        "#FC00FF",
+        "#fffc00"
+      ]
+    },
+    "shape": {
+      "type": "circle",
+      "options": {}
+    },
+    "opacity": {
+      "value": 1,
+      "animation": {
+        "enable": true,
+        "minimumValue": 0,
+        "speed": 2,
+        "startValue": "max",
+        "destroy": "min"
+      }
+    },
+    "size": {
+      "value": 4,
+      "random": {
+        "enable": true,
+        "minimumValue": 2
+      }
+    },
+    "links": {
+      "enable": false
+    },
+    "life": {
+      "duration": {
+        "sync": true,
+        "value": 5
+      },
+      "count": 1
+    },
+    "move": {
+      "enable": true,
+      "gravity": {
+        "enable": true,
+        "acceleration": 10
+      },
+      "speed": {
+        "min": 10,
+        "max": 20
+      },
+      "decay": 0.1,
+      "direction": "none",
+      "straight": false,
+      "outModes": {
+        "default": "destroy",
+        "top": "none"
+      }
+    },
+    "rotate": {
+      "value": {
+        "min": 0,
+        "max": 360
+      },
+      "direction": "random",
+      "move": true,
+      "animation": {
+        "enable": true,
+        "speed": 60
+      }
+    },
+    "tilt": {
+      "direction": "random",
+      "enable": true,
+      "move": true,
+      "value": {
+        "min": 0,
+        "max": 360
+      },
+      "animation": {
+        "enable": true,
+        "speed": 60
+      }
+    },
+    "roll": {
+      "darken": {
+        "enable": true,
+        "value": 25
+      },
+      "enable": true,
+      "speed": {
+        "min": 15,
+        "max": 25
+      }
+    },
+    "wobble": {
+      "distance": 30,
+      "enable": true,
+      "move": true,
+      "speed": {
+        "min": -15,
+        "max": 15
+      }
+    }
+  },
+  "emitters": {
+    "life": {
+      "count": 0,
+      "duration": 0.1,
+      "delay": 0.4
+    },
+    "rate": {
+      "delay": 0.1,
+      "quantity": 150
+    },
+    "size": {
+      "width": 0,
+      "height": 0
+    }
+  },
+
+  }}
+              />
             <Alert variant={'success'} style={{position: "absolute", zIndex:10}} onClose={() => dispatch(InterfaceActions.toggleGoalAlert(false))} dismissible>
                 <Alert.Heading>Toooooor!</Alert.Heading>
                 <p>Sehr gut, du hast die Aufgabe gelöst. Jetzt kannst du weiter mit der nächsten Aufgabe machen.</p>
             </Alert>
+</React.Fragment>
             }
             {toggleOwnGoalAlert && !ball.isMoving &&
             <Alert variant={'warning'} style={{position: "absolute", zIndex:10}} onClose={() => dispatch(InterfaceActions.toggleOwnGoalAlert(false))} dismissible>
@@ -366,7 +446,7 @@ export const RoboCupField = ({grid_properties}) => {
                 <p>Du soltest lieber mit deinem Roboter im Spielfeld bleiben :D</p>
             </Alert>
             }
-            <canvas id="playingField" ref={canvasRef} width={constants.canvas_width} height={constants.canvas_height} key={"robocupfield"}/>
+            <canvas id="playingField" ref={canvasRef} width={constants.canvas.width} height={constants.canvas.height} key={"robocupfield"}/>
         </div>
     )
 }

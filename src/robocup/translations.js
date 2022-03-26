@@ -11,20 +11,20 @@ import * as constants from "../constants.js";
 // translate from pixels to cell
 function pixelToCell(pos) {
   return {
-    x: Math.floor(pos.x / constants.cell_width),
-    // we need to add constants.cell_height/2 because the grid starts with a
+    x: Math.floor(pos.x / constants.cell.width),
+    // we need to add constants.cell.height/2 because the grid starts with a
     // half cell in y direction
-    y: Math.floor((pos.y + constants.cell_height/2) / constants.cell_height),
+    y: Math.floor((pos.y + constants.cell.height/2) / constants.cell.height),
   };
 }
 
 // translate from cell to pixels
 function cellToPixel(pos) {
   return {
-    x: pos.x * constants.cell_width,
-    // we need to subtract constants.cell_height/2 because the grid starts with
+    x: pos.x * constants.cell.width,
+    // we need to subtract constants.cell.height/2 because the grid starts with
     // a half cell in y direction
-    y: pos.y * constants.cell_height - constants.cell_height/2,
+    y: pos.y * constants.cell.height - constants.cell.height/2,
   };
 }
 
@@ -32,8 +32,8 @@ function cellToPixel(pos) {
 function cellToPixelWithCenteredRobot(pos) {
   const pixel = cellToPixel(pos)
   return {
-    x: pixel.x + constants.cell_width/2,
-    y: pixel.y + constants.cell_height/2,
+    x: pixel.x + constants.cell.width/2,
+    y: pixel.y + constants.cell.height/2,
   };
 }
 
@@ -46,8 +46,8 @@ function cellToPixelWithCenteredRobot(pos) {
 function cellToPixelWithEastBall(pos) {
   const pixel = cellToPixel(pos)
   return {
-    x: pixel.x + constants.cell_width * (5/6),
-    y: pixel.y + constants.cell_height/2,
+    x: pixel.x + constants.cell.width * (5/6),
+    y: pixel.y + constants.cell.height/2,
   };
 }
 
