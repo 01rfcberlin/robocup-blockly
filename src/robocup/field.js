@@ -443,7 +443,7 @@ export const RoboCupField = ({grid_properties}) => {
             {toggleOutOfBoundsAlert &&
             <Alert variant={'warning'} style={{position: "absolute", zIndex:10}} >
                 <Alert.Heading>Roboter hat das Spielfeld verlassen!</Alert.Heading>
-                <p>Du soltest lieber mit deinem Roboter im Spielfeld bleiben :D</p>
+                <p>Du solltest lieber mit deinem Roboter im Spielfeld bleiben :D</p>
             </Alert>
             }
             <canvas id="playingField" ref={canvasRef} width={constants.canvas.width} height={constants.canvas.height} key={"robocupfield"}/>
