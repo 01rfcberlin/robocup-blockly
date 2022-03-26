@@ -15,8 +15,6 @@ const initialState = {
  * @constructor
  */
 function ApplicationReducer(state, action) {
-  //console.log("ApplicationReducer", action.type);
-
   if (typeof state === "undefined") {
     return initialState;
   }

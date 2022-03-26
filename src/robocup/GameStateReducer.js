@@ -35,7 +35,6 @@ const initialState = {
 const setRobotTarget = (state, index, team, robotCell) => {
   //Handles setting a new target position for the robot on the field.
   let current_robot = {...state.robotList[team][index]};
-  //console.log("Robot.SetTargetPosition: Current robot: " + current_robot)
   const copy_robot_list = [...state.robotList[team]];
   copy_robot_list.splice(index, 1);
 
@@ -93,8 +92,6 @@ const setRobotTarget = (state, index, team, robotCell) => {
  * @constructor
  */
 function GameStateReducer(state, action) {
-  // console.log("GameStateReducer", action.type);
-
   let current_robot = null;
 
   if (typeof state === "undefined") {
@@ -161,8 +158,6 @@ function GameStateReducer(state, action) {
       copy_robot_list3.splice(action.index, 1);
 
       const new_rotation = angles.normalize_angle(current_robot.position.rotation + action.relativeTarget.rotation);
-      console.log("AddTargetRotation", new_rotation, current_robot.position.rotation, action.relativeTarget.rotation,
-current_robot.position.rotation + action.relativeTarget.rotation);
 
       return {
         ...state,
@@ -251,7 +246,6 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       let toggleOut = state.toggleOutOfBoundsAlert;
 
       if(newBallCell.x >= constants.num_x_cells-1 && goalCellsY.includes(newBallCell.y)) {
-        // console.log("TOOR Home Team")
         goalsL += 1;
         toggleGoal = true;
         toggleOwnGoal = false;
@@ -259,7 +253,6 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       }
 
       if(newBallCell.x <= 0 && goalCellsY.includes(newBallCell.y)) {
-        // console.log("TOOR Away Team")
         goalsR += 1;
         toggleOwnGoal = true;
         toggleGoal = false;
@@ -333,7 +326,6 @@ current_robot.position.rotation + action.relativeTarget.rotation);
         toggleOutOfBoundsAlert: action.showAlert
       };
     case ActionName.Interface.SetVisibility:
-      console.log("Changing visibility to " + action.visibility)
       return {
         ...state,
         visible: action.visibility
