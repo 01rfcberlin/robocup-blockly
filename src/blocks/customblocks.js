@@ -188,7 +188,7 @@ Blockly.Blocks['repeat'] = {
       "message1": "Aktion %1",
       "args1": [{
         "type": "input_statement",
-        "name": "do"
+        "name": "body"
       }],
       "colour": "#41658A",
       "previousStatement": null,
@@ -214,7 +214,7 @@ Blockly.Blocks['repeat_until'] = {
       "message1": "Aktion: %1",
       "args1": [{
         "type": "input_statement",
-        "name": "do"
+        "name": "body"
       }],
       "colour": "#41658A",
       "previousStatement": null,
@@ -239,7 +239,7 @@ Blockly.Blocks['if'] = {
       "message1": "Aktion: %1",
       "args1": [{
         "type": "input_statement",
-        "name": "do"
+        "name": "body"
       }],
       "colour": "#41658A",
       "previousStatement": null,

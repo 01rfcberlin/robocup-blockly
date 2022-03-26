@@ -106,9 +106,9 @@ Blockly.JavaScript['move_one_block_ahead'] = function(block) {
  */
 Blockly.JavaScript['repeat'] = function(block) {
     var number_in = block.getFieldValue('times');
-    var statements_name = Blockly.JavaScript.statementToCode(block, 'do');
+    var body = Blockly.JavaScript.statementToCode(block, 'body');
     const variable_name = randomNameGenerator();
-    return 'for(var ' + variable_name + ' = 0; ' + variable_name + ' < ' + number_in + '; ' + variable_name + '++){' + statements_name + '}';
+    return 'for(var ' + variable_name + ' = 0; ' + variable_name + ' < ' + number_in + '; ' + variable_name + '++){' + body + '}';
 };
 
 /**
@@ -118,7 +118,7 @@ Blockly.JavaScript['repeat'] = function(block) {
  */
 Blockly.JavaScript['repeat_until'] = function(block) {
     var boolean_in = Blockly.JavaScript.valueToCode(block, 'sensor_in', Blockly.JavaScript.ORDER_ATOMIC);
-    var statements_name = Blockly.JavaScript.statementToCode(block, 'do');
+    var body = Blockly.JavaScript.statementToCode(block, 'body');
 
     const noConditionDefined = boolean_in === '';
     if (noConditionDefined) {
@@ -126,7 +126,7 @@ Blockly.JavaScript['repeat_until'] = function(block) {
       return '';
     }
 
-    return 'while (!(' + boolean_in + ')) {' + statements_name + '};';
+    return 'while (!(' + boolean_in + ')) {' + body + '};';
 };
 
 /**
@@ -136,7 +136,7 @@ Blockly.JavaScript['repeat_until'] = function(block) {
  */
 Blockly.JavaScript['if'] = function(block) {
     var boolean_in = Blockly.JavaScript.valueToCode(block, 'sensor_in', Blockly.JavaScript.ORDER_ATOMIC);
-    var statements_name = Blockly.JavaScript.statementToCode(block, 'do');
+    var body = Blockly.JavaScript.statementToCode(block, 'body');
 
     const noConditionDefined = boolean_in === '';
     if (noConditionDefined) {
@@ -144,7 +144,7 @@ Blockly.JavaScript['if'] = function(block) {
       return '';
     }
 
-    return 'if (' + boolean_in + ') { '+ statements_name + ' }';
+    return 'if (' + boolean_in + ') { '+ body + ' }';
 };
 
 /**
