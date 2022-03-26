@@ -60,7 +60,7 @@ const robot = posToDimension(metersToPixel({x: robot_size_meters, y: robot_size_
 const ball = posToDimension(metersToPixel({x: ball_size_meters, y: ball_size_meters}));
 
 // the interval between execution of the code blocks. in ms
-const step_execution_interval = 100;
+const step_execution_interval = 50;
 
 // in ms
 const draw_all_interval = 20;
