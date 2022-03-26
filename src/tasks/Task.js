@@ -237,6 +237,11 @@ export default function Task(props) {
             robot_y = getRandomArbitrary(props.task_properties.own_robot.random.y.min,props.task_properties.own_robot.random.y.max);
             robot_rotation = getRandomRotation() * 2*Math.PI/360;
         }
+        else if (props.task_properties.own_robot.rel_ball) {
+            robot_x = ball_x + props.task_properties.own_robot.rel_ball.x;
+            robot_y = ball_y + props.task_properties.own_robot.rel_ball.y;
+            robot_rotation = props.task_properties.own_robot.rel_ball.rotation * 2*Math.PI/360;
+        }
         else {
             robot_x = props.task_properties.own_robot.position.x;
             robot_y = props.task_properties.own_robot.position.y;
@@ -249,10 +254,24 @@ export default function Task(props) {
             "left"
         ));
         if(props.task_properties.opponent_robot) {
+            let opponent_x = -1;
+            let opponent_y = -1;
+            let opponent_rotation = 0;
+            if (props.task_properties.opponent_robot.random) {
+                opponent_x = getRandomArbitrary(props.task_properties.opponent_robot.random.x.min,props.task_properties.opponent_robot.random.x.max);
+                opponent_y = getRandomArbitrary(props.task_properties.opponent_robot.random.y.min,props.task_properties.opponent_robot.random.y.max);
+                opponent_rotation = getRandomRotation() * 2*Math.PI/360;
+            }
+            else {
+                opponent_x = props.task_properties.opponent_robot.position.x;
+                opponent_y = props.task_properties.opponent_robot.position.y;
+                opponent_rotation = props.task_properties.opponent_robot.position.rotation * 2*Math.PI/360;
+            }
+
             dispatch(RobotActions.addRobot(
-                props.task_properties.opponent_robot.position.x,
-                props.task_properties.opponent_robot.position.y,
-                props.task_properties.opponent_robot.position.rotation * 2*Math.PI/360,
+                opponent_x,
+                opponent_y,
+                opponent_rotation,
                 "right"
             ));
         }

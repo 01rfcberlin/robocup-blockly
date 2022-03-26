@@ -207,9 +207,10 @@
                     "next_to_ball"
                 ],
                 "own_robot": {
-                    "random": {
-                        "x": {"min": 6, "max": 8},
-                        "y": {"min": 2, "max": 4}
+                    "rel_ball": {
+                        "x": -1,
+                        "y": 0,
+                        "rotation": 90
                     }
                 },
                 "ball": {
