@@ -143,6 +143,18 @@ export default function Task(props) {
         });
     }
 
+    function getRandomArbitrary(min, max) {
+      let rand = parseInt(Math.random() * (max - min) + min);
+      return rand;
+    }
+
+    function getRandomRotation() {
+      let potential_rotations = [0,90,180,270];
+      let rand = potential_rotations[Math.floor(Math.random()*potential_rotations.length)];
+      console.log(rand)
+      return rand;
+    }
+
   // Called when clicking on the reset button. Resets the robot position on the
   // field to the original position and abort execution
   // machen, sondern nur über hooks dinge ändern in der "klasse"?
@@ -205,13 +217,37 @@ export default function Task(props) {
 
     // Resets the robot position on the field to the original position
     function resetGameState () {
+        //Determines whether the ball should be placed random or at a fixed position
+        let ball_x = -1;
+        let ball_y = -1;
+        if (props.task_properties.ball.random) {
+            ball_x = getRandomArbitrary(props.task_properties.ball.random.x.min,props.task_properties.ball.random.x.max);
+            ball_y = getRandomArbitrary(props.task_properties.ball.random.y.min,props.task_properties.ball.random.y.max);
+        }
+        else {
+            ball_x = props.task_properties.ball.position.x;
+            ball_y = props.task_properties.ball.position.y;
+        }
+        dispatch(BallActions.addBall(ball_x,ball_y));
+        let robot_x = -1;
+        let robot_y = -1;
+        let robot_rotation = 0;
+        if (props.task_properties.own_robot.random) {
+            robot_x = getRandomArbitrary(props.task_properties.own_robot.random.x.min,props.task_properties.own_robot.random.x.max);
+            robot_y = getRandomArbitrary(props.task_properties.own_robot.random.y.min,props.task_properties.own_robot.random.y.max);
+            robot_rotation = getRandomRotation() * 2*Math.PI/360;
+        }
+        else {
+            robot_x = props.task_properties.own_robot.position.x;
+            robot_y = props.task_properties.own_robot.position.y;
+            robot_rotation = props.task_properties.own_robot.position.rotation * 2*Math.PI/360;
+        }
         dispatch(RobotActions.addRobot(
-            props.task_properties.own_robot.position.x,
-            props.task_properties.own_robot.position.y,
-            props.task_properties.own_robot.position.rotation * 2*Math.PI/360,
+            robot_x,
+            robot_y,
+            robot_rotation,
             "left"
         ));
-        dispatch(BallActions.addBall(props.task_properties.ball.position.x,props.task_properties.ball.position.y));
         if(props.task_properties.opponent_robot) {
             dispatch(RobotActions.addRobot(
                 props.task_properties.opponent_robot.position.x,

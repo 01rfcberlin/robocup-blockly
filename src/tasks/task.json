@@ -156,7 +156,15 @@
         },
         "task8": {
             "optimal_blocks": 10,
-            "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat", "repeat_until", "next_to_ball"],
+            "codeBlocks": [
+                "ball_kick",
+                "move_one_block_ahead",
+                "turn_left",
+                "turn_right",
+                "repeat",
+                "repeat_until",
+                "next_to_ball"
+            ],
             "own_robot": {
                 "position": {
                     "x": 1,
@@ -179,9 +187,46 @@
             },
             "task": {
                 "heading": "Die letzte Aufgabe",
-                "body": ["In dieser Aufgabe kommt alles zusammen. Sich drehen, den Ball über das Spielfeld bewegen und dann auch noch ein Gegenspieler. Diese Aufgabe ist zum kniffeln. Welche Anweisung soll hier gegeben werden?"],
-                "tip": ["Du kannst dich auch langsam an eine Lösung annähern, in dem du Stück für Stück Code hinzufügst und ihn immer wieder ausführst"]
+                "body": [
+                    "In dieser Aufgabe kommt alles zusammen. Sich drehen, den Ball über das Spielfeld bewegen und dann auch noch ein Gegenspieler. Diese Aufgabe ist zum kniffeln. Welche Anweisung soll hier gegeben werden?"
+                ],
+                "tip": [
+                    "Du kannst dich auch langsam an eine Lösung annähern, in dem du Stück für Stück Code hinzufügst und ihn immer wieder ausführst"
+                ]
             }
+        },
+            "task9": {
+                "optimal_blocks": 1,
+                "codeBlocks": [
+                    "ball_kick",
+                    "move_one_block_ahead",
+                    "turn_left",
+                    "turn_right",
+                    "repeat",
+                    "repeat_until",
+                    "next_to_ball"
+                ],
+                "own_robot": {
+                    "random": {
+                        "x": {"min": 6, "max": 8},
+                        "y": {"min": 2, "max": 4}
+                    }
+                },
+                "ball": {
+                    "random": {
+                        "x": {"min": 7, "max": 7},
+                        "y": {"min": 2, "max": 7}
+                    }
+                },
+                "task": {
+                    "heading": "Auf den Zufall reagieren",
+                    "body": [
+                        "Nanu, wo sind denn der Roboter und der Ball hin? Klick mal auf Code ausführen und schau was passiert. An welchen Stellen kann der Ball liegen? Und wo steht der Roboter? Um darauf reagieren zu können, brauchen wir den Wenn-Block und die neuen Sensor-Inputs."
+                    ],
+                    "tip": [
+                        "TODO"
+                    ]
+                }
         }
     }
 }
