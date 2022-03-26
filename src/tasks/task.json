@@ -195,7 +195,49 @@
                 ]
             }
         },
-            "task9": {
+        "task9": {
+            "optimal_blocks": 10,
+            "codeBlocks": [
+                "ball_kick",
+                "move_one_block_ahead",
+                "turn_left",
+                "turn_right",
+                "repeat",
+                "repeat_until",
+                "next_to_ball"
+            ],
+            "own_robot": {
+                "position": {
+                    "x": 1,
+                    "y": 4,
+                    "rotation": 90
+                }
+            },
+            "opponent_robot": {
+                "position": {
+                    "x": 7,
+                    "y": 4,
+                    "rotation": -90
+                },
+                "movement": ["move_one_block_ahead","move_one_block_ahead","turn_left","turn_left","move_one_block_ahead","move_one_block_ahead"]
+            },
+            "ball": {
+                "position": {
+                    "x": 2,
+                    "y": 6
+                }
+            },
+            "task": {
+                "heading": "Die Gegner bewegen sich!",
+                "body": [
+                    "TODO"
+                ],
+                "tip": [
+                    "TODO"
+                ]
+            }
+        },
+            "task10": {
                 "optimal_blocks": 1,
                 "codeBlocks": [
                     "ball_kick",
