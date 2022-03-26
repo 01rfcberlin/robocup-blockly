@@ -317,7 +317,7 @@ export default function Task(props) {
                       </Row>
                       <Row style={{marginTop: "20px"}}>
                           <Col xs={12}>
-                              <button size="lg" className={buttonClass} block onClick={() => {
+                              <button size="lg" className={buttonClass} onClick={() => {
                                 if (workspaceInterpreterRef.current !== null) {
                                   reset();
                                   triggerRendering(curTriggerRendering + 1);
