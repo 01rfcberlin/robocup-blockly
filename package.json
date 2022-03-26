@@ -14,6 +14,7 @@
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.0",
     "react-scripts": "^5.0.0",
+    "react-tsparticles": "^1.42.4",
     "reactstrap": "^9.0.0",
     "redux": "^4.0.5",
     "redux-promise-middleware": "^5.1.1",
