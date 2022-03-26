@@ -21,7 +21,7 @@ import Particles from "react-tsparticles";
 export const RoboCupField = ({grid_properties}) => {
     const dispatch = useDispatch();
 
-    const { robotListLeft, robotListRight, ball, toggleGoalAlert, toggleOwnGoalAlert, toggleOutOfBoundsAlert, visible } = useSelector(state => {
+    const { robotList, ball, toggleGoalAlert, toggleOwnGoalAlert, toggleOutOfBoundsAlert, visible } = useSelector(state => {
         return state.gameState;
     });
 
@@ -131,14 +131,14 @@ export const RoboCupField = ({grid_properties}) => {
     // Draws all robots at their current position.
     const draw_robots = (ctx) => {
         if (visible) {
-            robotListLeft.forEach(element => {
+            robotList.left.forEach(element => {
                 // the position of the Redux state is the center of the robot
                 canvas.drawRotatedCenteredImage(ctx, images.rfcRobot,
                     element.position.rotation,
                     element.position,
                     constants.robot)
             });
-            robotListRight.forEach(element => {
+            robotList.right.forEach(element => {
                 canvas.drawRotatedCenteredImage(ctx, images.bitbotsRobot,
                     element.position.rotation,
                     element.position,
@@ -168,62 +168,65 @@ export const RoboCupField = ({grid_properties}) => {
         // TODO This should have NEVER happened if we used React correctly :/
         if (canvasRef.current === null) return;
 
-        robotListLeft.forEach((element, idx) => {
-            // The following code is about reaching the target. But if there is
-            // not target, this code should be skipped.
-            if (!element.target) return;
+        for (let team of ["left", "right"]) {
+            robotList[team].forEach((element, idx) => {
+                // The following code is about reaching the target. But if there is
+                // not target, this code should be skipped.
+                if (!element.target) return;
 
-            // If we reached the final state, there is no need to move the robot.
-            if (!element.isActive) return;
+                // If we reached the final state, there is no need to move the robot.
+                if (!element.isActive) return;
 
-            if (element.isActiveDueToMoving) {
-                // Assumption: We either move left/right or top/bottom. We never move
-                // in both directions at the same time. Or put differently,
-                // element.target and element.position only differ in at most one
-                // component.
-                console.assert(element.target.x === element.position.x || element.target.y === element.position.y);
+                if (element.isActiveDueToMoving) {
+                    // Assumption: We either move left/right or top/bottom. We never move
+                    // in both directions at the same time. Or put differently,
+                    // element.target and element.position only differ in at most one
+                    // component.
+                    console.assert(element.target.x === element.position.x || element.target.y === element.position.y);
 
-                const delta_x = element.target.x - element.position.x;
-                const delta_y = element.target.y - element.position.y;
+                    const delta_x = element.target.x - element.position.x;
+                    const delta_y = element.target.y - element.position.y;
 
-                const delta_vec_length = Math.sqrt(delta_x ** 2 + delta_y ** 2);
-                const normalized_delta_vec_x = delta_x / delta_vec_length;
-                const normalized_delta_vec_y = delta_y / delta_vec_length;
+                    const delta_vec_length = Math.sqrt(delta_x ** 2 + delta_y ** 2);
+                    const normalized_delta_vec_x = delta_x / delta_vec_length;
+                    const normalized_delta_vec_y = delta_y / delta_vec_length;
 
-                const movement_vec_x = normalized_delta_vec_x * constants.robot_movement_per_draw_all;
-                const movement_vec_y = normalized_delta_vec_y * constants.robot_movement_per_draw_all;
+                    const movement_vec_x = normalized_delta_vec_x * constants.robot_movement_per_draw_all;
+                    const movement_vec_y = normalized_delta_vec_y * constants.robot_movement_per_draw_all;
 
-                let new_x = element.position.x + movement_vec_x;
-                let new_y = element.position.y + movement_vec_y;
+                    let new_x = element.position.x + movement_vec_x;
+                    let new_y = element.position.y + movement_vec_y;
 
-                // Avoid overshooting: Since we know that we only go along one
-                // coordinate, we can just set the position to the target.
-                const would_overshoot =
-                    (element.target.x > element.position.x && new_x > element.target.x)
-                    || (element.target.x < element.position.x && new_x < element.target.x)
-                    || (element.target.y > element.position.y && new_y > element.target.y)
-                    || (element.target.y < element.position.y && new_y < element.target.y);
-                if (would_overshoot) {
-                    new_x = element.target.x;
-                    new_y = element.target.y;
+                    // Avoid overshooting: Since we know that we only go along one
+                    // coordinate, we can just set the position to the target.
+                    const would_overshoot =
+                        (element.target.x > element.position.x && new_x > element.target.x)
+                        || (element.target.x < element.position.x && new_x < element.target.x)
+                        || (element.target.y > element.position.y && new_y > element.target.y)
+                        || (element.target.y < element.position.y && new_y < element.target.y);
+                    if (would_overshoot) {
+                        new_x = element.target.x;
+                        new_y = element.target.y;
+                    }
+
+                    dispatch(RobotActions.setPosition(new_x, new_y, element.position.rotation, idx, team));
                 }
 
-                dispatch(RobotActions.setPosition(new_x, new_y, element.position.rotation, idx));
-            }
+                if (element.isActiveDueToRotating) {
+                    const direction = Math.sign(angles.angle_signed_smallest_difference(element.position.rotation, element.target.rotation));
+                    const new_angle = element.position.rotation + direction * constants.robot_rotation_per_draw_all;
+                    const new_direction = Math.sign(angles.angle_signed_smallest_difference(new_angle, element.target.rotation));
+                    const would_overshoot = direction !== new_direction;
 
-            if (element.isActiveDueToRotating) {
-              const direction = Math.sign(angles.angle_signed_smallest_difference(element.position.rotation, element.target.rotation));
-              const new_angle = element.position.rotation + direction * constants.robot_rotation_per_draw_all;
-              const new_direction = Math.sign(angles.angle_signed_smallest_difference(new_angle, element.target.rotation));
-              const would_overshoot = direction !== new_direction;
+                    if (would_overshoot) {
+                        dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.target.rotation, idx, team));
+                    } else {
+                        dispatch(RobotActions.setPosition(element.position.x, element.position.y, new_angle, idx, team));
+                    }
+                }
+            });
+        }
 
-              if (would_overshoot) {
-                dispatch(RobotActions.setPosition(element.position.x, element.position.y, element.target.rotation, idx));
-              } else {
-                dispatch(RobotActions.setPosition(element.position.x, element.position.y, new_angle, idx));
-              }
-            }
-        });
 
         // Had to do a check if ball.position is already set
         if(ball.target && !Number.isNaN(ball.position.x) && !Number.isNaN(ball.position.y)) {

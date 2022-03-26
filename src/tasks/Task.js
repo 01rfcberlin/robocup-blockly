@@ -24,27 +24,27 @@ const blocklyFunctions = {
   ),
 
   setRobotTargetPosition: ({dispatch}) => (
-    (pos_x, pos_y, ind) => {
-      dispatch(RobotActions.setTargetPosition(pos_x,pos_y, ind));
+    (pos_x, pos_y, ind, team) => {
+      dispatch(RobotActions.setTargetPosition(pos_x,pos_y, ind, team));
     }
   ),
 
   ballKick: ({dispatch}) => (
-    (block, ind) => {
-      dispatch(BallActions.ballKick(block,ind));
+    (block, ind, team) => {
+      dispatch(BallActions.ballKick(block,ind, team));
     }
   ),
 
   addRobotTargetRotation: ({dispatch}) => (
-    (radians, ind) => {
-      dispatch(RobotActions.addTargetRotation(radians, ind));
+    (radians, ind, team) => {
+      dispatch(RobotActions.addTargetRotation(radians, ind, team));
     }
   ),
 
   moveForward: ({dispatch}) => (
-    (block, ind) => {
-      dispatch(RobotActions.walkForward(block,ind));
-      dispatch(BallActions.ballKick(1, 0));
+    (block, ind, team) => {
+      dispatch(RobotActions.walkForward(block,ind, team));
+      dispatch(BallActions.ballKick(1, ind, team));
     }
   ),
 
@@ -59,27 +59,27 @@ const blocklyFunctions = {
     }
   ),
 
-  nextToBall: ({dispatch, ballStateRef, robotListLeftRef}) => (
-    () => {
-      return ballKickable(ballStateRef.current.position, robotListLeftRef.current[0].position);
+  nextToBall: ({dispatch, ballStateRef, robotListRef}) => (
+    (id, team) => {
+      return ballKickable(ballStateRef.current.position, robotListRef.current[team][id].position);
     }
   ),
 
-  isRobotAboveGoal: ({dispatch, robotListLeftRef}) => (
-    () => {
-      const y = translations.pixelToCell(robotListLeftRef.current[0].position).y;
+  isRobotAboveGoal: ({dispatch, robotListRef}) => (
+    (id, team) => {
+      const y = translations.pixelToCell(robotListRef.current[team][id].position).y;
       return y < 3;
     }
   ),
-  isRobotBeneathGoal: ({dispatch, robotListLeftRef}) => (
-    () => {
-      const y = translations.pixelToCell(robotListLeftRef.current[0].position).y;
+  isRobotBeneathGoal: ({dispatch, robotListRef}) => (
+    (id, team) => {
+      const y = translations.pixelToCell(robotListRef.current[team][id].position).y;
       return y > 5;
     }
   ),
-  isRobotCenteredToGoal: ({dispatch, robotListLeftRef}) => (
-    () => {
-      const y = translations.pixelToCell(robotListLeftRef.current[0].position).y;
+  isRobotCenteredToGoal: ({dispatch, robotListRef}) => (
+    (id, team) => {
+      const y = translations.pixelToCell(robotListRef.current[team][id].position).y;
       return y >= 3 && y <= 5;
     }
   ),
@@ -104,7 +104,7 @@ function console_log(...args){
 
 export default function Task(props) {
   const dispatch = useDispatch();
-  const { robotListLeft, ball } = useSelector(state => {
+  const { robotList, ball } = useSelector(state => {
     return state.gameState;
   });
 
@@ -121,8 +121,8 @@ export default function Task(props) {
   const reachedCodeEnd = useRef();
 
   // TODO: Can this be solved without a ref? Or do we really need a ref?
-  const robotListLeftRef = useRef();
-  robotListLeftRef.current = robotListLeft;
+  const robotListRef = useRef();
+  robotListRef.current = robotList;
 
   const ballStateRef = useRef();
   ballStateRef.current = ball;
@@ -219,7 +219,7 @@ export default function Task(props) {
           dispatch,
           workspaceRef,
           reachedCodeEnd,
-          robotListLeftRef,
+          robotListRef,
           ballStateRef,
         });
 
@@ -308,7 +308,7 @@ export default function Task(props) {
   // React refs in the function.
   function interpreterStep() {
     const workspaceInterpreter = workspaceInterpreterRef.current;
-    const robot = robotListLeftRef.current[0];
+    const robot = robotListRef.current["left"][0]; //TODO
     const ballRef = ballStateRef.current
 
     // Execution was stopped via the reset button (or never begun)

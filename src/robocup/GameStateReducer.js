@@ -15,8 +15,10 @@ const initialState = {
   teamNameLeft: "01.RFC Berlin",
   teamNameRight: "Hamburg Bit-Bots",
   // The robot position is the center of the robot.
-  robotListLeft: [],
-  robotListRight: [],
+  robotList: {
+    "left": [],
+    "right": []
+  },
   // Don't already define position and target here because the code checks if
   // position and target are already defined or not and does different things
   // depending on this.
@@ -30,11 +32,11 @@ const initialState = {
   visible: true,
 };
 
-const setRobotTarget = (state, index, robotCell) => {
+const setRobotTarget = (state, index, team, robotCell) => {
   //Handles setting a new target position for the robot on the field.
-  let current_robot = {...state.robotListLeft[index]};
+  let current_robot = {...state.robotList[team][index]};
   //console.log("Robot.SetTargetPosition: Current robot: " + current_robot)
-  const copy_robot_list = [...state.robotListLeft];
+  const copy_robot_list = [...state.robotList[team]];
   copy_robot_list.splice(index, 1);
 
   // Check if robot will move to a cell out of the field
@@ -53,24 +55,28 @@ const setRobotTarget = (state, index, robotCell) => {
 
   return {
     ...state,
-    robotListLeft: [
-      ...copy_robot_list,
-      {
-        ...current_robot,
-        target: {
-          ...current_robot.position,
-          ...robotPixel,
-        },
-        // "is active" means if the robot is moving (either rotating or
-        // changing its position). Originally isActive was called
-        // reachedTargetPosition and reachedTargetRotation which (but only
-        // negated) which emphasizes that "is active" is only about whether the
-        // robot reached its target position or not.
-        isActive: true,
-        isActiveDueToMoving: true,
-        // don't overwrite isActiveDueToRotating here. keep the current value
-      }
-    ],
+    robotList: {
+      ...state.robotList,
+      [team]: [
+        ...copy_robot_list,
+        {
+          ...current_robot,
+          target: {
+            ...current_robot.position,
+            ...robotPixel,
+          },
+          // "is active" means if the robot is moving (either rotating or
+          // changing its position). Originally isActive was called
+          // reachedTargetPosition and reachedTargetRotation which (but only
+          // negated) which emphasizes that "is active" is only about whether the
+          // robot reached its target position or not.
+          isActive: true,
+          isActiveDueToMoving: true,
+          // don't overwrite isActiveDueToRotating here. keep the current value
+        }
+      ]
+
+    },
     outOfBound: outofbounds,
     toggleOutOfBoundsAlert: toggleOut,
     toggleGoalAlert: goalt,
@@ -103,24 +109,19 @@ function GameStateReducer(state, action) {
       action.robot.isActive = false;
       action.robot.isActiveDueToMoving = false;
       action.robot.isActiveDueToRotating = false;
-      if (action.field_half === "left") {
-        return {
-          ...state,
-          robotListLeft: [...state.robotListLeft, action.robot]
-        };
-      }
-      else {
-        return {
-          ...state,
-          robotListRight: [...state.robotListRight, action.robot]
-        };
-      }
+      return {
+        ...state,
+        robotList: {
+          ...state.robotList,
+          [action.team]: [...state.robotList[action.team], action.robot]
+        }
+      };
     case ActionName.Robot.SetTargetPosition:
-      return setRobotTarget(state, action.index, action.target);
+      return setRobotTarget(state, action.index, action.team, action.target);
     case ActionName.Robot.SetPosition:
       //Actually updates the position of a robot on the field
-      current_robot = {...state.robotListLeft[action.index]};
-      const copy_robot_list2 = [...state.robotListLeft];
+      current_robot = {...state.robotList[action.team][action.index]};
+      const copy_robot_list2 = [...state.robotList[action.team]];
       copy_robot_list2.splice(action.index, 1);
 
       const isActiveDueToMoving =
@@ -135,25 +136,28 @@ function GameStateReducer(state, action) {
 
       return {
         ...state,
-        robotListLeft: [
-          ...copy_robot_list2,
-          {
-            ...current_robot,
-            position: {
-              rotation: new_rot,
-              x: action.position.x,
-              y: action.position.y
-            },
-            isActive: isActiveDueToMoving || isActiveDueToRotating,
-            isActiveDueToMoving,
-            isActiveDueToRotating,
-          }
-        ]
+        robotList: {
+          ...state.robotList,
+          [action.team]: [
+            ...copy_robot_list2,
+            {
+              ...current_robot,
+              position: {
+                rotation: new_rot,
+                x: action.position.x,
+                y: action.position.y
+              },
+              isActive: isActiveDueToMoving || isActiveDueToRotating,
+              isActiveDueToMoving,
+              isActiveDueToRotating,
+            }
+          ]
+        }
       };
     case ActionName.Robot.AddTargetRotation:
       //Turn the robot on the field
-      current_robot = {...state.robotListLeft[action.index]};
-      const copy_robot_list3 = [...state.robotListLeft];
+      current_robot = {...state.robotList[action.team][action.index]};
+      const copy_robot_list3 = [...state.robotList[action.team]];
       copy_robot_list3.splice(action.index, 1);
 
       const new_rotation = angles.normalize_angle(current_robot.position.rotation + action.relativeTarget.rotation);
@@ -162,34 +166,37 @@ current_robot.position.rotation + action.relativeTarget.rotation);
 
       return {
         ...state,
-        robotListLeft: [
-          ...copy_robot_list3,
-          {
-            ...current_robot,
-            target: {
-              ...current_robot.target,
-              rotation: new_rotation
-            },
-            isActive: true,
-            isActiveDueToRotating: true,
-            // don't overwrite isActiveDueToMoving here. keep the current value
-          }
-        ]
+        robotList: {
+          ...state.robotList,
+          [action.team]: [
+            ...copy_robot_list3,
+            {
+              ...current_robot,
+              target: {
+                ...current_robot.target,
+                rotation: new_rotation
+              },
+              isActive: true,
+              isActiveDueToRotating: true,
+              // don't overwrite isActiveDueToMoving here. keep the current value
+            }
+          ]
+        }
       };
     case ActionName.Robot.WalkForward:
-      current_robot = {...state.robotListLeft[action.index]};
+      current_robot = {...state.robotList[action.team][action.index]};
       const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
       const robotCell = translations.pixelToCell(current_robot.position);
 
       if (gaze_direction === angles.gaze_directions.right) {
-        return setRobotTarget(state, action.index, {x:robotCell.x + action.blocks, y:robotCell.y});
+        return setRobotTarget(state, action.index, action.team,{x:robotCell.x + action.blocks, y:robotCell.y});
       } else if (gaze_direction === angles.gaze_directions.left) {
-        return setRobotTarget(state, action.index, {x:robotCell.x - action.blocks, y:robotCell.y});
+        return setRobotTarget(state, action.index, action.team,{x:robotCell.x - action.blocks, y:robotCell.y});
       } else if (gaze_direction === angles.gaze_directions.bottom) {
-        return setRobotTarget(state, action.index, {x:robotCell.x, y:robotCell.y + action.blocks});
+        return setRobotTarget(state, action.index, action.team,{x:robotCell.x, y:robotCell.y + action.blocks});
       } else if (gaze_direction === angles.gaze_directions.top) {
-        return setRobotTarget(state, action.index, {x:robotCell.x, y:robotCell.y - action.blocks});
+        return setRobotTarget(state, action.index, action.team,{x:robotCell.x, y:robotCell.y - action.blocks});
       } else {
         console.assert(false);
         return {};
@@ -211,8 +218,8 @@ current_robot.position.rotation + action.relativeTarget.rotation);
       };
     case ActionName.Ball.BallKick:
       //Handles setting a new target position for the ball on the field.
-      current_robot = {...state.robotListLeft[action.robot.index]};
-      const copy_robot_list4 = [...state.robotListLeft];
+      current_robot = {...state.robotList[action.team][action.robot.index]};
+      const copy_robot_list4 = [...state.robotList[action.team]];
       copy_robot_list4.splice(action.index, 1);
 
       const goalCellsY = [3, 4, 5]
@@ -268,11 +275,14 @@ current_robot.position.rotation + action.relativeTarget.rotation);
           target: newBallPixel,
           isMoving: true
         },
-        robotListLeft: [
+        robotList: {
+          ...state.robotList,
+          [action.team]: [
           ...copy_robot_list4,
           {
             ...current_robot,
-          }],
+          }]
+        },
         goalsLeft: goalsL,
         goalsRight: goalsR,
         toggleGoalAlert: toggleGoal,

@@ -10,7 +10,7 @@ const BallActions = {
       }
     }
   },
-  ballKick: (blocks, ind) => {
+  ballKick: (blocks, ind, team) => {
     return {
       type: ActionName.Ball.BallKick,
       target: {
@@ -18,7 +18,8 @@ const BallActions = {
       },
       robot: {
         index: ind
-      }
+      },
+      team: team
     }
   },
   setPosition: (ballPixelX, ballPixelY) => {

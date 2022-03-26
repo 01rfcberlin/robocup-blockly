@@ -24,7 +24,7 @@ Blockly.JavaScript['robot_add'] = function(block) {
 Blockly.JavaScript['robot_move'] = function(block) {
     var value_pos_x = Blockly.JavaScript.valueToCode(block, 'pos_x', Blockly.JavaScript.ORDER_ATOMIC);
     var value_pos_y = Blockly.JavaScript.valueToCode(block, 'pos_y', Blockly.JavaScript.ORDER_ATOMIC);
-    return 'setRobotTargetPosition(' + value_pos_x + ', ' + value_pos_y + ', 0);';
+    return 'setRobotTargetPosition(' + value_pos_x + ', ' + value_pos_y + ', 0, "left");';
 };
 
 /**
@@ -33,7 +33,7 @@ Blockly.JavaScript['robot_move'] = function(block) {
  * @returns {string}
  */
  Blockly.JavaScript['ball_kick'] = function(block) {
-    return 'ballKick(3, 0);';
+    return 'ballKick(3, 0, "left");';
 };
 
 /**
@@ -43,7 +43,7 @@ Blockly.JavaScript['robot_move'] = function(block) {
  * @returns {string}
  */
 Blockly.JavaScript['turn_right'] = function(block) {
-    return 'addRobotTargetRotation(Math.PI/2, 0);';
+    return 'addRobotTargetRotation(Math.PI/2, 0, "left");';
 };
 
 /**
@@ -53,7 +53,7 @@ Blockly.JavaScript['turn_right'] = function(block) {
  * @returns {string}
  */
 Blockly.JavaScript['turn_left'] = function(block) {
-    return 'addRobotTargetRotation(-Math.PI/2, 0);';
+    return 'addRobotTargetRotation(-Math.PI/2, 0, "left");';
 };
 
 /**
@@ -63,7 +63,7 @@ Blockly.JavaScript['turn_left'] = function(block) {
  * @returns {string}
  */
 Blockly.JavaScript['move_one_block_ahead'] = function(block) {
-    return 'moveForward(1, 0);';
+    return 'moveForward(1, 0, "left");';
 };
 
 /**
@@ -130,17 +130,17 @@ Blockly.JavaScript['if'] = function(block) {
  * @returns {string}
  */
 Blockly.JavaScript['next_to_ball'] = function(block) {
-    return ['nextToBall()', Blockly.JavaScript.ORDER_ATOMIC];
+    return ['nextToBall(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['is_robot_above_goal'] = function(block) {
-    return ['isRobotAboveGoal()', Blockly.JavaScript.ORDER_ATOMIC];
+    return ['isRobotAboveGoal(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
 };
 Blockly.JavaScript['is_robot_beneath_goal'] = function(block) {
-    return ['isRobotBeneathGoal()', Blockly.JavaScript.ORDER_ATOMIC];
+    return ['isRobotBeneathGoal(0, "team")', Blockly.JavaScript.ORDER_ATOMIC];
 };
 Blockly.JavaScript['is_robot_centered_to_goal'] = function(block) {
-    return ['isRobotCenteredToGoal()', Blockly.JavaScript.ORDER_ATOMIC];
+    return ['isRobotCenteredToGoal(0, "team")', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 /**
