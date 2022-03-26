@@ -48,48 +48,48 @@ const blocklyFunctions = {
     }
   ),
 
-  startBlock: ({dispatch, reachedCodeEnd}) => (
+  startBlock: ({reachedCodeEnd}) => (
     () => {
     }
   ),
 
-  codeEnd: ({dispatch, reachedCodeEnd}) => (
+  codeEnd: ({reachedCodeEnd}) => (
     () => {
       reachedCodeEnd.current = true;
     }
   ),
 
-  nextToBall: ({dispatch, ballStateRef, robotListRef}) => (
+  nextToBall: ({ballStateRef, robotListRef}) => (
     (id, team) => {
       return ballKickable(ballStateRef.current.position, robotListRef.current[team][id].position);
     }
   ),
 
-  isRobotAboveGoal: ({dispatch, robotListRef}) => (
+  isRobotAboveGoal: ({robotListRef}) => (
     (id, team) => {
       const y = translations.pixelToCell(robotListRef.current[team][id].position).y;
       return y < 3;
     }
   ),
-  isRobotBeneathGoal: ({dispatch, robotListRef}) => (
+  isRobotBeneathGoal: ({robotListRef}) => (
     (id, team) => {
       const y = translations.pixelToCell(robotListRef.current[team][id].position).y;
       return y > 5;
     }
   ),
-  isRobotCenteredToGoal: ({dispatch, robotListRef}) => (
+  isRobotCenteredToGoal: ({robotListRef}) => (
     (id, team) => {
       const y = translations.pixelToCell(robotListRef.current[team][id].position).y;
       return y >= 3 && y <= 5;
     }
   ),
 
-  waitBlock: ({dispatch}) => (
+  waitBlock: ({}) => (
     () => {
     }
   ),
 
-  highlightBlock: ({dispatch, workspaceRef}) => (
+  highlightBlock: ({workspaceRef}) => (
     (blockId) => {
       workspaceRef.current.workspace.highlightBlock(blockId);
     }
