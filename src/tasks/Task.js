@@ -1,7 +1,7 @@
 import {RoboCupField} from "../robocup/field";
 import BlocklyComponent, {Block} from "../Blockly";
 import {useEffect, useState, useRef} from "react";
-import {Button, Container} from 'reactstrap';
+import {Container} from 'reactstrap';
 import RobotActions from "../robocup/RobotActions";
 import BlocklyJS from "blockly/javascript";
 import {useDispatch, useSelector} from "react-redux";
