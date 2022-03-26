@@ -102,7 +102,7 @@ export default function Task(props) {
 
   const taskBody = () => {
       return props.task_properties.task.body.map((element, index) => {
-          return <p key={`task-body-${index}`}> {element} </p>
+          return <p style={{marginTop: "10px"}} key={`task-body-${index}`}> {element} </p>
       })
   };
 
@@ -286,7 +286,7 @@ export default function Task(props) {
                       </Row>
                       <Row className={"justify-content-md-center"} style={{marginTop: "20px"}}>
                               <h3>{props.task_properties.task.heading}</h3>
-                              <p style={{marginTop: "10px"}}>{taskBody()}</p>
+                              {taskBody()}
                       </Row>
                       <Row>
                           <Col xs={8}>
