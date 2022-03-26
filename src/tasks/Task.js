@@ -62,6 +62,11 @@ const blocklyFunctions = {
     }
   ),
 
+  waitBlock: ({dispatch}) => (
+    () => {
+    }
+  ),
+
   highlightBlock: ({dispatch, workspaceRef}) => (
     (blockId) => {
       workspaceRef.current.workspace.highlightBlock(blockId);

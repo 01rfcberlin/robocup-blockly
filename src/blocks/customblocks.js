@@ -239,3 +239,20 @@ Blockly.Blocks['next_to_ball'] = {
     });
   }
 };
+
+/**
+ * Block that handles turning the robot 90 degrees to the right
+ * @type {{init: Blockly.Blocks.wait.init}}
+ */
+Blockly.Blocks['wait'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Warten',
+      "colour": "#A400AC",
+      "previousStatement": null,
+      "nextStatement": null,
+      "tooltip": "Der Roboter macht diesen Block nichts.",
+    });
+  }
+};
+

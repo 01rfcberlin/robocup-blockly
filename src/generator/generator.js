@@ -139,6 +139,16 @@ Blockly.JavaScript['next_to_ball'] = function(block) {
     return ['nextToBall()', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
+/**
+ * Just do nothing
+ * TODO: Robot index right now is hard-coded so it is always 0
+ * @param block
+ * @returns {string}
+ */
+ Blockly.JavaScript['wait'] = function(block) {
+    return 'waitBlock();';
+};
+
 const randomNameGenerator = () => {
     let res = '';
     for(let i = 0; i < 5; i++){
