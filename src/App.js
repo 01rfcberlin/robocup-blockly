@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 
-import './blocks/customblocks';
-import './generator/generator';
+import './customblocks';
+import './generator';
 import {useDispatch, useSelector} from "react-redux";
 import ApplicationActions from "./applicationLogic/ApplicationActions";
 import TaskDetails from "./tasks/task.json";
