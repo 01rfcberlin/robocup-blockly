@@ -84,7 +84,7 @@ const blocklyFunctions = {
     }
   ),
 
-  waitBlock: ({}) => (
+  waitBlock: () => (
     () => {
     }
   ),
