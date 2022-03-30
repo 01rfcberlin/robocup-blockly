@@ -247,7 +247,7 @@
             }
         },
             "task10": {
-                "optimal_blocks": 1,
+                "optimal_blocks": 16,
                 "visibility": false,
                 "codeBlocks": [
                     "ball_kick",
