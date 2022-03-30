@@ -252,7 +252,7 @@ Blockly.Blocks['next_to_ball'] = {
 Blockly.Blocks['is_robot_above_goal'] = {
   init: function() {
     this.jsonInit({
-      "message0": 'Roboter ist über dem Tor',
+      "message0": 'Roboter ist über den Toren',
       "output": null,
       "type": Boolean,
       "colour": "#93a832",
@@ -263,7 +263,7 @@ Blockly.Blocks['is_robot_above_goal'] = {
 Blockly.Blocks['is_robot_beneath_goal'] = {
   init: function() {
     this.jsonInit({
-      "message0": 'Roboter ist unter dem Tor',
+      "message0": 'Roboter ist unter den Toren',
       "output": null,
       "type": Boolean,
       "colour": "#93a832",
@@ -274,7 +274,7 @@ Blockly.Blocks['is_robot_beneath_goal'] = {
 Blockly.Blocks['is_robot_centered_to_goal'] = {
   init: function() {
     this.jsonInit({
-      "message0": 'Roboter ist mittig zum Tor',
+      "message0": 'Roboter ist zwischen den Toren',
       "output": null,
       "type": Boolean,
       "colour": "#93a832",
