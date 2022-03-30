@@ -11,6 +11,8 @@ const ActionName = {
     AddRobot: 'Robot.AddRobot',
     SetTargetPosition: 'Robot.SetTargetPosition',
     SetPosition: 'Robot.SetPosition',
+    SetFixedMovement: 'Robot.SetFixedMovement',
+    IncreaseFixedMovementIndex: 'IncreaseFixedMovementIndex',
     AddTargetRotation: 'Robot.AddTargetRotation',
     WalkForward: 'Robot.WalkForward',
     Reset: 'Robot.Reset'

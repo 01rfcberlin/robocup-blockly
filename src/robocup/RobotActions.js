@@ -35,6 +35,21 @@ const RobotActions = {
       team: team
     }
   },
+  setFixedMovement: (ind, team, movementList) => {
+    return {
+      type: ActionName.Robot.SetFixedMovement,
+      index: ind,
+      team: team,
+      movementList: movementList
+    }
+  },
+  increaseFixedMovementIndex: (ind, team) => {
+    return {
+      type: ActionName.Robot.IncreaseFixedMovementIndex,
+      index: ind,
+      team: team
+    }
+  },
   walkForward: (blocks, ind, team) => {
     return {
       type: ActionName.Robot.WalkForward,

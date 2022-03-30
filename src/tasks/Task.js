@@ -29,22 +29,25 @@ const blocklyFunctions = {
     }
   ),
 
-  ballKick: ({dispatch}) => (
+  ballKick: ({dispatch, robotListRef}) => (
     (block, ind, team) => {
       dispatch(BallActions.ballKick(block,ind, team));
+      tickOpponentRobots(team,robotListRef,dispatch);
     }
   ),
 
-  addRobotTargetRotation: ({dispatch}) => (
+  addRobotTargetRotation: ({dispatch, robotListRef}) => (
     (radians, ind, team) => {
       dispatch(RobotActions.addTargetRotation(radians, ind, team));
+      tickOpponentRobots(team,robotListRef,dispatch);
     }
   ),
 
-  moveForward: ({dispatch}) => (
+  moveForward: ({dispatch, robotListRef}) => (
     (block, ind, team) => {
       dispatch(RobotActions.walkForward(block,ind, team));
       dispatch(BallActions.ballKick(1, ind, team));
+      tickOpponentRobots(team,robotListRef,dispatch);
     }
   ),
 
@@ -84,8 +87,9 @@ const blocklyFunctions = {
     }
   ),
 
-  waitBlock: () => (
-    () => {
+  waitBlock: ({dispatch, robotListRef}) => (
+    (team) => {
+        tickOpponentRobots(team,robotListRef,dispatch);
     }
   ),
 
@@ -95,6 +99,34 @@ const blocklyFunctions = {
     }
   ),
 };
+
+function tickOpponentRobots(own_team, robotListRef, dispatch) {
+    let other_team = "right";
+    if (own_team === "right") {
+        other_team = "left"
+    }
+    for (let robot in robotListRef.current[other_team]) {
+        if (robotListRef.current[other_team].fixedMovement) {
+            let currFixedMovement = robotListRef.current[other_team][robot].fixedMovement
+            convertFixedMovements(currFixedMovement.actionList[currFixedMovement.index], robot, other_team, dispatch);
+            dispatch(RobotActions.increaseFixedMovementIndex(robot, other_team));
+        }
+    }
+}
+
+function convertFixedMovements(action, robot, team, dispatch) {
+    switch (action) {
+        case "move_one_block_ahead":
+            dispatch(RobotActions.walkForward(1, robot, team));
+            dispatch(BallActions.ballKick(1, robot, team));
+            break;
+        case "turn_left":
+            dispatch(RobotActions.addTargetRotation(-Math.PI/2, robot, team));
+            break;
+        default:
+            break;
+    }
+}
 
 function console_log(...args){
   if (constants.debugInterpreterLogs) {
@@ -221,6 +253,7 @@ export default function Task(props) {
           reachedCodeEnd,
           robotListRef,
           ballStateRef,
+          tickOpponentRobots,
         });
 
         interpreter.setProperty(globalObject, funName, interpreter.createNativeFunction((...args) => {
@@ -301,6 +334,10 @@ export default function Task(props) {
                 opponent_rotation,
                 "right"
             ));
+
+            if (props.task_properties.opponent_robot.movement) {
+                dispatch(RobotActions.setFixedMovement(0, "right", props.task_properties.opponent_robot.movement));
+            }
         }
     };
 
@@ -308,7 +345,7 @@ export default function Task(props) {
   // React refs in the function.
   function interpreterStep() {
     const workspaceInterpreter = workspaceInterpreterRef.current;
-    const robot = robotListRef.current["left"][0]; //TODO
+    const robot = robotListRef.current["left"][0];
     const ballRef = ballStateRef.current
 
     // Execution was stopped via the reset button (or never begun)

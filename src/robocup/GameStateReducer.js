@@ -196,7 +196,46 @@ function GameStateReducer(state, action) {
         console.assert(false);
         return {};
       }
-
+    case ActionName.Robot.SetFixedMovement:
+      current_robot = {...state.robotList[action.team][action.index]};
+      const copy_robot_list5 = [...state.robotList[action.team]];
+      copy_robot_list5.splice(action.index, 1);
+      return {
+        ...state,
+        robotList: {
+          ...state.robotList,
+          [action.team]: [
+            ...copy_robot_list5,
+            {
+              ...current_robot,
+              fixedMovement: {
+                "actionList": action.movementList,
+                "index": 0
+              },
+            }
+          ]
+        }
+      }
+    case ActionName.Robot.IncreaseFixedMovementIndex:
+      current_robot = {...state.robotList[action.team][action.index]};
+      const copy_robot_list6 = [...state.robotList[action.team]];
+      copy_robot_list6.splice(action.index, 1);
+      return {
+        ...state,
+        robotList: {
+          ...state.robotList,
+          [action.team]: [
+            ...copy_robot_list6,
+            {
+              ...current_robot,
+              fixedMovement: {
+                ...current_robot.fixedMovement,
+                "index": (current_robot.fixedMovement.index + 1)%current_robot.fixedMovement.actionList.length
+              },
+            }
+          ]
+        }
+      }
     case ActionName.Robot.Reset:
       return initialState;
     case ActionName.Ball.SetTargetPosition:

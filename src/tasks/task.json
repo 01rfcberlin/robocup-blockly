@@ -213,7 +213,8 @@
                 "turn_right",
                 "repeat",
                 "repeat_until",
-                "next_to_ball"
+                "next_to_ball",
+                "wait"
             ],
             "own_robot": {
                 "position": {
@@ -226,7 +227,7 @@
                 "position": {
                     "x": 7,
                     "y": 4,
-                    "rotation": -90
+                    "rotation": 0
                 },
                 "movement": ["move_one_block_ahead","move_one_block_ahead","turn_left","turn_left","move_one_block_ahead","move_one_block_ahead"]
             },

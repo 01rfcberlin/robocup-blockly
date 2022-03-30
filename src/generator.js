@@ -150,7 +150,7 @@ Blockly.JavaScript['is_robot_centered_to_goal'] = function(block) {
  * @returns {string}
  */
  Blockly.JavaScript['wait'] = function(block) {
-    return 'waitBlock();';
+    return 'waitBlock("left");';
 };
 
 const randomNameGenerator = () => {
