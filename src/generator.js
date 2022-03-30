@@ -137,10 +137,10 @@ Blockly.JavaScript['is_robot_above_goal'] = function(block) {
     return ['isRobotAboveGoal(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
 };
 Blockly.JavaScript['is_robot_beneath_goal'] = function(block) {
-    return ['isRobotBeneathGoal(0, "team")', Blockly.JavaScript.ORDER_ATOMIC];
+    return ['isRobotBeneathGoal(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
 };
 Blockly.JavaScript['is_robot_centered_to_goal'] = function(block) {
-    return ['isRobotCenteredToGoal(0, "team")', Blockly.JavaScript.ORDER_ATOMIC];
+    return ['isRobotCenteredToGoal(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 /**
