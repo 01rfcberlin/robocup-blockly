@@ -1,4 +1,8 @@
-# React-Demo for RoboCup WebUI Blockly-Control
+# Blockly robot soccer webapp
+
+For the live version, go to: https://01.rfc-berlin.de/girlsday/
+
+https://user-images.githubusercontent.com/23171985/160791077-8bb720ce-1d7f-480f-bce1-10fde6330f83.mp4
 
 ## Installation
 
