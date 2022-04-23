@@ -49,6 +49,12 @@ const setRobotTarget = (state, index, team, robotCell) => {
     goalt = false;
     owngoalt = false;
   }
+  if ((robotCell.x > 0 && robotCell.x < 10) && (robotCell.y > 0 && robotCell.y < 8)) {
+    outofbounds = false;
+    toggleOut = false;
+    goalt = false;
+    owngoalt = false;
+  }
 
   const robotPixel = translations.cellToPixelWithCenteredRobot(robotCell);
 
