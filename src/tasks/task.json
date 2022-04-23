@@ -285,6 +285,44 @@
                         "TODO"
                     ]
                 }
+        },
+        "task11": {
+            "optimal_blocks": 0,
+            "visibility": false,
+            "codeBlocks": [
+                "ball_kick",
+                "move_one_block_ahead",
+                "turn_left",
+                "turn_right",
+                "repeat",
+                "repeat_until",
+                "if",
+                "next_to_ball",
+                "is_robot_above_goal",
+                "is_robot_beneath_goal",
+                "is_robot_centered_to_goal"
+            ],
+            "own_robot": {
+                "random": {
+                    "x": {"min": 2, "max": 7},
+                    "y": {"min": 2, "max": 7}
+                }
+            },
+            "ball": {
+                "random": {
+                    "x": {"min": 2, "max": 7},
+                    "y": {"min": 2, "max": 7}
+                }
+            },
+            "task": {
+                "heading": "Sichtfeld",
+                "body": [
+                    "TODO"
+                ],
+                "tip": [
+                    "TODO"
+                ]
+            }
         }
     }
 }

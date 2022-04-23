@@ -30,6 +30,7 @@ const App = () => {
         TaskDetails.tasks.task8,
         TaskDetails.tasks.task9,
         TaskDetails.tasks.task10,
+        TaskDetails.tasks.task11,
     ];
 
     return (
