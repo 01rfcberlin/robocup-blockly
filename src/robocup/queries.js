@@ -8,13 +8,13 @@ function ballInVisionFieldImpl(robot, ball, offsetLength, offsetLateral) {
   const ballCell = translations.pixelToCell(ball);
 
   if (gaze_direction === angles.gaze_directions.right) {
-    return ballCell.y == robotCell.y + offsetLateral && ballCell.x >= robotCell.x - offsetLength && ballCell.x <= robotCell.x+3;
+    return ballCell.y === robotCell.y + offsetLateral && ballCell.x >= robotCell.x - offsetLength && ballCell.x <= robotCell.x+3;
   } else if (gaze_direction === angles.gaze_directions.left) {
-    return ballCell.y == robotCell.y + offsetLateral && ballCell.x <= robotCell.x + offsetLength && ballCell.x >= robotCell.x-3;
+    return ballCell.y === robotCell.y + offsetLateral && ballCell.x <= robotCell.x + offsetLength && ballCell.x >= robotCell.x-3;
   } else if (gaze_direction === angles.gaze_directions.bottom) {
-    return ballCell.x == robotCell.x + offsetLateral && ballCell.y >= robotCell.y - offsetLength && ballCell.y <= robotCell.y+3;
+    return ballCell.x === robotCell.x + offsetLateral && ballCell.y >= robotCell.y - offsetLength && ballCell.y <= robotCell.y+3;
   } else if (gaze_direction === angles.gaze_directions.top) {
-    return ballCell.x == robotCell.x + offsetLateral && ballCell.y <= robotCell.y + offsetLength && ballCell.y >= robotCell.y-3;
+    return ballCell.x === robotCell.x + offsetLateral && ballCell.y <= robotCell.y + offsetLength && ballCell.y >= robotCell.y-3;
   } else {
     console.assert(false);
     return false;
