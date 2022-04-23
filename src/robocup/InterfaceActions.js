@@ -7,6 +7,12 @@ const InterfaceActions = {
       showAlert: showAlert
     }
   },
+  toggleBallReachedAlert: (showAlert) => {
+    return {
+      type: ActionName.Interface.ToggleBallReachedAlert,
+      showAlert: showAlert
+    }
+  },
   toggleOwnGoalAlert: (showAlert) => {
     return {
       type: ActionName.Interface.ToggleOwnGoalAlert,
@@ -25,7 +31,12 @@ const InterfaceActions = {
       visibility: visibility
     }
   },
-
+  setAim: (aim) => {
+  return {
+    type: ActionName.Interface.SetAim,
+    aim: aim
+  }
+},
 };
 
 export default InterfaceActions;

@@ -27,9 +27,11 @@ const initialState = {
   goalsRight: 0,
   outOfBound: false,
   toggleGoalAlert: false,
+  toggleBallReachedAlert: false,
   toogleOwnGoalAlert: false,
   toggleOutOfBoundsAlert: false,
   visible: true,
+  aim: "",
 };
 
 const setRobotTarget = (state, index, team, robotCell) => {
@@ -43,6 +45,7 @@ const setRobotTarget = (state, index, team, robotCell) => {
   let toggleOut = state.toggleOutOfBoundsAlert;
   let goalt = state.toggleGoalAlert;
   let owngoalt = state.toggleOwnGoalAlert;
+  let toggleBallReached = state.toggleBallReachedAlert;
   if (robotCell.x >= 10 || robotCell.x <= 0 || robotCell.y <= 0 || robotCell.y >= 8) {
     outofbounds = true;
     toggleOut = true;
@@ -55,6 +58,7 @@ const setRobotTarget = (state, index, team, robotCell) => {
     goalt = false;
     owngoalt = false;
   }
+
 
   const robotPixel = translations.cellToPixelWithCenteredRobot(robotCell);
 
@@ -85,7 +89,8 @@ const setRobotTarget = (state, index, team, robotCell) => {
     outOfBound: outofbounds,
     toggleOutOfBoundsAlert: toggleOut,
     toggleGoalAlert: goalt,
-    toggleOwnGoalAlert: owngoalt
+    toggleOwnGoalAlert: owngoalt,
+    toggleBallReachedAlert: toggleBallReached,
   };
 };
 
@@ -137,6 +142,11 @@ function GameStateReducer(state, action) {
         new_rot = angles.normalize_angle(action.position.rotation);
       }
 
+      let toggleBallReached = false;
+      if (ballKickable(state.ball.position, current_robot.position) && state.aim === "ball") {
+        toggleBallReached = true;
+      }
+
       return {
         ...state,
         robotList: {
@@ -155,7 +165,8 @@ function GameStateReducer(state, action) {
               isActiveDueToRotating,
             }
           ]
-        }
+        },
+        toggleBallReachedAlert: toggleBallReached,
       };
     case ActionName.Robot.AddTargetRotation:
       //Turn the robot on the field
@@ -290,7 +301,7 @@ function GameStateReducer(state, action) {
       let toggleOwnGoal = state.toggleOwnGoalAlert;
       let toggleOut = state.toggleOutOfBoundsAlert;
 
-      if(newBallCell.x >= constants.num_x_cells-1 && goalCellsY.includes(newBallCell.y)) {
+      if(newBallCell.x >= constants.num_x_cells-1 && goalCellsY.includes(newBallCell.y) && state.aim === "goal") {
         goalsL += 1;
         toggleGoal = true;
         toggleOwnGoal = false;
@@ -360,6 +371,11 @@ function GameStateReducer(state, action) {
         ...state,
         toggleGoalAlert: action.showAlert
       };
+    case ActionName.Interface.ToggleBallReachedAlert:
+      return {
+        ...state,
+        toggleBallReachedAlert: action.showAlert
+      };
     case ActionName.Interface.ToggleOwnGoalAlert:
       return {
         ...state,
@@ -374,6 +390,11 @@ function GameStateReducer(state, action) {
       return {
         ...state,
         visible: action.visibility
+      };
+    case ActionName.Interface.SetAim:
+      return {
+        ...state,
+        aim: action.aim
       };
     default:
       return state;

@@ -3,6 +3,7 @@
         "task1": {
             "optimal_blocks": 1,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": ["ball_kick"],
             "own_robot": {
                 "position": {
@@ -26,6 +27,7 @@
         "task2": {
             "optimal_blocks": 4,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": ["ball_kick", "move_one_block_ahead"],
             "own_robot": {
                 "position": {
@@ -49,6 +51,7 @@
         "task3": {
             "optimal_blocks": 6,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right"],
             "own_robot": {
                 "position": {
@@ -72,6 +75,7 @@
         "task4": {
             "optimal_blocks": 8,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right"],
             "own_robot": {
                 "position": {
@@ -95,6 +99,7 @@
         "task5": {
             "optimal_blocks": 3,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat"],
             "own_robot": {
                 "position": {
@@ -118,6 +123,7 @@
         "task6": {
             "optimal_blocks": 4,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat"],
             "own_robot": {
                 "position": {
@@ -141,6 +147,7 @@
         "task7": {
             "optimal_blocks": 4,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat", "repeat_until", "next_to_ball"],
             "own_robot": {
                 "position": {
@@ -164,6 +171,7 @@
         "task8": {
             "optimal_blocks": 10,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": [
                 "ball_kick",
                 "move_one_block_ahead",
@@ -206,6 +214,7 @@
         "task9": {
             "optimal_blocks": 10,
             "visibility": true,
+            "aim": "goal",
             "codeBlocks": [
                 "ball_kick",
                 "move_one_block_ahead",
@@ -250,6 +259,7 @@
             "task10": {
                 "optimal_blocks": 16,
                 "visibility": false,
+                "aim": "goal",
                 "codeBlocks": [
                     "ball_kick",
                     "move_one_block_ahead",
@@ -289,6 +299,7 @@
         "task11": {
             "optimal_blocks": 0,
             "visibility": false,
+            "aim": "ball",
             "codeBlocks": [
                 "ball_kick",
                 "move_one_block_ahead",

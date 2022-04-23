@@ -278,6 +278,7 @@ export default function Task(props) {
     function resetGameState () {
         //Determines whether the ball should be placed random or at a fixed position
         dispatch(InterfaceActions.setVisibility(props.task_properties.visibility))
+        dispatch(InterfaceActions.setAim(props.task_properties.aim))
         let ball_x = -1;
         let ball_y = -1;
         if (props.task_properties.ball.random) {
