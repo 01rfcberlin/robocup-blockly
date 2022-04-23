@@ -5,11 +5,13 @@ import RobotActions from "./RobotActions";
 import BallActions from "./BallActions";
 import * as constants from "../constants.js";
 import * as angles from "./angles";
+import * as translations from "./translations";
 import * as canvas from "./canvas";
 import * as images from "./images";
 import Alert from "react-bootstrap/Alert";
 import InterfaceActions from "./InterfaceActions";
 import Particles from "react-tsparticles";
+import * as queries from "../robocup/queries.js";
 
 export const aimReachedEffect = () => {
     return (<React.Fragment>
@@ -165,7 +167,7 @@ export const aimReachedEffect = () => {
 export const RoboCupField = ({grid_properties}) => {
     const dispatch = useDispatch();
 
-    const { robotList, ball, toggleGoalAlert, toggleBallReachedAlert, toggleOwnGoalAlert, toggleOutOfBoundsAlert, visible } = useSelector(state => {
+    const { robotList, ball, toggleGoalAlert, toggleBallReachedAlert, toggleOwnGoalAlert, toggleOutOfBoundsAlert, visible, visionField } = useSelector(state => {
         return state.gameState;
     });
 
@@ -270,6 +272,22 @@ export const RoboCupField = ({grid_properties}) => {
                 ctx.fillText("(" + x + "," + y + ")", x * constants.cell.width + margin, y * constants.cell.height);
             }
         }
+    };
+
+    // this is implemented analogous to draw_robots() and drawRotatedImage()
+    const drawViewField = (ctx) => {
+        robotList.left.forEach(robot => {
+          ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+          for (let x = -1; x <= 11; x++) {
+              for (let y = -1; y <= 9; y++) {
+                  const cellPixel = translations.cellToPixelWithCenteredRobot({x, y});
+                  const isInVisionField = queries.ballInLeftVisionField(robot.position, cellPixel) || queries.ballInMidVisionField(robot.position, cellPixel) || queries.ballInRightVisionField(robot.position, cellPixel);
+                  if (!isInVisionField) {
+                    ctx.fillRect(cellPixel.x-constants.cell.width/2, cellPixel.y-constants.cell.height/2, constants.cell.width, constants.cell.height);
+                  }
+              }
+          }
+      });
     };
 
     // Draws all robots at their current position.
@@ -427,6 +445,10 @@ export const RoboCupField = ({grid_properties}) => {
 
         if (constants.debugDrawCellCoords) {
           drawDebugCellCoords(context);
+        }
+
+        if (visionField && visible) {
+          drawViewField(context);
         }
     };
 

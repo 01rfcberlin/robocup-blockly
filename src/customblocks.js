@@ -299,3 +299,39 @@ Blockly.Blocks['wait'] = {
   }
 };
 
+/**
+ * Custom block for checking alignment of the robot with the ball
+ */
+Blockly.Blocks['ball_in_left_vision_field'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Ball links vom Roboter',
+      "output": null,
+      "type": Boolean,
+      "colour": "#93a832",
+      "tooltip": "TODO",
+    });
+  }
+};
+Blockly.Blocks['ball_in_mid_vision_field'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Ball ist vorm Roboter',
+      "output": null,
+      "type": Boolean,
+      "colour": "#93a832",
+      "tooltip": "TODO",
+    });
+  }
+};
+Blockly.Blocks['ball_in_right_vision_field'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Ball rechts vom Roboter',
+      "output": null,
+      "type": Boolean,
+      "colour": "#93a832",
+      "tooltip": "TODO",
+    });
+  }
+};

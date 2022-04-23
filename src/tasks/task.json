@@ -322,7 +322,10 @@
                 "next_to_ball",
                 "is_robot_above_goal",
                 "is_robot_beneath_goal",
-                "is_robot_centered_to_goal"
+                "is_robot_centered_to_goal",
+                "ball_in_left_vision_field",
+                "ball_in_mid_vision_field",
+                "ball_in_right_vision_field"
             ],
             "own_robot": {
                 "random": {

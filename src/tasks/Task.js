@@ -11,6 +11,7 @@ import {ballKickable} from "../robocup/GameStateReducer.js";
 import {Col, Row} from "reactstrap";
 import Blockly from 'blockly/core';
 import InterfaceActions from "../robocup/InterfaceActions";
+import * as queries from "../robocup/queries.js";
 import * as translations from "../robocup/translations.js";
 
 // These are the functions that are made available inside the JS interpreter.
@@ -98,6 +99,23 @@ const blocklyFunctions = {
       workspaceRef.current.workspace.highlightBlock(blockId);
     }
   ),
+
+  ballInLeftVisionField: ({ballStateRef, robotListRef}) => (
+    (id, team) => {
+      return queries.ballInLeftVisionField(robotListRef.current[team][id].position, ballStateRef.current.position);
+    }
+  ),
+  ballInMidVisionField: ({ballStateRef, robotListRef}) => (
+    (id, team) => {
+      return queries.ballInMidVisionField(robotListRef.current[team][id].position, ballStateRef.current.position);
+    }
+  ),
+  ballInRightVisionField: ({ballStateRef, robotListRef}) => (
+    (id, team) => {
+      return queries.ballInRightVisionField(robotListRef.current[team][id].position, ballStateRef.current.position);
+    }
+  ),
+
 };
 
 function tickOpponentRobots(own_team, robotListRef, dispatch) {

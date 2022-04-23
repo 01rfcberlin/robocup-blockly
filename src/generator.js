@@ -153,6 +153,16 @@ Blockly.JavaScript['is_robot_centered_to_goal'] = function(block) {
     return 'waitBlock("left");';
 };
 
+Blockly.JavaScript['ball_in_left_vision_field'] = function(block) {
+    return ['ballInLeftVisionField(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
+};
+Blockly.JavaScript['ball_in_mid_vision_field'] = function(block) {
+    return ['ballInMidVisionField(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
+};
+Blockly.JavaScript['ball_in_right_vision_field'] = function(block) {
+    return ['ballInRightVisionField(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
+};
+
 const randomNameGenerator = () => {
     let res = '';
     for(let i = 0; i < 5; i++){
