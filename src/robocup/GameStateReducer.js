@@ -327,7 +327,8 @@ function GameStateReducer(state, action) {
       }
 
       let newBallPixel;
-      if (kickable) {
+      // set target position once when it's not set yet
+      if (kickable || state.ball.target === undefined) {
         newBallPixel = translations.cellToPixelWithEastBall(newBallCell);
       } else {
         // Do not reset target in case the ball is not kickable. This is relevant
