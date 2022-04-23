@@ -31,6 +31,7 @@ const initialState = {
   toogleOwnGoalAlert: false,
   toggleOutOfBoundsAlert: false,
   visible: true,
+  winToggled: false,
   aim: "",
 };
 
@@ -59,6 +60,9 @@ const setRobotTarget = (state, index, team, robotCell) => {
     owngoalt = false;
   }
 
+  if(state.aim === "ball" && state.winToggled) {
+    toggleBallReached = false;
+  }
 
   const robotPixel = translations.cellToPixelWithCenteredRobot(robotCell);
 
@@ -142,10 +146,13 @@ function GameStateReducer(state, action) {
         new_rot = angles.normalize_angle(action.position.rotation);
       }
 
-      let toggleBallReached = false;
-      if (ballKickable(state.ball.position, current_robot.position) && state.aim === "ball") {
+      let toggleBallReached = state.toggleBallReachedAlert;
+      let winning = state.winToggled;
+      if (ballKickable(state.ball.position, current_robot.position) && state.aim === "ball" && !state.winToggled) {
         toggleBallReached = true;
+        winning = true;
       }
+
 
       return {
         ...state,
@@ -167,6 +174,7 @@ function GameStateReducer(state, action) {
           ]
         },
         toggleBallReachedAlert: toggleBallReached,
+        winToggled: winning
       };
     case ActionName.Robot.AddTargetRotation:
       //Turn the robot on the field
@@ -301,12 +309,14 @@ function GameStateReducer(state, action) {
       let toggleGoal = state.toggleGoalAlert;
       let toggleOwnGoal = state.toggleOwnGoalAlert;
       let toggleOut = state.toggleOutOfBoundsAlert;
+      let winning2 = state.winToggled;
 
-      if(newBallCell.x >= constants.num_x_cells-1 && goalCellsY.includes(newBallCell.y) && state.aim === "goal") {
+      if(newBallCell.x >= constants.num_x_cells-1 && goalCellsY.includes(newBallCell.y) && state.aim === "goal" && !state.winToggled) {
         goalsL += 1;
         toggleGoal = true;
         toggleOwnGoal = false;
         toggleOut = false;
+        winning2 = true;
       }
 
       if(newBallCell.x <= 0 && goalCellsY.includes(newBallCell.y)) {
@@ -345,6 +355,7 @@ function GameStateReducer(state, action) {
         toggleGoalAlert: toggleGoal,
         toggleOwnGoalAlert: toggleOwnGoal,
         toggleOutOfBoundsAlert: toggleOut,
+        winToggled: winning2,
       };
     case ActionName.Ball.AddBall:
       const ballPixel = translations.cellToPixelWithEastBall(action.position);
