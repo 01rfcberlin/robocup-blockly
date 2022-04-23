@@ -37,4 +37,12 @@ function ballInVisionField(robotPixel, ballPixel) {
   return ballInMidVisionField(robotPixel, ballPixel) || ballInLeftVisionField(robotPixel, ballPixel) || ballInRightVisionField(robotPixel, ballPixel)
 }
 
-export { ballInLeftVisionField, ballInMidVisionField, ballInRightVisionField, ballInVisionField }
+// A ball is only "kickable" if the robot is not moving, i.e. if the ball and
+// the robot are on the same cell.
+function ballKickable(ballPos, robotPos) {
+  const robotCell = translations.pixelToCell(robotPos);
+  const ballCell = translations.pixelToCell(ballPos);
+  return ballCell.x === robotCell.x && ballCell.y === robotCell.y;
+}
+
+export { ballInLeftVisionField, ballInMidVisionField, ballInRightVisionField, ballInVisionField, ballKickable }

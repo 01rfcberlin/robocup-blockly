@@ -7,7 +7,6 @@ import BlocklyJS from "blockly/javascript";
 import {useDispatch, useSelector} from "react-redux";
 import BallActions from "../robocup/BallActions";
 import * as constants from "../constants.js";
-import {ballKickable} from "../robocup/GameStateReducer.js";
 import {Col, Row} from "reactstrap";
 import Blockly from 'blockly/core';
 import InterfaceActions from "../robocup/InterfaceActions";
@@ -65,7 +64,7 @@ const blocklyFunctions = {
 
   nextToBall: ({ballStateRef, robotListRef}) => (
     (id, team) => {
-      return ballKickable(ballStateRef.current.position, robotListRef.current[team][id].position);
+      return queries.ballKickable(ballStateRef.current.position, robotListRef.current[team][id].position);
     }
   ),
 

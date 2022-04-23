@@ -2,14 +2,7 @@ import ActionName from "../helper/ActionName";
 import * as constants from "../constants.js";
 import * as angles from "./angles";
 import * as translations from "./translations.js";
-
-// A ball is only "kickable" if the robot is not moving, i.e. if the ball and
-// the robot are on the same cell.
-export function ballKickable(ballPos, robotPos) {
-  const robotCell = translations.pixelToCell(robotPos);
-  const ballCell = translations.pixelToCell(ballPos);
-  return ballCell.x === robotCell.x && ballCell.y === robotCell.y;
-}
+import * as queries from "./queries.js";
 
 const initialState = {
   teamNameLeft: "01.RFC Berlin",
@@ -149,7 +142,7 @@ function GameStateReducer(state, action) {
 
       let toggleBallReached = state.toggleBallReachedAlert;
       let winning = state.winToggled;
-      if (ballKickable(state.ball.position, current_robot.position) && state.aim === "ball" && !state.winToggled) {
+      if (queries.ballKickable(state.ball.position, current_robot.position) && state.aim === "ball" && !state.winToggled) {
         toggleBallReached = true;
         winning = true;
       }
@@ -287,7 +280,7 @@ function GameStateReducer(state, action) {
       const ballCell = translations.pixelToCell(state.ball.position);
       let newBallCell = ballCell;
 
-      const kickable = ballKickable(state.ball.position, current_robot.position);
+      const kickable = queries.ballKickable(state.ball.position, current_robot.position);
       if (kickable) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
