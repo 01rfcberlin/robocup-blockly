@@ -162,6 +162,9 @@ Blockly.JavaScript['ball_in_mid_vision_field'] = function(block) {
 Blockly.JavaScript['ball_in_right_vision_field'] = function(block) {
     return ['ballInRightVisionField(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
 };
+Blockly.JavaScript['ball_in_vision_field'] = function(block) {
+    return ['ballInVisionField(0, "left")', Blockly.JavaScript.ORDER_ATOMIC];
+};
 
 const randomNameGenerator = () => {
     let res = '';

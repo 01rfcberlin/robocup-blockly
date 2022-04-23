@@ -115,6 +115,11 @@ const blocklyFunctions = {
       return queries.ballInRightVisionField(robotListRef.current[team][id].position, ballStateRef.current.position);
     }
   ),
+  ballInVisionField: ({ballStateRef, robotListRef}) => (
+    (id, team) => {
+      return queries.ballInVisionField(robotListRef.current[team][id].position, ballStateRef.current.position);
+    }
+  ),
 
 };
 

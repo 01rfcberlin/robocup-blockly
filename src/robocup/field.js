@@ -281,8 +281,7 @@ export const RoboCupField = ({grid_properties}) => {
           for (let x = -1; x <= 11; x++) {
               for (let y = -1; y <= 9; y++) {
                   const cellPixel = translations.cellToPixelWithCenteredRobot({x, y});
-                  const isInVisionField = queries.ballInLeftVisionField(robot.position, cellPixel) || queries.ballInMidVisionField(robot.position, cellPixel) || queries.ballInRightVisionField(robot.position, cellPixel);
-                  if (!isInVisionField) {
+                  if (!queries.ballInVisionField(robot.position, cellPixel)) {
                     ctx.fillRect(cellPixel.x-constants.cell.width/2, cellPixel.y-constants.cell.height/2, constants.cell.width, constants.cell.height);
                   }
               }

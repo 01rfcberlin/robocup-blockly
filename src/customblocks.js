@@ -335,3 +335,14 @@ Blockly.Blocks['ball_in_right_vision_field'] = {
     });
   }
 };
+Blockly.Blocks['ball_in_vision_field'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'Ball im Sichtfeld vom Roboter',
+      "output": null,
+      "type": Boolean,
+      "colour": "#93a832",
+      "tooltip": "TODO",
+    });
+  }
+};
