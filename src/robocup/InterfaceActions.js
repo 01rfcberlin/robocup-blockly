@@ -37,6 +37,12 @@ const InterfaceActions = {
     aim: aim
   }
 },
+  setVisionField: (visibility) => {
+    return {
+      type: ActionName.Interface.SetVisionField,
+      visibility: visibility
+    }
+  },
 };
 
 export default InterfaceActions;

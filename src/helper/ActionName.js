@@ -30,7 +30,8 @@ const ActionName = {
     ToggleOwnGoalAlert: 'Interface.ToggleOwnGoalAlert',
     ToggleOutOfBoundsAlert: 'Interface.ToggleOutOfBoundsAlert',
     SetVisibility: "Interface.SetVisibility",
-    SetAim: "Interface.SetAim"
+    SetAim: "Interface.SetAim",
+    SetVisionField: "Interface.SetVisionField",
   }
 };
 

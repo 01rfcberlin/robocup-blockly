@@ -33,6 +33,7 @@ const initialState = {
   visible: true,
   winToggled: false,
   aim: "",
+  visionField: false,
 };
 
 const setRobotTarget = (state, index, team, robotCell) => {
@@ -415,6 +416,11 @@ function GameStateReducer(state, action) {
       return {
         ...state,
         aim: action.aim
+      };
+    case ActionName.Interface.SetVisionField:
+      return {
+        ...state,
+        visionField: action.visibility
       };
     default:
       return state;

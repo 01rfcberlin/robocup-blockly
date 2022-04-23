@@ -4,6 +4,7 @@
             "optimal_blocks": 1,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": ["ball_kick"],
             "own_robot": {
                 "position": {
@@ -28,6 +29,7 @@
             "optimal_blocks": 4,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": ["ball_kick", "move_one_block_ahead"],
             "own_robot": {
                 "position": {
@@ -52,6 +54,7 @@
             "optimal_blocks": 6,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right"],
             "own_robot": {
                 "position": {
@@ -76,6 +79,7 @@
             "optimal_blocks": 8,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right"],
             "own_robot": {
                 "position": {
@@ -100,6 +104,7 @@
             "optimal_blocks": 3,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat"],
             "own_robot": {
                 "position": {
@@ -124,6 +129,7 @@
             "optimal_blocks": 4,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat"],
             "own_robot": {
                 "position": {
@@ -148,6 +154,7 @@
             "optimal_blocks": 4,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": ["ball_kick", "move_one_block_ahead", "turn_left", "turn_right", "repeat", "repeat_until", "next_to_ball"],
             "own_robot": {
                 "position": {
@@ -172,6 +179,7 @@
             "optimal_blocks": 10,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": [
                 "ball_kick",
                 "move_one_block_ahead",
@@ -215,6 +223,7 @@
             "optimal_blocks": 10,
             "visibility": true,
             "aim": "goal",
+            "visionField": false,
             "codeBlocks": [
                 "ball_kick",
                 "move_one_block_ahead",
@@ -260,6 +269,7 @@
                 "optimal_blocks": 16,
                 "visibility": false,
                 "aim": "goal",
+                "visionField": false,
                 "codeBlocks": [
                     "ball_kick",
                     "move_one_block_ahead",
@@ -300,6 +310,7 @@
             "optimal_blocks": 0,
             "visibility": false,
             "aim": "ball",
+            "visionField": true,
             "codeBlocks": [
                 "ball_kick",
                 "move_one_block_ahead",
