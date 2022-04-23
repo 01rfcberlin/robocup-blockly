@@ -278,7 +278,8 @@ function GameStateReducer(state, action) {
       const ballCell = translations.pixelToCell(state.ball.position);
       let newBallCell = ballCell;
 
-      if (ballKickable(state.ball.position, current_robot.position)) {
+      const kickable = ballKickable(state.ball.position, current_robot.position);
+      if (kickable) {
         const gaze_direction = angles.classify_gaze_direction(current_robot.position.rotation);
 
         if (gaze_direction === angles.gaze_directions.left) {
@@ -315,7 +316,14 @@ function GameStateReducer(state, action) {
         toggleOut = false;
       }
 
-      const newBallPixel = translations.cellToPixelWithEastBall(newBallCell);
+      let newBallPixel;
+      if (kickable) {
+        newBallPixel = translations.cellToPixelWithEastBall(newBallCell);
+      } else {
+        // Do not reset target in case the ball is not kickable. This is relevant
+        // when there is an opponent player that also moves.
+        newBallPixel = state.ball.target;
+      }
 
       return {
         ...state,
