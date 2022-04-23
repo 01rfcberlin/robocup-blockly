@@ -106,7 +106,7 @@ function tickOpponentRobots(own_team, robotListRef, dispatch) {
         other_team = "left"
     }
     for (let robot in robotListRef.current[other_team]) {
-        if (robotListRef.current[other_team].fixedMovement) {
+        if (robotListRef.current[other_team][robot].fixedMovement) {
             let currFixedMovement = robotListRef.current[other_team][robot].fixedMovement
             convertFixedMovements(currFixedMovement.actionList[currFixedMovement.index], robot, other_team, dispatch);
             dispatch(RobotActions.increaseFixedMovementIndex(robot, other_team));
