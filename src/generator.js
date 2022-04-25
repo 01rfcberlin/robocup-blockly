@@ -123,6 +123,18 @@ Blockly.JavaScript['if'] = function(block) {
 
     return 'if (' + boolean_in + ') { '+ body + ' }';
 };
+Blockly.JavaScript['if_not'] = function(block) {
+    var boolean_in = Blockly.JavaScript.valueToCode(block, 'sensor_in', Blockly.JavaScript.ORDER_ATOMIC);
+    var body = Blockly.JavaScript.statementToCode(block, 'body');
+
+    const noConditionDefined = boolean_in === '';
+    if (noConditionDefined) {
+      // do nothing
+      return '';
+    }
+
+    return 'if (!(' + boolean_in + ')) { '+ body + ' }';
+};
 
 /**
  * Custom code that checks whether the robot is next to the ball
