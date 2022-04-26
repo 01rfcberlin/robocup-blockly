@@ -101,7 +101,7 @@
             }
         },
         "task5": {
-            "optimal_blocks": 3,
+            "optimal_blocks": 2,
             "visibility": true,
             "aim": "goal",
             "visionField": false,
