@@ -261,7 +261,7 @@
                     "In diesem Level kannst du zeigen, was du bisher gelernt hast! Ein gegnerischer Roboter macht dir das Leben schwer einfach ein Tor zu schießen. Er bewegt sich auf dem Spielfeld auf und ab. Findest du den kürzesten Weg ein Tor zu schießen?"
                 ],
                 "tip": [
-                    "Du kannst das Level entweder so lösen, dass du um den Roboter herum läufst oder den Block Warten nutzen, um nicht mit den Roboter zu kollidieren."
+                    "Du kannst das Level entweder so lösen, dass du mit deinem Roboter um den gegnerischen Roboter herum läufst oder den Block Warten nutzen, um nicht mit dem gegnerischen Roboter zu kollidieren."
                 ]
             }
         },
