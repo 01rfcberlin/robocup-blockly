@@ -258,10 +258,10 @@
             "task": {
                 "heading": "Die Gegner bewegen sich!",
                 "body": [
-                    "TODO"
+                    "In diesem Level kannst du zeigen, was du bisher gelernt hast! Ein gegnerischer Roboter macht dir das Leben schwer einfach ein Tor zu schießen. Er bewegt sich auf dem Spielfeld auf und ab. Findest du den kürzesten Weg ein Tor zu schießen?"
                 ],
                 "tip": [
-                    "TODO"
+                    "Du kannst das Level entweder so lösen, dass du um den Roboter herum läufst oder den Block Warten nutzen, um nicht mit den Roboter zu kollidieren."
                 ]
             }
         },
@@ -303,7 +303,7 @@
                         "Nanu, wo sind denn der Roboter und der Ball hin? Klick mal auf Code ausführen und schau was passiert. An welchen Stellen kann der Ball liegen? Und wo steht der Roboter? Um darauf reagieren zu können, brauchen wir den Wenn-Block und die neuen Sensor-Inputs."
                     ],
                     "tip": [
-                        "TODO"
+                        "Es gibt drei Positionen an der der Roboter und der Ball auftauchen können: Ein paar Blöcke über dem Tor, ein paar Blöcke unter dem Tor oder in gerade Schusslinie. Du kannst für alle drei Fälle Blöcke bauen. Dein Roboter kann eigenständig entscheiden, welche Schritte er ausführen muss."
                     ]
                 }
         },
