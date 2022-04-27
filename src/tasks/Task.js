@@ -302,7 +302,17 @@ export default function Task(props) {
         dispatch(InterfaceActions.setVisibility(props.task_properties.visibility))
         dispatch(InterfaceActions.setAim(props.task_properties.aim))
         dispatch(InterfaceActions.setVisionField(props.task_properties.visionField))
-
+        let ball_x = -1;
+        let ball_y = -1;
+        if (props.task_properties.ball.random) {
+            ball_x = getRandomArbitrary(props.task_properties.ball.random.x.min,props.task_properties.ball.random.x.max);
+            ball_y = getRandomArbitrary(props.task_properties.ball.random.y.min,props.task_properties.ball.random.y.max);
+        }
+        else {
+            ball_x = props.task_properties.ball.position.x;
+            ball_y = props.task_properties.ball.position.y;
+        }
+        dispatch(BallActions.addBall(ball_x,ball_y));
         let robot_x = -1;
         let robot_y = -1;
         let robot_rotation = 0;
@@ -321,28 +331,12 @@ export default function Task(props) {
             robot_y = props.task_properties.own_robot.position.y;
             robot_rotation = props.task_properties.own_robot.position.rotation * 2*Math.PI/360;
         }
-
-        let ball_x = -1;
-        let ball_y = -1;
-        if (props.task_properties.ball.random) {
-            do {
-              ball_x = getRandomArbitrary(props.task_properties.ball.random.x.min,props.task_properties.ball.random.x.max);
-              ball_y = getRandomArbitrary(props.task_properties.ball.random.y.min,props.task_properties.ball.random.y.max);
-            } while (robot_x === ball_x && robot_y === ball_y);
-        }
-        else {
-            ball_x = props.task_properties.ball.position.x;
-            ball_y = props.task_properties.ball.position.y;
-        }
-
-        dispatch(BallActions.addBall(ball_x,ball_y));
         dispatch(RobotActions.addRobot(
             robot_x,
             robot_y,
             robot_rotation,
             "left"
         ));
-
         if(props.task_properties.opponent_robot) {
             let opponent_x = -1;
             let opponent_y = -1;
