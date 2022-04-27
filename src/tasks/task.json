@@ -308,7 +308,7 @@
                 }
         },
         "task11": {
-            "optimal_blocks": 0,
+            "optimal_blocks": 16,
             "visibility": false,
             "aim": "ball",
             "visionField": true,
