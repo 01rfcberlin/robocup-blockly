@@ -345,10 +345,10 @@
             "task": {
                 "heading": "Sichtfeld",
                 "body": [
-                    "Nun ist deine Aufgabe den Ball zu finden und zum Ball zu gehen (du musst jetzt kein Tor mehr schießen), ohne vorher zu wissen, wo der Ball ist. Du musst keine perfekte Lösung finden, wobei der Roboter den Ball jedes Mal findet."
+                    "Nun ist deine Aufgabe den Ball zu finden und zum Ball zu gehen ohne vorher zu wissen, wo der Ball ist. Du musst jetzt kein Tor mehr schießen. Du musst keine perfekte Lösung finden, bei der der Roboter den Ball jedes Mal findet."
                 ],
                 "tip": [
-                    "TODO"
+                    "Dies ist das Expert:innen Level. Hier gibt es keine Tipps ;)"
                 ]
             }
         }
