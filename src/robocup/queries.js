@@ -16,7 +16,10 @@ function ballInVisionFieldImpl(robot, ball, offsetLength, offsetLateral) {
   } else if (gaze_direction === angles.gaze_directions.top) {
     return ballCell.x === robotCell.x + offsetLateral && ballCell.y <= robotCell.y + offsetLength && ballCell.y >= robotCell.y-3;
   } else {
-    console.assert(false);
+    // This probably means that the robot is rotating and thus the robot's
+    // rotation might be e.g. between looking up and looking left. The vision
+    // field in the UI also is not shown when the robot rotates, so returning
+    // false here also reflects the behavior of the UI.
     return false;
   }
 }
