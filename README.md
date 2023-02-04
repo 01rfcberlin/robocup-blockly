@@ -26,13 +26,13 @@ This opens the webapp under [http://localhost:3000](http://localhost:3000) in yo
 The page will reload if you make edits.
 You will also see any lint errors in the console.
 
-## Build
+## Static build for deployment
 
-Assume we want to deploy the site to the path "/girlsday", then you can do:
+Assuming you want to host the webapp at the path `/girlsday` (eg http://example.com/girlsday):
 
 ```
-PUBLIC_URL="/girlsday" npm run build
 cp -r blockly/media/ public/media
+PUBLIC_URL="/girlsday" npm run build
 ```
 
-You can find the files to deploy in the build/ folder.
+You can find the static build in `build/`.
