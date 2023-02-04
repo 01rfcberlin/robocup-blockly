@@ -6,7 +6,13 @@ https://user-images.githubusercontent.com/23171985/160791077-8bb720ce-1d7f-480f-
 
 ## Installation
 
-In the project directory, copy the media/ folder once like this: `cp -r blockly/media/ public/media`. Then run `npm install`.
+Before you can build the project, you need to do the following once:
+
+```
+cd robocup-blockly/
+cp -r blockly/media/ public/media
+npm install
+```
 
 ## Build
 
