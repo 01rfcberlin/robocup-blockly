@@ -14,6 +14,18 @@ cp -r blockly/media/ public/media
 npm install
 ```
 
+## Development
+
+Run the webapp in the development mode like this:
+
+```
+npm start
+```
+
+This opens the webapp under [http://localhost:3000](http://localhost:3000) in your browser.
+The page will reload if you make edits.
+You will also see any lint errors in the console.
+
 ## Build
 
 Assume we want to deploy the site to the path "/girlsday", then you can do:
@@ -24,11 +36,3 @@ cp -r blockly/media/ public/media
 ```
 
 You can find the files to deploy in the build/ folder.
-
-## Execute the Code
-
-`npm start` to run the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
