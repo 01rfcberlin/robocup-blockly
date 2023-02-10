@@ -1,8 +1,8 @@
-# Blockly robot soccer webapp
+# Blockly robot soccer web app
 
-A webapp based on [Blockly](https://developers.google.com/blockly/) and React to teach the basics of coding and developing robots.
-The theme of the webapp is the [RoboCup Humanoid League](https://www.robocup.org/leagues/3), in which robots play soccer autonomously.
-This webapp was developed in the context of the [GirlsDay](https://girls-day.de), which is a Germany-wide event which promotes male-dominated jobs to young women, and where we used this webapp to make our work on robots more approachable for the young women.
+A web app based on [Blockly](https://developers.google.com/blockly/) and React to teach the basics of coding and developing robots.
+The theme of the web app is the [RoboCup Humanoid League](https://www.robocup.org/leagues/3), in which robots play soccer autonomously.
+This web app was developed in the context of the [GirlsDay](https://girls-day.de), which is a Germany-wide event which promotes male-dominated jobs to young women, and where we used this web app to make our work on robots more approachable for the young women.
 
 For the live version, go to: https://01.rfc-berlin.de/girlsday/
 
@@ -20,19 +20,19 @@ npm install
 
 ## Development
 
-Run the webapp in the development mode like this:
+Run the web app in the development mode like this:
 
 ```
 npm start
 ```
 
-This opens the webapp under [http://localhost:3000](http://localhost:3000) in your browser.
+This opens the web app under [http://localhost:3000](http://localhost:3000) in your browser.
 The page will reload if you make edits.
 You will also see any lint errors in the console.
 
 ## Static build for deployment
 
-Assuming you want to host the webapp at the path `/girlsday` (eg http://example.com/girlsday):
+Assuming you want to host the web app at the path `/girlsday` (eg http://example.com/girlsday):
 
 ```
 cp -r blockly/media/ public/media
